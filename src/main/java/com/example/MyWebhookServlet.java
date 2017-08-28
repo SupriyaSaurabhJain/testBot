@@ -127,7 +127,8 @@ public class MyWebhookServlet extends AIWebhookServlet  {
 			output.setSpeech(response + "\n \n This is what I found. Does it help ?");
 			//webhook_res["contextOut"].append({"name":"complaince_expert", "lifespan":2,"parameters":{ "topic": topic} })
 			HashMap<String, JsonElement> outParameters = new HashMap<String , JsonElement>();
-			JsonElement contextOutParameter=(JsonElement) parser.parse(topic);				
+			JsonElement contextOutParameter ;
+			contextOutParameter = new JsonPrimitive(topic);
 			outParameters.put("topic",contextOutParameter );
 			contextOut.setLifespan(2);
 			contextOut.setName("complaince_expert");
@@ -136,6 +137,7 @@ public class MyWebhookServlet extends AIWebhookServlet  {
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			log.info("exception  "+ e);
 			e.printStackTrace();
 		}
 
