@@ -60,6 +60,9 @@ HttpPost post = new HttpPost(url);
 
 // add header
 post.setHeader("User-Agent", USER_AGENT);
+post.setHeader("Content-Type" , "application/json");
+post.setHeader("Authorization" , "Bearer 36f114a183b241ad8fda33e11c962a5f");
+
  StringEntity entity;
  String r = "no ";
 try {
