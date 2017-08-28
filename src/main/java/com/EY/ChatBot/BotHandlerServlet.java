@@ -1,58 +1,35 @@
-package com.example;
+package com.EY.ChatBot;
 
-import java.io.*;
+import java.io.FileReader;
 import java.util.HashMap;
+import java.util.logging.Logger;
+
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServlet;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import java.util.logging.Logger;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 
 import ai.api.model.AIOutputContext;
 import ai.api.model.Fulfillment;
-import ai.api.web.AIWebhookServlet;
 
+// [START example]
 @SuppressWarnings("serial")
-public class MyWebhookServlet extends AIWebhookServlet  { 
-	//https://ai-ml-eychat.appspot.com/webhook  
+public class BotHandlerServlet extends HttpServlet{
 	private static final Logger log = Logger.getLogger(MyWebhookServlet.class.getName());
-	@Override
-	protected void doWebhook(AIWebhookRequest input, Fulfillment output) {
-		String action = input.getResult().getAction();
-		HashMap<String, JsonElement> parameter = input.getResult().getParameters();
-					
-		switch (action) {
-		case "overtime":
-		case "overtime_federal":
-		case "overtime_federal_more_yes":
-		case "overtime_states":
-		case "overtime_states_no":
-		case "compliance_expert_yes":
-			output.setDisplayText("You may write your detailed query via email and our compliance expert will get back to you within 3 working days. If your query is urgent in nature then you may opt for urgent response desk and you may receive response within 24 hours. \n\nWould you like to write a query with standard response time?\n :obYes:cb :obNo:cb");
-			output.setSpeech("You may write your detailed query via email and our compliance expert will get back to you within 3 working days. If your query is urgent in nature then you may opt for urgent response desk and you may receive response within 24 hours.       Would you like to write a query with standard response time?");
-			break;
-		case "query":
-			String topic = parameter.get("topics").toString().replaceAll("^\"|\"$", "");
-			String law_scope = parameter.get("law_scope").toString().replaceAll("^\"|\"$", "");
-			output  = getQueryResponse(topic,law_scope.toUpperCase() , output );
-			break;
-		case "state_laws": 
-			topic = parameter.get("topic").toString().replaceAll("^\"|\"$", "");
-			log.info(topic);
-			String state = parameter.get("state").toString().replaceAll("^\"|\"$", "");
-			log.info(state);
-			output  = getStateActionResponse(topic,state.toUpperCase() , output );
-			break;
 
-		default:
-			break;
-		}
-		//output.setSpeech(input.getResult().toString());
-
+	protected Fulfillment compilanceExpertYesHandler(Fulfillment output) {
+		// TODO Auto-generated method stub
+		output.setDisplayText("You may write your detailed query via email and our compliance expert will get back to you within 3 working days. If your query is urgent in nature then you may opt for urgent response desk and you may receive response within 24 hours. \n\nWould you like to write a query with standard response time?\n :obYes:cb :obNo:cb");
+		output.setSpeech("You may write your detailed query via email and our compliance expert will get back to you within 3 working days. If your query is urgent in nature then you may opt for urgent response desk and you may receive response within 24 hours.       Would you like to write a query with standard response time?");
+		return output;
 	}
-	protected Fulfillment getQueryResponse(String topic , String law_scope , Fulfillment output){
+	protected Fulfillment getQueryActionResponseHandler(HashMap<String, JsonElement> parameter , Fulfillment output) {
+		String topic = parameter.get("topics").toString().replaceAll("^\"|\"$", "");
+		String law_scope = parameter.get("law_scope").toString().replaceAll("^\"|\"$", "");
 		ServletContext conetxt = getServletContext();
 		String pathToDd = conetxt.getRealPath("/WEB-INF/db.txt");
 		JSONParser parser = new JSONParser();
@@ -104,15 +81,15 @@ public class MyWebhookServlet extends AIWebhookServlet  {
 			output.setContextOut(contextOut);
 
 		}
-
-		return output ;
+		return output;
 	}
-	protected Fulfillment getStateActionResponse(String topic , String state , Fulfillment output){
-		log.info("inside funb");
+	protected Fulfillment getStateActionResponseHandler(HashMap<String, JsonElement> parameter , Fulfillment output) {
+		String topic = parameter.get("topic").toString().replaceAll("^\"|\"$", "");
+		log.info(topic);
+		String state = parameter.get("state").toString().replaceAll("^\"|\"$", "");
+		log.info(state);
 		ServletContext conetxt = getServletContext();
-
 		String pathToDd = conetxt.getRealPath("/WEB-INF/db.txt");
-
 		JSONParser parser = new JSONParser();
 		Object obj = null;
 		String response = "No Response!!!" ;
