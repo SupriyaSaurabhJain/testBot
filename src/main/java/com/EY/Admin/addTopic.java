@@ -59,7 +59,7 @@ public class addTopic extends HttpServlet {
 	private static String addNewIntent(String topic , String subTopic , String entityID){
 		
 	String url = "https://api.api.ai/v1/entities/"+entityID+"/entries?v=20150910";
-
+	log.severe("topic : "+ topic + "   subTopic : "+subTopic + "\n  url : "+url);
 	HttpClient client = HttpClientBuilder.create().build();
 	HttpPost post = new HttpPost(url);
 
@@ -77,7 +77,6 @@ public class addTopic extends HttpServlet {
 		HttpResponse response = client.execute(post);
 		log.severe("Response Code : " + response.getStatusLine().getStatusCode());
 		log.severe("Response Message :" + response.getStatusLine().getReasonPhrase());
-
 		BufferedReader rd = new BufferedReader(
 				new InputStreamReader(response.getEntity().getContent()));
 		r  = response.getEntity().toString();
