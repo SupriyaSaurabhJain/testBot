@@ -47,7 +47,7 @@ public class addTopic extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		log.info(request.getAttribute("topic").toString());
+	//	log.info(request.getAttribute("topic").toString());
 		log.info("" + request.getParameter("json"));
 		String topic = request.getParameter("topic");
 		String subTopic = request.getParameter("subTopic");
