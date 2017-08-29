@@ -39,16 +39,6 @@ public class addTopic extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		this.doPost(request, response);
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	//	log.info(request.getAttribute("topic").toString());
-		log.info("" + request.getParameter("json"));
 		String topic = request.getParameter("topic");
 		String subTopic = request.getParameter("subTopic");
 		String entityId = "d7b4ab70-c537-40e3-b1dc-083aba5ed555" ; // weather bot topicEntity 
@@ -102,5 +92,15 @@ public class addTopic extends HttpServlet {
 		e.printStackTrace();
 	}
 	return  r;
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+	//	log.info(request.getAttribute("topic").toString());
+		//log.info("" + request.getParameter("json"));
+		doGet(request, response);
 	}
 }
