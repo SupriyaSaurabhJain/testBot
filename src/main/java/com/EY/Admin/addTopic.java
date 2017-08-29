@@ -38,10 +38,22 @@ public class addTopic extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+	//	log.info(request.getAttribute("topic").toString());
+		//log.info("" + request.getParameter("json"));
+
 		// TODO Auto-generated method stub
 		String topic = request.getParameter("topic");
 		String subTopic = request.getParameter("subTopic");
 		String entityId = "d7b4ab70-c537-40e3-b1dc-083aba5ed555" ; // weather bot topicEntity 
+		log.severe(" in doPost " + subTopic);
 		response.getWriter().write(addNewIntent(topic, subTopic , entityId));
 	}
 	private static String getJsonStringEntityForElement(String topic , String subTopic){
@@ -92,15 +104,5 @@ public class addTopic extends HttpServlet {
 		e.printStackTrace();
 	}
 	return  r;
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	//	log.info(request.getAttribute("topic").toString());
-		//log.info("" + request.getParameter("json"));
-		doGet(request, response);
 	}
 }
