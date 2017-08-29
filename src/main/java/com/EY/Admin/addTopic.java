@@ -57,7 +57,7 @@ public class addTopic extends HttpServlet {
 		return inputJson;
 	}
 	private static String addNewIntent(String topic , String subTopic , String entityID){
-		topic = "topic" ;  subTopic = "sub" ;
+		//topic = "topic" ;  subTopic = "sub" ;
 		 
 	String url = "https://api.api.ai/v1/entities/"+entityID+"/entries?v=20150910";
 	log.severe("topic : "+ topic + "   subTopic : "+subTopic + "\n  url : "+url);
@@ -80,7 +80,7 @@ public class addTopic extends HttpServlet {
 		log.severe("Response Message :" + response.getStatusLine().getReasonPhrase());
 		BufferedReader rd = new BufferedReader(
 				new InputStreamReader(response.getEntity().getContent()));
-		r  = response.getEntity().toString();
+		r  = response.getStatusLine().toString();
 		StringBuffer result = new StringBuffer();
 		String line = "";
 		while ((line = rd.readLine()) != null) {
