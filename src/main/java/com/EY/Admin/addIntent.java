@@ -20,7 +20,7 @@ import com.EY.ChatBot.MyWebhookServlet;
 /**
  * Servlet implementation class addTopic
  */
-public class addTopic extends HttpServlet {
+public class addIntent extends HttpServlet {
 	private static final Logger log = Logger.getLogger(MyWebhookServlet.class.getName());
 
 	private static final long serialVersionUID = 1L;
@@ -29,11 +29,6 @@ public class addTopic extends HttpServlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public addTopic() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -49,16 +44,32 @@ public class addTopic extends HttpServlet {
 		// TODO Auto-generated method stub
 		String topic = request.getParameter("topic");
 		String subTopic = request.getParameter("subTopic");
-		String entityId = "d7b4ab70-c537-40e3-b1dc-083aba5ed555" ; // weather bot topicEntity 
-		response.getWriter().write(addNewIntent(topic, subTopic , entityId));
+		response.getWriter().write(addNewIntent(topic, subTopic));
 	}
-	private static String getJsonStringEntityForElement(String topic , String subTopic){
-		String inputJson = "[{\"value\": \""+ subTopic+ "\",\"synonyms\": []}]" ;
+	private static String getJsonStringEntityForIntent(String topic , String subTopic){
+		String inputJson = "{\"name\": \"" +  topic  +"\",\"auto\": true, \"contexts\": []," +
+				" \"templates\": [ ],\"userSays\": [ ], "+
+				" \"isTemplate\": false,\"count\": 0 },{\"data\": [ ], " +
+				"\"isTemplate\": false, " +
+				"\"count\": 0  " +
+				" } ]," + 
+				"\"responses\": [ " +
+				"{\"resetContexts\": false, " +
+				"\"action\": \"" + topic+"\", " +
+				"\"affectedContexts\": [  { " +
+				"\"name\": \"house\",    \"lifespan\": 10           } " +
+				"], " + 
+				"\"parameters\": [ " +
+				"{ " +
+				"\"dataType\": \"@subTopic\", " +
+				"\"name\": \"subTopic\", " +
+				"\"value\": \"\\$subTopic\" " +
+				"}    ], " +
+				"\"speech\": \" \"" +
+				" }   ],  \"priority\": 500000 }";
 		return inputJson;
 	}
-	private static String addNewIntent(String topic , String subTopic , String entityID){
-		
-	String url = "https://api.api.ai/v1/entities/"+entityID+"/entries?v=20150910";
+	private static String addNewIntent(String topic , String subTopic){String url = "https://api.api.ai/v1/intents?v=20150910";
 
 	HttpClient client = HttpClientBuilder.create().build();
 	HttpPost post = new HttpPost(url);
@@ -71,22 +82,20 @@ public class addTopic extends HttpServlet {
 	StringEntity entity;
 	String r = "no ";
 	try {
-		entity = new StringEntity(getJsonStringEntityForElement(topic, subTopic));
+		entity = new StringEntity(getJsonStringEntityForIntent(topic, subTopic));
 		post.setEntity(entity);
 
 		HttpResponse response = client.execute(post);
 		log.severe("Response Code : " + response.getStatusLine().getStatusCode());
-		log.severe("Response Message :" + response.getStatusLine().getReasonPhrase());
 
-		BufferedReader rd = new BufferedReader(
-				new InputStreamReader(response.getEntity().getContent()));
+		BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 		r  = response.getEntity().toString();
 		StringBuffer result = new StringBuffer();
 		String line = "";
 		while ((line = rd.readLine()) != null) {
 			result.append(line);
 		}
-		log.severe("result " + result);
+		log.severe("result " + result); // Gives result Json
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
