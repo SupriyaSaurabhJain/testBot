@@ -1,11 +1,19 @@
 package com.EY.Service;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import com.google.gson.JsonObject;
+
 import ai.api.AIServiceException;
 import ai.api.model.AIResponse;
 import ai.api.web.AIServiceServlet;
@@ -22,7 +30,6 @@ public class MyServiceServlet extends AIServiceServlet {
 	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println(request.getSession());
 		try {
 
 			AIResponse aiResponse = request(request.getParameter("message"), request.getParameter("sessionId"));
@@ -40,5 +47,6 @@ public class MyServiceServlet extends AIServiceServlet {
 			System.out.println("Exception accesing API AI");
 			e.printStackTrace();
 		}
+			
 	}
 }
