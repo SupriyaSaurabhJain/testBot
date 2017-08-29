@@ -39,7 +39,7 @@ public class addTopic extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		this.doPost(request, response);
 	}
 
 	/**
@@ -87,6 +87,14 @@ public class addTopic extends HttpServlet {
 			result.append(line);
 		}
 		log.severe("result " + result);
+		r = result.toString();
+		/* 
+		
+		{  "id": "6845cca9-412a-40de-9b1e-fb67ee4b1c68",  "timestamp": "2017-08-29T09:37:16.474Z",  "lang": "en", 
+		 "status": {    "code": 409,    "errorType": "conflict",   
+		  "errorDetails": "Entity with the name \u0027testEntity\u0027 already has entry with value \u0027null\u0027.",   
+		   "errorID": "042d7183-af43-4bc0-a6f0-11f0a66c65c1"  }}
+		*/
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
