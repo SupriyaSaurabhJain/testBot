@@ -18,7 +18,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.EY.APIai.Handler.APIHandler;
 import com.EY.ChatBot.MyWebhookServlet;
+import com.EY.DB.DbOperation;
 import com.EY.Service.ReadParameters;
 /**
  * Servlet implementation class addTopic
@@ -44,13 +46,31 @@ public class addTopicServlet extends HttpServlet {
 			String topic = jsonResponseObject.get("topic").toString();
 			String subTopic = jsonResponseObject.get("subTopic").toString();
 			System.out.println(topic);
-			String entityId = "d7b4ab70-c537-40e3-b1dc-083aba5ed555";
-			response.getWriter().write(addNewIntent(topic, subTopic , entityId));
+			//String entityId = "d7b4ab70-c537-40e3-b1dc-083aba5ed555";
+			//response.getWriter().write(addNewIntent(topic, subTopic , entityId));
+			
+			response.getWriter().write(addTopic(topic, subTopic));
 
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	public String addTopic(String topic, String subTopic) {
+		// TODO Auto-generated method stub
+		String response = "";
+		int result = new DbOperation().addNewTopicToDB(topic, subTopic);
+		log.info("result in addTopic :" + result);
+		if (result == 1) {
+			response =new APIHandler().addTopic(subTopic, subTopic);
+		
+		}
+		else{
+			response = " {  \"status\": {    \"code\": 400,    \"errorType\": \"Request Failed\"  }}" ;
+			
+		}
+		log.info("Response : "+ response);
+		return response;
 	}
 	private static String getJsonStringEntityForElement(String topic , String subTopic){
 		String inputJson = "[{\"value\": \""+ subTopic+ "\",\"synonyms\": []}]" ;

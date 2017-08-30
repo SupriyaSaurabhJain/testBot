@@ -14,7 +14,7 @@ public class DbOperation extends ConnectionDetails{
 		Connection connection = ConnectionDetails.getConnection();
 		try {
 			Statement statement =  connection.createStatement();
-			 response = statement.executeUpdate("insert into sample Values('Benifit', 'Group Insurance')");
+			 response = statement.executeUpdate("insert into sample Values(' "+topic +" ' , '" + subTopic +"')");
 			log.info("Query executed response : "+ response);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -40,7 +40,7 @@ public class DbOperation extends ConnectionDetails{
 		Connection connection = ConnectionDetails.getConnection();
 		try {
 			Statement statement =  connection.createStatement();
-			 response = statement.executeUpdate("DELETE FROM sample WHERE subTopic = 'Group Insurance'");
+			 response = statement.executeUpdate("DELETE FROM sample WHERE subTopic = ' " +subTopic+ "'");
 			log.info("Query executed response : "+ response);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
