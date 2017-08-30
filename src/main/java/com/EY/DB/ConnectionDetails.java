@@ -1,4 +1,4 @@
-package com.EY.DBConnection;
+package com.EY.DB;
 import java.sql.*;
 import java.util.logging.Logger;
 

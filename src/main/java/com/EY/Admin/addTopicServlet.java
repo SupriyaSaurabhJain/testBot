@@ -23,7 +23,7 @@ import com.EY.Service.ReadParameters;
 /**
  * Servlet implementation class addTopic
  */
-public class addTopic extends HttpServlet {
+public class addTopicServlet extends HttpServlet {
 	private static final Logger log = Logger.getLogger(MyWebhookServlet.class.getName());
 
 	private static final long serialVersionUID = 1L;
@@ -32,12 +32,6 @@ public class addTopic extends HttpServlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public addTopic() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String responseJson  = ReadParameters.readPostParameter(request);

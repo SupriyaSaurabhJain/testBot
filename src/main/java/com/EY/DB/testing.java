@@ -1,4 +1,4 @@
-package com.EY.DBConnection;
+package com.EY.DB;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -26,7 +26,8 @@ public class testing extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
-			new DbOperation().addNewTopicToDB("opp", "oppp");
+			new DbOperation().deleteFromDb("sf", "sfs");
+			
 	}
 
 	/**
