@@ -62,4 +62,14 @@
     <servlet-name>addTopic</servlet-name>
     <url-pattern>/addTopic</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>testing</display-name>
+    <servlet-name>testing</servlet-name>
+    <servlet-class>com.EY.DBConnection.testing</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>testing</servlet-name>
+    <url-pattern>/testing</url-pattern>
+  </servlet-mapping>
 </web-app>
