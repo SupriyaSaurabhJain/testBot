@@ -59,4 +59,28 @@ public class DbOperation extends ConnectionDetails{
 		}
 		return response;
 	}
-}
+	public String getResponse(String topic , String state , String country){
+		log.info("inside getResponse");
+		String response = "";
+		Connection connection = ConnectionDetails.getConnection();
+		try {
+			Statement statement =  connection.createStatement();
+			 response = "";
+			log.info("Query executed response : "+ response);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			log.severe("exception while selecting from table :" + e);
+			e.printStackTrace();
+		}
+		finally{
+			try {
+				connection.close();
+				log.info("connection closed");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				log.severe("Error closing connection");
+				e.printStackTrace();
+			}
+		return "";
+	}
+}}
