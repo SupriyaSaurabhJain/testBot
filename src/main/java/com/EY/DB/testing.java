@@ -3,7 +3,10 @@ package com.EY.DB;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.TreeMap;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -50,7 +53,10 @@ public class testing extends HttpServlet {
 			Workbook workbook = new XSSFWorkbook(excelFile);
 			Sheet datatypeSheet = workbook.getSheetAt(0);
 			Iterator<Row> iterator = datatypeSheet.iterator();
-
+			HashSet<String> topics = new HashSet<String>();
+			HashSet<String> state = new HashSet<String>();
+			HashSet<String> subTopics = new HashSet<String>();
+			TreeMap<String, ArrayList<String>> descriptionLib = new TreeMap<String ,ArrayList<String>>();
 			String[] headers = new String[55];
 			String[] cRow = new String[55];
 			boolean firstRow = true ;
@@ -92,12 +98,17 @@ public class testing extends HttpServlet {
 				log.info("excel read : proceed to functions " + i++);
 				log.info(cRow[0] + "  " +cRow[1]);
 				if(!firstRow){
-				//	log.info(" insert topic ");
-
-					//insertTopic(conn,cRow[0]);
-					//FreadFromExcel.insertTopic(cRow[0]);
-				//	log.info("insert state");
-					//readFromExcel.insertState(headers, "US");
+					
+//					topics.add(cRow[0]);
+//					subTopics.add(cRow[1]);
+					
+					
+				/*	log.info(" insert topic ");		
+					FreadFromExcel.insertTopic(cRow[0]);*/
+					
+					log.info("insert subTopic");
+					readFromExcel.insertSubTopic(cRow[1], cRow[0]);
+					
 					//insertSubTopic(conn, cRow[1], cRow[0], out);
 					//insertState(conn, headers, "US", out);
 					//insertLawDesc(headers, cRow);
@@ -105,8 +116,11 @@ public class testing extends HttpServlet {
 				}
 				else
 				{
-					//insertState(headers, "US");
-
+					log.info("insert state");
+					readFromExcel.insertState(headers, "US");
+					/*for(int k = 4 ; k < headers.length ; k++){
+						state.add(headers[k]);
+					}*/
 				}
 				firstRow = false;
 				//System.out.println(cRow[0]);
