@@ -18,9 +18,9 @@ public class readFromExcel {
 		log.info("Method start");
 		try {
 
-			//String path = readFromExcel.class.getResource("/WEB-INF/sample_data.xlsx").getPath();
-			log.info("file path : ");
-			FileInputStream excelFile = new FileInputStream(new File("/WEB-INF/sample_data.xlsx"));
+			String path = readFromExcel.class.getResource("/sample_data.xlsx").getPath();
+			log.info("file path : "+ path);
+			FileInputStream excelFile = new FileInputStream(new File(path));
 			Workbook workbook = new XSSFWorkbook(excelFile);
 			log.info("workbook initialized");
 			Sheet datatypeSheet = workbook.getSheetAt(0);
