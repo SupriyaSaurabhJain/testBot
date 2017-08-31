@@ -18,7 +18,7 @@ public class readFromExcel {
 	public static void toDb(){
 		try {
 
-			String path = readFromExcel.class.getResource("/sample_data.xlsx").getPath();
+			String path = readFromExcel.class.getResource("/WEB-INF/sample_data.xlsx").getPath();
 			FileInputStream excelFile = new FileInputStream(new File(path));
 			Workbook workbook = new XSSFWorkbook(excelFile);
 			Sheet datatypeSheet = workbook.getSheetAt(0);
