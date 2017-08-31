@@ -41,7 +41,7 @@ public class testing extends HttpServlet {
 		// TODO Auto-generated method stub
 
 //			new DbOperation().deleteFromDb("sf", "sfs");
-
+		int i = 0;
 		log.info("Method start");
 		try {
 
@@ -89,14 +89,15 @@ public class testing extends HttpServlet {
 						}
 					}
 				}
-				log.info("excel read : proceed to functions ");
+				log.info("excel read : proceed to functions " + i++);
+				log.info(headers[0] + "  " +headers[1]);
 				if(!firstRow){
 				//	log.info(" insert topic ");
 
 					//insertTopic(conn,cRow[0]);
-					//readFromExcel.insertTopic(cRow[0]);
-					log.info("insert state");
-					readFromExcel.insertState(headers, "US");
+					//FreadFromExcel.insertTopic(cRow[0]);
+				//	log.info("insert state");
+					//readFromExcel.insertState(headers, "US");
 					//insertSubTopic(conn, cRow[1], cRow[0], out);
 					//insertState(conn, headers, "US", out);
 					//insertLawDesc(headers, cRow);
