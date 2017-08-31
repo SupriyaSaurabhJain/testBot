@@ -11,11 +11,11 @@ import java.util.logging.Logger;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.EY.ChatBot.MyWebhookServlet;
 public class readFromExcel {
-	private static final Logger log = Logger.getLogger(readFromExcel.class.getName());
+	private static final Logger log = Logger.getLogger(testing.class.getName());
 
 	public static void toDb(){
+		log.info("Method start");
 		try {
 
 			String path = readFromExcel.class.getResource("/WEB-INF/sample_data.xlsx").getPath();
@@ -28,7 +28,7 @@ public class readFromExcel {
 			String[] cRow = new String[55];
 			boolean firstRow = true ;
 			int index = 0;
-
+			log.info("inside try reading excel sheet");
 			while (iterator.hasNext()) {
 
 				index = 0;
@@ -66,7 +66,10 @@ public class readFromExcel {
 						}
 					}
 				}
+				log.info("excel read : proceed to functions ");
 				if(!firstRow){
+					log.info(" insert topic ");
+
 					//insertTopic(conn,cRow[0]);
 					insertTopic(cRow[0]);
 					//insertSubTopic(conn, cRow[1], cRow[0], out);
@@ -76,17 +79,19 @@ public class readFromExcel {
 				}
 				else
 				{
-					insertState(headers, "US");
+					//insertState(headers, "US");
 
 				}
 				firstRow = false;
 				//System.out.println(cRow[0]);
 
 			}
-
+			workbook.close();
 		} catch (Exception e) {
+			log.info("exception reading excel : " + e);
 			e.printStackTrace();
 		}
+		
 	}
 	private static void insertTopic(String topic)  {
 		Connection connection = ConnectionDetails.getConnection();
