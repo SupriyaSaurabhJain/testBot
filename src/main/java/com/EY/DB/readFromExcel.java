@@ -19,9 +19,12 @@ public class readFromExcel {
 		try {
 
 			String path = readFromExcel.class.getResource("/WEB-INF/sample_data.xlsx").getPath();
+			log.info("file path : "+ path);
 			FileInputStream excelFile = new FileInputStream(new File(path));
 			Workbook workbook = new XSSFWorkbook(excelFile);
+			log.info("workbook initialized");
 			Sheet datatypeSheet = workbook.getSheetAt(0);
+			log.info("sheet initilized");
 			Iterator<Row> iterator = datatypeSheet.iterator();
 
 			String[] headers = new String[55];
@@ -30,18 +33,19 @@ public class readFromExcel {
 			int index = 0;
 			log.info("inside try reading excel sheet");
 			while (iterator.hasNext()) {
-
+				log.info("inside iterator");
 				index = 0;
 				Row currentRow = iterator.next();
 				Iterator<Cell> cellIterator = currentRow.iterator();
 
 				while (cellIterator.hasNext()) {
-
+					log.info("inside cell iterator");
 					Cell currentCell = cellIterator.next();
 					//getCellTypeEnum shown as deprecated for version 3.15
 					//getCellTypeEnum ill be renamed to getCellType starting from version 4.0
+					
 					if (currentCell.getCellTypeEnum() ==  CellType.STRING) {
-
+						log.info("cell Typr String"); 
 						if(firstRow){
 							headers[index] = currentCell.getStringCellValue();
 							log.info("header from excel : " + headers[index]);

@@ -28,7 +28,7 @@ public class testing extends HttpServlet {
 
 //			new DbOperation().deleteFromDb("sf", "sfs");
 		new readFromExcel().toDb();
-			
+			response.getWriter().write("end---------");
 	}
 
 	/**
