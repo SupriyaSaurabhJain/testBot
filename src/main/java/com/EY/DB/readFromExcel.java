@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
@@ -79,14 +80,20 @@ public class readFromExcel {
 	}
 
 	public static  void insertState(String[] headers, String country){
+		HashSet<String> state = new HashSet<String>();
 		Connection connection = ConnectionDetails.getConnection();
 		Statement statement;
 		try {
 			statement = connection.createStatement();
 			for (int i = 5; i < headers.length; i++) {
+				
+				state.add(headers[i].toUpperCase());
+				
+			}
+			for (String stringState : state) {
 				int t1 = 1;
-				int response = statement.executeUpdate("insert into State(state_name,country_id) Values('"+headers[i]+"','"+t1+"')");
-				log.info("state added");
+				int response = statement.executeUpdate("insert into State(state_name,country_id) Values('"+stringState+"','"+t1+"')");
+				log.info("state added" + stringState);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
