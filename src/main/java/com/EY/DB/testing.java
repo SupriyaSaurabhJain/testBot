@@ -26,7 +26,8 @@ public class testing extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
-			new DbOperation().deleteFromDb("sf", "sfs");
+//			new DbOperation().deleteFromDb("sf", "sfs");
+		new readFromExcel().toDb();
 			
 	}
 
