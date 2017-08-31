@@ -91,10 +91,10 @@ public class testing extends HttpServlet {
 				}
 				log.info("excel read : proceed to functions ");
 				if(!firstRow){
-					log.info(" insert topic ");
+				//	log.info(" insert topic ");
 
 					//insertTopic(conn,cRow[0]);
-					readFromExcel.insertTopic(cRow[0]);
+					//readFromExcel.insertTopic(cRow[0]);
 					log.info("insert state");
 					readFromExcel.insertState(headers, "US");
 					//insertSubTopic(conn, cRow[1], cRow[0], out);

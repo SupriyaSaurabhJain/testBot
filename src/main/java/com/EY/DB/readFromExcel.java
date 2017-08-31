@@ -90,6 +90,7 @@ public class readFromExcel {
 				state.add(headers[i].toUpperCase());
 				
 			}
+			log.info("Total states : " + state.size());
 			for (String stringState : state) {
 				int t1 = 1;
 				int response = statement.executeUpdate("insert into State(state_name,country_id) Values('"+stringState+"','"+t1+"')");
