@@ -56,10 +56,20 @@
     <description></description>
     <display-name>addTopic</display-name>
     <servlet-name>addTopic</servlet-name>
-    <servlet-class>com.EY.Admin.addTopic</servlet-class>
+    <servlet-class>com.EY.Admin.addTopicServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>addTopic</servlet-name>
     <url-pattern>/addTopic</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>testing</display-name>
+    <servlet-name>testing</servlet-name>
+    <servlet-class>com.EY.DB.testing</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>testing</servlet-name>
+    <url-pattern>/testing</url-pattern>
   </servlet-mapping>
 </web-app>
