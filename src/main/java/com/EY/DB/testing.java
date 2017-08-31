@@ -90,7 +90,7 @@ public class testing extends HttpServlet {
 					}
 				}
 				log.info("excel read : proceed to functions " + i++);
-				log.info(headers[0] + "  " +headers[1]);
+				log.info(cRow[0] + "  " +cRow[1]);
 				if(!firstRow){
 				//	log.info(" insert topic ");
 
