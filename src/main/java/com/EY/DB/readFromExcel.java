@@ -5,8 +5,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.apache.poi.ss.usermodel.*;
@@ -17,7 +20,7 @@ public class readFromExcel {
 
 	public static void toDb(){
 	}
-	static void insertTopic(String topic)  {
+	static void insertTopic(Set<String> topic)  {
 		Connection connection = ConnectionDetails.getConnection();
 		Statement statement;
 		try {
@@ -35,16 +38,21 @@ public class readFromExcel {
 		}
 	}
 
-	public static void insertSubTopic(String subtopic, String topic){
-		int topic_id = getTopicId(topic);
-		log.info("insertin sub topic : topic id : "+ topic_id);
+	public static void insertSubTopic(HashMap<String , ArrayList<String>> topicsSubtopic){
 		Connection connection = ConnectionDetails.getConnection();
 		Statement statement;
-
 		try {
 			statement = connection.createStatement();
-			int t = statement.executeUpdate("insert into SubTopics(sub_topic_name,topic_id) Values('"+subtopic+"','"+topic_id+"')");
-			log.info("sub topic added ");
+			
+			for (String topic : topicsSubtopic.keySet()) {
+				log.info("insertin sub topic : topic id : "+ topic);
+				int topic_id = getTopicId(topic);
+				for (String subTopic : topicsSubtopic.get(topic)) {
+					int t = statement.executeUpdate("insert into SubTopics(sub_topic_name,topic_id) Values('"+subTopic+"','"+topic_id+"')");
+					log.info("sub topic added ");
+				}
+			}
+					
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			log.severe("exception adding sub topic : " + e);
@@ -86,9 +94,9 @@ public class readFromExcel {
 		try {
 			statement = connection.createStatement();
 			for (int i = 5; i < headers.length; i++) {
-				
+
 				state.add(headers[i].toUpperCase());
-				
+
 			}
 			log.info("Total states : " + state.size());
 			for (String stringState : state) {
@@ -210,13 +218,13 @@ public class readFromExcel {
 			int t = statement.executeUpdate("insert into QuestionsMgnt(possible_questions,questions_type,User_id,topic_id,sub_topic_id) Values('"+question+"','SYSTEM','"+uid+"','"+topic_id+"','"+sub_topic_id+"')");	
 			log.info("sucessfully addded question");
 		}catch (SQLException e) {
-		// TODO Auto-generated catch block
-		log.severe("exception adding question");
-		e.printStackTrace();
+			// TODO Auto-generated catch block
+			log.severe("exception adding question");
+			e.printStackTrace();
+		}
+		finally{
+			ConnectionDetails.closeConnection();
+		}
 	}
-	finally{
-		ConnectionDetails.closeConnection();
-	}
-	}
-	
+
 }

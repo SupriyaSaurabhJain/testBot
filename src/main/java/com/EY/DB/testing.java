@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
@@ -53,10 +54,11 @@ public class testing extends HttpServlet {
 			Workbook workbook = new XSSFWorkbook(excelFile);
 			Sheet datatypeSheet = workbook.getSheetAt(0);
 			Iterator<Row> iterator = datatypeSheet.iterator();
-			HashSet<String> topics = new HashSet<String>();
+			HashMap<String , ArrayList<String>> topicsSubtopic = new HashMap<String , ArrayList<String>>();
 			HashSet<String> state = new HashSet<String>();
 			HashSet<String> subTopics = new HashSet<String>();
-			TreeMap<String, ArrayList<String>> descriptionLib = new TreeMap<String ,ArrayList<String>>();
+			TreeMap<String, HashMap<String, String>> descriptionLib = new TreeMap<String ,HashMap<String, String>>(); // map of subTopic --> <state,law>
+			TreeMap<String, String> questionLib = new TreeMap<String, String>(); // msp subTopic --> question
 			String[] headers = new String[55];
 			String[] cRow = new String[55];
 			boolean firstRow = true ;
@@ -99,15 +101,21 @@ public class testing extends HttpServlet {
 				log.info(cRow[0] + "  " +cRow[1]);
 				if(!firstRow){
 					
-//					topics.add(cRow[0]);
-//					subTopics.add(cRow[1]);
-					
-					
+					if (topicsSubtopic.containsKey(cRow[0])) {
+						ArrayList<String> subTopic = topicsSubtopic.get(cRow[0]);
+						subTopic.add(cRow[1]);
+						topicsSubtopic.put(cRow[0], subTopic);
+					}
+					HashMap<String, String> stateLawMap = new HashMap<String, String>();
+					for(int k = 3 ; k < cRow.length ; k++){
+						stateLawMap.put(headers[k] , cRow[k]);
+					}
+					descriptionLib.put(cRow[1], stateLawMap);
 				/*	log.info(" insert topic ");		
 					FreadFromExcel.insertTopic(cRow[0]);*/
 					
-					log.info("insert subTopic");
-					readFromExcel.insertSubTopic(cRow[1], cRow[0]);
+					/*log.info("insert subTopic");
+					readFromExcel.insertSubTopic(cRow[1], cRow[0]);*/
 					
 					//insertSubTopic(conn, cRow[1], cRow[0], out);
 					//insertState(conn, headers, "US", out);
@@ -127,6 +135,9 @@ public class testing extends HttpServlet {
 
 			}
 			workbook.close();
+			log.info("insert subTopic");
+			readFromExcel.insertTopic(topicsSubtopic.keySet());
+			readFromExcel.insertSubTopic(topicsSubtopic);
 		} catch (Exception e) {
 			log.info("exception reading excel : " + e);
 			e.printStackTrace();
