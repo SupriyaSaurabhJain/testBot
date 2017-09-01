@@ -123,14 +123,17 @@ public class readFromExcel {
 
 	public  static void insertLawDesc(TreeMap<String, HashMap<String, String>> descriptionLib){ // descriptionLib ::  map of subTopic --> <state,law>
 		int law_id = 0;
+		log.info("inside method law desc insert");
 		Connection connection = ConnectionDetails.getConnection();
 		Statement statement;
 		try {
 			statement = connection.createStatement();
 			for (String  subTopic : descriptionLib.keySet()) {
+				log.info("subTopic : " + subTopic);
 				int subTopicId = getSubTopicId(subTopic);
 				TreeMap<String , String> stateLawMap = new TreeMap<String , String> ();
 				for (String state : stateLawMap.keySet()) {
+					log.info("state : " + state);
 					String lawDescription = stateLawMap.get(state).replaceAll("\'", "").replaceAll("\"", "").replaceAll("\n", "").replaceAll("\t", "");
 					if (state.equalsIgnoreCase("FEDERAL")) {
 						log.info("insert into Law_Description(law_description,state_id,sub_topic_id) Values('"+lawDescription+"','"+"NULL"+"','"+subTopicId+"')");
@@ -149,7 +152,7 @@ public class readFromExcel {
 		}
 		catch (SQLException e) {
 			// TODO Auto-generated catch block
-			log.severe("exception adding state : "+ e);
+			log.severe("exception adding law desc : "+ e);
 			e.printStackTrace();
 		}
 		finally{
@@ -180,7 +183,7 @@ public class readFromExcel {
 		finally{
 			ConnectionDetails.closeConnection();
 		}
-		log.info("state id added : "+ state_id);
+		log.info("state id fetched : "+ state_id);
 		return state_id;
 	}
 

@@ -97,7 +97,6 @@ public class testing extends HttpServlet {
 						}
 					}
 				}
-				log.info("excel read : proceed to functions " + i++);
 				//log.info(cRow[0] + "  " +cRow[1]);
 				if(!firstRow){
 					
@@ -142,7 +141,6 @@ public class testing extends HttpServlet {
 
 			}
 			workbook.close();
-			log.info("insert subTopic");
 			
 			/*for (String string : topicsSubtopic.keySet()) {
 				for (String subTopic : topicsSubtopic.get(string)) {
@@ -150,8 +148,9 @@ public class testing extends HttpServlet {
 			}
 			}*/
 			
-			readFromExcel.insertTopic(topicsSubtopic.keySet());
-			readFromExcel.insertSubTopic(topicsSubtopic);
+			//readFromExcel.insertTopic(topicsSubtopic.keySet());
+			//readFromExcel.insertSubTopic(topicsSubtopic);
+			log.info("add desc!");
 			readFromExcel.insertLawDesc(descriptionLib);
 		} catch (Exception e) {
 			log.info("exception reading excel : " + e);
