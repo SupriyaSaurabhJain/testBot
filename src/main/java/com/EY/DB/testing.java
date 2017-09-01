@@ -102,13 +102,13 @@ public class testing extends HttpServlet {
 				if(!firstRow){
 					
 					if (topicsSubtopic.containsKey(cRow[0].trim().toUpperCase())) {
-						ArrayList<String> subTopic = topicsSubtopic.get(cRow[0].trim().toUpperCase());
-						subTopic.add(cRow[1].trim().toUpperCase());
+						ArrayList<String> subTopic = topicsSubtopic.get(cRow[0].toUpperCase());
+						subTopic.add(cRow[1].toUpperCase());
 						topicsSubtopic.put(cRow[0].trim().toUpperCase(), subTopic);
 					}
 					else{
 						ArrayList<String> subTopic = new ArrayList<String> ();
-						subTopic.add(cRow[0].trim().toUpperCase());
+						subTopic.add(cRow[0].toUpperCase());
 						topicsSubtopic.put(cRow[0].trim().toUpperCase(), subTopic);
 					}
 					/*HashMap<String, String> stateLawMap = new HashMap<String, String>();
