@@ -144,14 +144,14 @@ public class testing extends HttpServlet {
 			workbook.close();
 			log.info("insert subTopic");
 			
-			for (String string : topicsSubtopic.keySet()) {
+			/*for (String string : topicsSubtopic.keySet()) {
 				for (String subTopic : topicsSubtopic.get(string)) {
 					log.info("topic :" + string + "  subTopic : " + subTopic );
 			}
-			}
+			}*/
 			
-			/*readFromExcel.insertTopic(topicsSubtopic.keySet());
-			readFromExcel.insertSubTopic(topicsSubtopic);*/
+			readFromExcel.insertTopic(topicsSubtopic.keySet());
+			readFromExcel.insertSubTopic(topicsSubtopic);
 		} catch (Exception e) {
 			log.info("exception reading excel : " + e);
 			e.printStackTrace();
