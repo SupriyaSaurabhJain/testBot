@@ -131,7 +131,8 @@ public class readFromExcel {
 			for (String  subTopic : descriptionLib.keySet()) {
 				log.info("subTopic : " + subTopic);
 				int subTopicId = getSubTopicId(subTopic);
-				TreeMap<String , String> stateLawMap = new TreeMap<String , String> ();
+				HashMap<String , String> stateLawMap = descriptionLib.get(subTopic.toUpperCase());
+				
 				for (String state : stateLawMap.keySet()) {
 					log.info("state : " + state);
 					String lawDescription = stateLawMap.get(state).replaceAll("\'", "").replaceAll("\"", "").replaceAll("\n", "").replaceAll("\t", "");
