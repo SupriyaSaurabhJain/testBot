@@ -127,18 +127,44 @@ public class DbOperation extends ConnectionDetails{
 		}
 		return response;
 	}
+	public static  int getSubTopicId(String subtopic){
+		Connection connection = ConnectionDetails.getConnection();
+		int subTopic_id = -1;
+		subtopic = subtopic.trim().toUpperCase();
+		Statement statement;
+		try {
+			statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery("select sub_topic_id from SubTopics where sub_topic_name='"+subtopic+"';");
+			int id=-1;
+			while(rs.next()){
+				subTopic_id  = rs.getInt("sub_topic_id");
+
+			}
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			log.severe("exception fetching sub topic id");
+			e.printStackTrace();
+		}
+		finally{
+			ConnectionDetails.closeConnection();
+		}
+		log.info("subTopic id added : "+ subTopic_id);
+		return subTopic_id;
+	} 
+
 	public static String getResponse(String subTopic , String state , String country){
 		log.info("inside getResponse");
 		String response = "";
 		String Query = "";
-		int subTopic_id = -1; 
+		int subTopic_id = getSubTopicId(subTopic.toUpperCase()) ; 
 		Connection connection = ConnectionDetails.getConnection();
 		if (state.toUpperCase().equalsIgnoreCase("FEDERAL")) {
-			Query = "SELECT law_description FROM Law_Description WHERE topic_id = '"+subTopic_id+"' AND state_id IS NULL;" ;
+			Query = "SELECT law_description FROM Law_Description WHERE sub_topic_id = '"+subTopic_id+"' AND state_id IS NULL;" ;
 		}
 		else{
-			int state_id = getstateId(state);
-			Query = "SELECT law_description FROM Law_Description WHERE topic_id = '"+subTopic_id+"' AND state_id = '" +state_id+"';";
+			int state_id = getstateId(state.toUpperCase());
+			Query = "SELECT law_description FROM Law_Description WHERE sub_topic_id = '"+subTopic_id+"' AND state_id = '" +state_id+"';";
 		}
 		try {
 			Statement statement =  connection.createStatement();
