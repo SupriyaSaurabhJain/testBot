@@ -124,34 +124,32 @@ public class readFromExcel {
 	public  static void insertLawDesc(TreeMap<String, HashMap<String, String>> descriptionLib){ // descriptionLib ::  map of subTopic --> <state,law>
 		int law_id = 0;
 		log.info("inside method law desc insert");
-//		Connection connection = ConnectionDetails.getConnection();
+		//		Connection connection = ConnectionDetails.getConnection();
 		//Statement statement;
 		try {
-//			statement = connection.createStatement();
+			//			statement = connection.createStatement();
 			for (String  subTopic : descriptionLib.keySet()) {
 				log.info("subTopic : " + subTopic);
 				int subTopicId = getSubTopicId(subTopic);
 				HashMap<String , String> stateLawMap = descriptionLib.get(subTopic.toUpperCase());
-				
+
 				for (String state : stateLawMap.keySet()) {
-					Connection connection = ConnectionDetails.getConnection();
-					Statement statement = connection.createStatement();
+
 
 					log.info("state : " + state);
 					String lawDescription = stateLawMap.get(state).replaceAll("\'", "").replaceAll("\"", "").replaceAll("\n", "").replaceAll("\t", "");
 					if (state.equalsIgnoreCase("FEDERAL")) {
 						log.info("insert into Law_Description(law_description,country_id,state_id,sub_topic_id) Values('"+lawDescription+"','"+"1"+"','"+"NULL"+"','"+subTopicId+"')");
-						int response = statement.executeUpdate("insert into Law_Description(law_description,country_id,sub_topic_id) Values('"+lawDescription+"','"+"1"+"','"+subTopicId+"')");
+						insertDescIntoDb("insert into Law_Description(law_description,country_id,sub_topic_id) Values('"+lawDescription+"','"+"1"+"','"+subTopicId+"')");
 					}
 					else{
 						int state_id = getstateId(state); 
 						log.info("insert into Law_Description(law_description,state_id,sub_topic_id) Values('"+lawDescription+"','"+state_id+"','"+subTopicId+"')");
-						int response = statement.executeUpdate("insert into Law_Description(law_description,country_id,state_id,sub_topic_id) Values('"+lawDescription+"','"+"1"+"','"+state_id+"','"+subTopicId+"')");
-						
+						insertDescIntoDb("insert into Law_Description(law_description,country_id,state_id,sub_topic_id) Values('"+lawDescription+"','"+"1"+"','"+state_id+"','"+subTopicId+"')");
+
 					}
-					ConnectionDetails.closeConnection();
 				}
-				
+
 			}
 			log.info("Law description added ");
 		}
@@ -164,7 +162,15 @@ public class readFromExcel {
 			//ConnectionDetails.closeConnection();
 		}
 	}
+	private static int  insertDescIntoDb(String Query) throws SQLException{
 
+		Connection connection = ConnectionDetails.getConnection();
+		Statement statement = connection.createStatement();
+		int response = statement.executeUpdate(Query);
+		ConnectionDetails.closeConnection();
+		return response;
+
+	}
 	public static  int getstateId(String state){
 		Connection connection = ConnectionDetails.getConnection();
 		int state_id = -1;
