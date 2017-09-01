@@ -42,7 +42,7 @@ public class testing extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	/*protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
 //			new DbOperation().deleteFromDb("sf", "sfs");
@@ -159,7 +159,7 @@ public class testing extends HttpServlet {
 		}
 		
 			response.getWriter().write("end---------");
-	}
+	} */
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -168,7 +168,7 @@ public class testing extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-	/*protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//String topic = request.getParameter("topic");
 		String subTopic = request.getParameter("subTopic");
@@ -178,6 +178,6 @@ public class testing extends HttpServlet {
 		//DbOperation.addNewTopicToDB(topic, subTopic);
 		response.getWriter().write(DbOperation.getResponse(subTopic ,state , "1"));
 		
-	}*/
+	}
 
 }
