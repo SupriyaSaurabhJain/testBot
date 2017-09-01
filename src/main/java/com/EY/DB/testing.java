@@ -111,6 +111,7 @@ public class testing extends HttpServlet {
 						stateLawMap.put(headers[k] , cRow[k]);
 					}
 					descriptionLib.put(cRow[1], stateLawMap);
+					questionLib.put(cRow[1], cRow[2]);
 				/*	log.info(" insert topic ");		
 					FreadFromExcel.insertTopic(cRow[0]);*/
 					
@@ -124,7 +125,7 @@ public class testing extends HttpServlet {
 				}
 				else
 				{
-					log.info("insert state");
+					//log.info("insert state");
 					readFromExcel.insertState(headers, "US");
 					/*for(int k = 4 ; k < headers.length ; k++){
 						state.add(headers[k]);
@@ -136,6 +137,7 @@ public class testing extends HttpServlet {
 			}
 			workbook.close();
 			log.info("insert subTopic");
+			log.info("topic : "+ topicsSubtopic.keySet().toArray());
 			readFromExcel.insertTopic(topicsSubtopic.keySet());
 			readFromExcel.insertSubTopic(topicsSubtopic);
 		} catch (Exception e) {
