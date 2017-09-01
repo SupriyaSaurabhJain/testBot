@@ -98,25 +98,26 @@ public class testing extends HttpServlet {
 					}
 				}
 				log.info("excel read : proceed to functions " + i++);
-				log.info(cRow[0] + "  " +cRow[1]);
+				//log.info(cRow[0] + "  " +cRow[1]);
 				if(!firstRow){
 					
-					if (topicsSubtopic.containsKey(cRow[0])) {
-						ArrayList<String> subTopic = topicsSubtopic.get(cRow[0]);
-						subTopic.add(cRow[1]);
-						topicsSubtopic.put(cRow[0], subTopic);
+					if (topicsSubtopic.containsKey(cRow[0].trim().toUpperCase())) {
+						ArrayList<String> subTopic = topicsSubtopic.get(cRow[0].trim().toUpperCase());
+						subTopic.add(cRow[1].trim().toUpperCase());
+						topicsSubtopic.put(cRow[0].trim().toUpperCase(), subTopic);
 					}
 					else{
 						ArrayList<String> subTopic = new ArrayList<String> ();
-						subTopic.add(cRow[0]);
-						topicsSubtopic.put(cRow[0], subTopic);
+						subTopic.add(cRow[0].trim().toUpperCase());
+						topicsSubtopic.put(cRow[0].trim().toUpperCase(), subTopic);
 					}
-					HashMap<String, String> stateLawMap = new HashMap<String, String>();
+					/*HashMap<String, String> stateLawMap = new HashMap<String, String>();
 					for(int k = 3 ; k < cRow.length ; k++){
 						stateLawMap.put(headers[k] , cRow[k]);
 					}
 					descriptionLib.put(cRow[1], stateLawMap);
-					questionLib.put(cRow[1], cRow[2]);
+					questionLib.put(cRow[1], cRow[2]);*/
+					
 				/*	log.info(" insert topic ");		
 					FreadFromExcel.insertTopic(cRow[0]);*/
 					
@@ -142,13 +143,15 @@ public class testing extends HttpServlet {
 			}
 			workbook.close();
 			log.info("insert subTopic");
-			for (String topic : topicsSubtopic.keySet()) {
-				log.info("topic :" + topic);
+			
+			for (String string : topicsSubtopic.keySet()) {
+				for (String subTopic : topicsSubtopic.get(string)) {
+					log.info("topic :" + string + "  subTopic : " + subTopic );
+			}
 			}
 			
-			log.info("topic : "+ topicsSubtopic.keySet().toArray());
-			readFromExcel.insertTopic(topicsSubtopic.keySet());
-			readFromExcel.insertSubTopic(topicsSubtopic);
+			/*readFromExcel.insertTopic(topicsSubtopic.keySet());
+			readFromExcel.insertSubTopic(topicsSubtopic);*/
 		} catch (Exception e) {
 			log.info("exception reading excel : " + e);
 			e.printStackTrace();
