@@ -124,16 +124,19 @@ public class readFromExcel {
 	public  static void insertLawDesc(TreeMap<String, HashMap<String, String>> descriptionLib){ // descriptionLib ::  map of subTopic --> <state,law>
 		int law_id = 0;
 		log.info("inside method law desc insert");
-		Connection connection = ConnectionDetails.getConnection();
-		Statement statement;
+//		Connection connection = ConnectionDetails.getConnection();
+		//Statement statement;
 		try {
-			statement = connection.createStatement();
+//			statement = connection.createStatement();
 			for (String  subTopic : descriptionLib.keySet()) {
 				log.info("subTopic : " + subTopic);
 				int subTopicId = getSubTopicId(subTopic);
 				HashMap<String , String> stateLawMap = descriptionLib.get(subTopic.toUpperCase());
 				
 				for (String state : stateLawMap.keySet()) {
+					Connection connection = ConnectionDetails.getConnection();
+					Statement statement = connection.createStatement();
+
 					log.info("state : " + state);
 					String lawDescription = stateLawMap.get(state).replaceAll("\'", "").replaceAll("\"", "").replaceAll("\n", "").replaceAll("\t", "");
 					if (state.equalsIgnoreCase("FEDERAL")) {
