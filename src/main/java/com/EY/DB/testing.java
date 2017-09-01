@@ -106,6 +106,11 @@ public class testing extends HttpServlet {
 						subTopic.add(cRow[1]);
 						topicsSubtopic.put(cRow[0], subTopic);
 					}
+					else{
+						ArrayList<String> subTopic = new ArrayList<String> ();
+						subTopic.add(cRow[0]);
+						topicsSubtopic.put(cRow[0], subTopic);
+					}
 					HashMap<String, String> stateLawMap = new HashMap<String, String>();
 					for(int k = 3 ; k < cRow.length ; k++){
 						stateLawMap.put(headers[k] , cRow[k]);
@@ -126,7 +131,7 @@ public class testing extends HttpServlet {
 				else
 				{
 					//log.info("insert state");
-					readFromExcel.insertState(headers, "US");
+					//readFromExcel.insertState(headers, "US");
 					/*for(int k = 4 ; k < headers.length ; k++){
 						state.add(headers[k]);
 					}*/
@@ -137,6 +142,10 @@ public class testing extends HttpServlet {
 			}
 			workbook.close();
 			log.info("insert subTopic");
+			for (String topic : topicsSubtopic.keySet()) {
+				log.info("topic :" + topic);
+			}
+			
 			log.info("topic : "+ topicsSubtopic.keySet().toArray());
 			readFromExcel.insertTopic(topicsSubtopic.keySet());
 			readFromExcel.insertSubTopic(topicsSubtopic);

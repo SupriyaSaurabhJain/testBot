@@ -20,13 +20,15 @@ public class readFromExcel {
 
 	public static void toDb(){
 	}
-	static void insertTopic(Set<String> topic)  {
+	static void insertTopic(Set<String> topics)  {
 		Connection connection = ConnectionDetails.getConnection();
 		Statement statement;
 		try {
 			statement = connection.createStatement();
-			int response = statement.executeUpdate("insert into Topics(topic_name) Values('"+topic+"')");
-			log.info("added to table Topics : "+ response);
+			for (String topic : topics) {		
+				int response = statement.executeUpdate("insert into Topics(topic_name) Values('"+topic+"')");
+				log.info("added to table Topics : "+ response);
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			log.severe("Exception adding topic to table : " + e);
@@ -43,7 +45,7 @@ public class readFromExcel {
 		Statement statement;
 		try {
 			statement = connection.createStatement();
-			
+
 			for (String topic : topicsSubtopic.keySet()) {
 				log.info("insertin sub topic : topic id : "+ topic);
 				int topic_id = getTopicId(topic);
@@ -52,7 +54,7 @@ public class readFromExcel {
 					log.info("sub topic added ");
 				}
 			}
-					
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			log.severe("exception adding sub topic : " + e);
