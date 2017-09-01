@@ -118,11 +118,11 @@ public class testing extends HttpServlet {
 					descriptionLib.put(cRow[1].trim().toUpperCase(), stateLawMap);
 					questionLib.put(cRow[1].trim().toUpperCase(), cRow[2]);
 					
-					log.info(" insert topic ");		
-					FreadFromExcel.insertTopic(cRow[0]);
+					//log.info(" insert topic ");		
+					//readFromExcel.insertTopic(cRow[0]);
 					
-					log.info("insert subTopic");
-					readFromExcel.insertSubTopic(cRow[1], cRow[0]);
+					//log.info("insert subTopic");
+					//readFromExcel.insertSubTopic(cRow[1], cRow[0]);
 					
 					//insertSubTopic(conn, cRow[1], cRow[0], out);
 					//insertState(conn, headers, "US", out);
