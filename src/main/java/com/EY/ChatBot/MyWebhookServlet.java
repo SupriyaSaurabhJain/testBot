@@ -6,6 +6,8 @@ import javax.servlet.ServletContext;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import java.util.logging.Logger;
+
+import com.EY.DB.DbOperation;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 
@@ -63,7 +65,8 @@ public class MyWebhookServlet extends AIWebhookServlet  {
 				JSONObject jsonObject = (JSONObject) obj;
 				JSONObject obj1 = (JSONObject)	jsonObject.get(topic.toUpperCase().trim());
 				response = "This is what I found about federal law on" + topic+ ". \n" ;
-				response += obj1.get(law_scope).toString();
+				//response += obj1.get(law_scope).toString();
+				response += DbOperation.getResponse(topic, law_scope, "1");
 				output.setDisplayText(response + "\n\nDoes this help?\n :obYes:cb :obNo:cb");
 				output.setSpeech(response + "\n \n This is what I found. Does it help ?");
 				//webhook_res["contextOut"].append({"name":"complaince_expert", "lifespan":2,"parameters":{ "topic": topic} })
