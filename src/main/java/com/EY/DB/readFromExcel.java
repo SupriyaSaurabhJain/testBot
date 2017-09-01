@@ -41,6 +41,7 @@ public class readFromExcel {
 		}
 	}
 
+	
 	public static void insertSubTopic(HashMap<String , ArrayList<String>> topicsSubtopic){
 		Connection connection = ConnectionDetails.getConnection();
 		Statement statement;

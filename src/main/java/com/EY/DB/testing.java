@@ -41,7 +41,7 @@ public class testing extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	/*protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
 //			new DbOperation().deleteFromDb("sf", "sfs");
@@ -117,11 +117,11 @@ public class testing extends HttpServlet {
 					descriptionLib.put(cRow[1].trim().toUpperCase(), stateLawMap);
 					questionLib.put(cRow[1].trim().toUpperCase(), cRow[2]);
 					
-				/*	log.info(" insert topic ");		
-					FreadFromExcel.insertTopic(cRow[0]);*/
+					log.info(" insert topic ");		
+					FreadFromExcel.insertTopic(cRow[0]);
 					
-					/*log.info("insert subTopic");
-					readFromExcel.insertSubTopic(cRow[1], cRow[0]);*/
+					log.info("insert subTopic");
+					readFromExcel.insertSubTopic(cRow[1], cRow[0]);
 					
 					//insertSubTopic(conn, cRow[1], cRow[0], out);
 					//insertState(conn, headers, "US", out);
@@ -132,9 +132,9 @@ public class testing extends HttpServlet {
 				{
 					//log.info("insert state");
 					//readFromExcel.insertState(headers, "US");
-					/*for(int k = 4 ; k < headers.length ; k++){
+					for(int k = 4 ; k < headers.length ; k++){
 						state.add(headers[k]);
-					}*/
+					}
 				}
 				firstRow = false;
 				//System.out.println(cRow[0]);
@@ -142,11 +142,11 @@ public class testing extends HttpServlet {
 			}
 			workbook.close();
 			
-			/*for (String string : topicsSubtopic.keySet()) {
+			for (String string : topicsSubtopic.keySet()) {
 				for (String subTopic : topicsSubtopic.get(string)) {
 					log.info("topic :" + string + "  subTopic : " + subTopic );
 			}
-			}*/
+			}
 			
 			//readFromExcel.insertTopic(topicsSubtopic.keySet());
 			//readFromExcel.insertSubTopic(topicsSubtopic);
@@ -158,7 +158,7 @@ public class testing extends HttpServlet {
 		}
 		
 			response.getWriter().write("end---------");
-	}
+	}*/
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -166,6 +166,13 @@ public class testing extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
+	}
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		String topic = request.getParameter("topic");
+		String subTopic = request.getParameter("subTopic");
+		response.getWriter().write("topic :"+ topic + "  subTopic : "+ subTopic);
+		DbOperation.addNewTopicToDB(topic, subTopic);
 	}
 
 }
