@@ -103,20 +103,20 @@ public class testing extends HttpServlet {
 					
 					if (topicsSubtopic.containsKey(cRow[0].trim().toUpperCase())) {
 						ArrayList<String> subTopic = topicsSubtopic.get(cRow[0].trim().toUpperCase());
-						subTopic.add(cRow[1]);
+						subTopic.add(cRow[1].trim().toUpperCase());
 						topicsSubtopic.put(cRow[0].trim().toUpperCase(), subTopic);
 					}
 					else{
 						ArrayList<String> subTopic = new ArrayList<String> ();
-						subTopic.add(cRow[1]);
+						subTopic.add(cRow[1].trim().toUpperCase());
 						topicsSubtopic.put(cRow[0].trim().toUpperCase(), subTopic);
 					}
-					/*HashMap<String, String> stateLawMap = new HashMap<String, String>();
+					HashMap<String, String> stateLawMap = new HashMap<String, String>();
 					for(int k = 3 ; k < cRow.length ; k++){
-						stateLawMap.put(headers[k] , cRow[k]);
+						stateLawMap.put(headers[k].trim().toUpperCase() , cRow[k].trim().toUpperCase());
 					}
-					descriptionLib.put(cRow[1], stateLawMap);
-					questionLib.put(cRow[1], cRow[2]);*/
+					descriptionLib.put(cRow[1].trim().toUpperCase(), stateLawMap);
+					questionLib.put(cRow[1].trim().toUpperCase(), cRow[2]);
 					
 				/*	log.info(" insert topic ");		
 					FreadFromExcel.insertTopic(cRow[0]);*/
@@ -150,8 +150,9 @@ public class testing extends HttpServlet {
 			}
 			}*/
 			
-			readFromExcel.insertTopic(topicsSubtopic.keySet());
+			//readFromExcel.insertTopic(topicsSubtopic.keySet());
 			readFromExcel.insertSubTopic(topicsSubtopic);
+			readFromExcel.insertLawDesc(descriptionLib);
 		} catch (Exception e) {
 			log.info("exception reading excel : " + e);
 			e.printStackTrace();

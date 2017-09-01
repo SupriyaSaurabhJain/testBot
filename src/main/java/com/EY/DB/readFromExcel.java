@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.logging.Logger;
 
 import org.apache.poi.ss.usermodel.*;
@@ -68,6 +69,7 @@ public class readFromExcel {
 	public static  int getTopicId(String topic) {
 		Connection connection = ConnectionDetails.getConnection();
 		int topic_id = -1;
+		topic = topic.trim().toUpperCase();
 		Statement statement;
 		try {
 			statement = connection.createStatement();
@@ -97,7 +99,7 @@ public class readFromExcel {
 			statement = connection.createStatement();
 			for (int i = 5; i < headers.length; i++) {
 
-				state.add(headers[i].toUpperCase());
+				state.add(headers[i].trim().toUpperCase());
 
 			}
 			log.info("Total states : " + state.size());
@@ -119,31 +121,29 @@ public class readFromExcel {
 
 	}
 
-	public  static void insertLawDesc(String[] headers, String[] curRow){
+	public  static void insertLawDesc(TreeMap<String, HashMap<String, String>> descriptionLib){ // descriptionLib ::  map of subTopic --> <state,law>
 		int law_id = 0;
 		Connection connection = ConnectionDetails.getConnection();
 		Statement statement;
 		try {
 			statement = connection.createStatement();
-			for (int i = 3; i < curRow.length; i++) {
-				curRow[i] = curRow[i].replaceAll("\'", "").replaceAll("\"", "").replaceAll("\n", "").replaceAll("\t", "");
-				law_id++;
-				if(i==3)
-				{
-					int country_id = 1;
-					int topic_id= getTopicId(curRow[0]);
-					int t = statement.executeUpdate("insert into Law_Description(law_description,country_id,topic_id) Values('"+curRow[i]+"','"+country_id+"','"+topic_id+"')");
+			for (String  subTopic : descriptionLib.keySet()) {
+				int subTopicId = getSubTopicId(subTopic);
+				TreeMap<String , String> stateLawMap = new TreeMap<String , String> ();
+				for (String state : stateLawMap.keySet()) {
+					String lawDescription = stateLawMap.get(state).replaceAll("\'", "").replaceAll("\"", "").replaceAll("\n", "").replaceAll("\t", "");
+					if (state.equalsIgnoreCase("FEDERAL")) {
+						log.info("insert into Law_Description(law_description,state_id,sub_topic_id) Values('"+lawDescription+"','"+"NULL"+"','"+subTopicId+"')");
+						int response = statement.executeUpdate("insert into Law_Description(law_description,country_id,state_id,sub_topic_id) Values('"+lawDescription+"','"+"1"+"','"+"NULL"+"','"+subTopicId+"')");
+					}
+					else{
+						int state_id = getstateId(state); 
+						log.info("insert into Law_Description(law_description,state_id,sub_topic_id) Values('"+lawDescription+"','"+state_id+"','"+subTopicId+"')");
+						int response = statement.executeUpdate("insert into Law_Description(law_description,country_id,state_id,sub_topic_id) Values('"+lawDescription+"','"+"1"+"','"+state_id+"','"+subTopicId+"')");
+						
+					}
 				}
-				else
-				{
-					/*int id = 1;
-				conn = createDBConnection();
-				int id1 = getstateId(conn, headers[i], out);
-				int id2 = getTopicId(conn, curRow[0], out);
-				stmt = conn.createStatement();
-				int t = stmt.executeUpdate("insert into Law_Description(law_description,state_id,country_id,topic_id) Values('"+curRow[i]+"','"+id1+"','"+id+"','"+id2+"')");
-				conn.close();*/
-				}
+				
 			}
 			log.info("Law description added ");
 		}
@@ -160,6 +160,7 @@ public class readFromExcel {
 	public static  int getstateId(String state){
 		Connection connection = ConnectionDetails.getConnection();
 		int state_id = -1;
+		state = state.trim().toUpperCase();
 		Statement statement;
 		try {
 			statement = connection.createStatement();
@@ -186,6 +187,7 @@ public class readFromExcel {
 	public static  int getSubTopicId(String subtopic){
 		Connection connection = ConnectionDetails.getConnection();
 		int subTopic_id = -1;
+		subtopic = subtopic.trim().toUpperCase();
 		Statement statement;
 		try {
 			statement = connection.createStatement();
