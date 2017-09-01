@@ -149,6 +149,7 @@ public class readFromExcel {
 						int response = statement.executeUpdate("insert into Law_Description(law_description,country_id,state_id,sub_topic_id) Values('"+lawDescription+"','"+"1"+"','"+state_id+"','"+subTopicId+"')");
 						
 					}
+					ConnectionDetails.closeConnection();
 				}
 				
 			}
@@ -160,7 +161,7 @@ public class readFromExcel {
 			e.printStackTrace();
 		}
 		finally{
-			ConnectionDetails.closeConnection();
+			//ConnectionDetails.closeConnection();
 		}
 	}
 
