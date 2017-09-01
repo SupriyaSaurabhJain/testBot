@@ -150,7 +150,7 @@ public class testing extends HttpServlet {
 			}
 			}*/
 			
-			//readFromExcel.insertTopic(topicsSubtopic.keySet());
+			readFromExcel.insertTopic(topicsSubtopic.keySet());
 			readFromExcel.insertSubTopic(topicsSubtopic);
 			readFromExcel.insertLawDesc(descriptionLib);
 		} catch (Exception e) {
