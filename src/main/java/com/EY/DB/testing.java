@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hssf.record.DBCellRecord;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -169,10 +170,14 @@ public class testing extends HttpServlet {
 	}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String topic = request.getParameter("topic");
+		//String topic = request.getParameter("topic");
 		String subTopic = request.getParameter("subTopic");
-		response.getWriter().write("topic :"+ topic + "  subTopic : "+ subTopic);
-		DbOperation.addNewTopicToDB(topic, subTopic);
+		String state = request.getParameter("state");
+		 
+		response.getWriter().write("state :"+ state + "  subTopic : "+ subTopic);
+		//DbOperation.addNewTopicToDB(topic, subTopic);
+		response.getWriter().write(DbOperation.getResponse(subTopic ,state , "1"));
+		
 	}
 
 }

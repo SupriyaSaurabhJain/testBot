@@ -127,13 +127,25 @@ public class DbOperation extends ConnectionDetails{
 		}
 		return response;
 	}
-	public String getResponse(String topic , String state , String country){
+	public static String getResponse(String subTopic , String state , String country){
 		log.info("inside getResponse");
 		String response = "";
+		String Query = "";
+		int subTopic_id = -1; 
 		Connection connection = ConnectionDetails.getConnection();
+		if (state.toUpperCase().equalsIgnoreCase("FEDERAL")) {
+			Query = "SELECT law_description FROM Law_Description WHERE topic_id = '"+subTopic_id+"' AND state_id IS NULL;" ;
+		}
+		else{
+			int state_id = getstateId(state);
+			Query = "SELECT law_description FROM Law_Description WHERE topic_id = '"+subTopic_id+"' AND state_id = '" +state_id+"';";
+		}
 		try {
 			Statement statement =  connection.createStatement();
-			 response = "";
+			ResultSet rs = statement.executeQuery(Query);
+			while(rs.next()){
+				response  = rs.getString("law_description");
+			}
 			log.info("Query executed response : "+ response);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -149,6 +161,35 @@ public class DbOperation extends ConnectionDetails{
 				log.severe("Error closing connection");
 				e.printStackTrace();
 			}
-		return "";
+		return response;
 	}
-}}
+		
+}
+	
+	public static  int getstateId(String state){
+		Connection connection = ConnectionDetails.getConnection();
+		int state_id = -1;
+		state = state.trim().toUpperCase();
+		Statement statement;
+		try {
+			statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery("select state_id from State where state_name='"+state+"';");
+			while(rs.next()){
+				//Retrieve by column name
+				state_id  = rs.getInt("state_id");
+
+
+			}
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			log.severe("exception fetching state id");
+			e.printStackTrace();
+		}
+		finally{
+			ConnectionDetails.closeConnection();
+		}
+		log.info("state id fetched : "+ state_id);
+		return state_id;
+	}
+}
