@@ -220,7 +220,7 @@ public class DbOperation extends ConnectionService{
 		int topicId = getTopicId(topic);
 		int subTopicId = getSubTopicId(subTopic);
 		String query = "INSERT INTO QuestionsManagement(possible_questions , questions_type , User_ID , sub_topic_id ,topic_id) VALUES" +
-		                " ('" +question+"' , 'USER' , ' "+ userId+"' , '"+ subTopicId+"' , '" + topicId +"' , ') " ;
+		                " ('" +question+"' , 'USER' , ' "+ userId+"' , '"+ subTopicId+"' , '" + topicId +"') ;" ;
 		Connection connection = ConnectionService.getConnection();
 		Statement statement;
 		try {
