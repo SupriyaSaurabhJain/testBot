@@ -72,17 +72,7 @@
     <servlet-name>testing</servlet-name>
     <url-pattern>/testing</url-pattern>
   </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>ShowComplianceDB</display-name>
-    <servlet-name>ShowComplianceDB</servlet-name>
-    <servlet-class>com.EY.Admin.ShowComplianceDB</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ShowComplianceDB</servlet-name>
-    <url-pattern>/ShowComplianceDB</url-pattern>
-  </servlet-mapping>
-  <servlet>
+   <servlet>
     <description></description>
     <display-name>AddNewQuestion</display-name>
     <servlet-name>AddNewQuestion</servlet-name>
