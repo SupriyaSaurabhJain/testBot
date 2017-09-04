@@ -7,26 +7,22 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
-import com.EY.APIai.Handler.APIHandler;
-import com.EY.ChatBot.MyWebhookServlet;
 import com.EY.Service.ReadParameters;
+
 /**
- * Servlet implementation class addTopic
+ * Servlet implementation class AddNewQuestion
  */
-public class addTopicServlet extends HttpServlet {
-	private static final Logger log = Logger.getLogger(MyWebhookServlet.class.getName());
+public class AddNewQuestion extends HttpServlet {
+	private static final Logger log = Logger.getLogger(AddNewQuestion.class.getName());
 
 	private static final long serialVersionUID = 1L;
-	private static final String USER_AGENT = "Mozilla/5.0";
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
+    public AddNewQuestion() {
+        super();
+    }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String responseJson  = ReadParameters.readPostParameter(request);
@@ -38,20 +34,25 @@ public class addTopicServlet extends HttpServlet {
 			//System.out.println(jsonResponseObject);
 			String topic = jsonResponseObject.get("topic").toString();
 			String subTopic = jsonResponseObject.get("subTopic").toString();
-			response.getWriter().write(addTopic(topic, subTopic));
+			String question =  jsonResponseObject.get("question").toString();
+			int userId = Integer.parseInt(jsonResponseObject.get("userId").toString());
+			response.getWriter().write(addQuestion(topic, subTopic , question ,userId));
 
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	public static String addTopic(String topic, String subTopic) {
+	public static String addQuestion(String topic, String subTopic ,String question, int userId) {
 		// TODO Auto-generated method stub
 		String response = "";
-		int result = new DbOperation().addNewTopicToDB(topic, subTopic);
+		
+		int result = DbOperation.addNewQuestionToDB(topic, subTopic , question ,userId);
 		log.info("result in addTopic :" + result);
 		if (result == 1) {
-			response =new APIHandler().addTopic(subTopic, subTopic);
+			// to api ai 
+			response = " {  \"status\": {    \"code\": 200,    \"errorType\": \"Sucess\"  }}" ;
+
 		
 		}
 		else{
@@ -61,9 +62,6 @@ public class addTopicServlet extends HttpServlet {
 		log.info("Response : "+ response);
 		return response;
 	}
-	private static String getJsonStringEntityForElement(String topic , String subTopic){
-		String inputJson = "[{\"value\": \""+ subTopic+ "\",\"synonyms\": []}]" ;
-		return inputJson;
-	}
 	
+
 }

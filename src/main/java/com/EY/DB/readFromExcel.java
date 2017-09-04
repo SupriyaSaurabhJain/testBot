@@ -1,6 +1,5 @@
 package com.EY.DB;
 
-import java.io.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,13 +7,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class readFromExcel {
 	private static final Logger log = Logger.getLogger(testing.class.getName());
@@ -22,7 +18,7 @@ public class readFromExcel {
 	public static void toDb(){
 	}
 	static void insertTopic(Set<String> topics)  {
-		Connection connection = ConnectionDetails.getConnection();
+		Connection connection = ConnectionService.getConnection();
 		Statement statement;
 		try {
 			statement = connection.createStatement();
@@ -37,13 +33,13 @@ public class readFromExcel {
 			e.printStackTrace();
 		}
 		finally{
-			ConnectionDetails.closeConnection();
+			ConnectionService.closeConnection();
 		}
 	}
 
 	
 	public static void insertSubTopic(HashMap<String , ArrayList<String>> topicsSubtopic){
-		Connection connection = ConnectionDetails.getConnection();
+		Connection connection = ConnectionService.getConnection();
 		Statement statement;
 		try {
 			statement = connection.createStatement();
@@ -53,7 +49,7 @@ public class readFromExcel {
 				int topic_id = getTopicId(topic);
 				for (String subTopic : topicsSubtopic.get(topic)) {
 					int t = statement.executeUpdate("insert into SubTopics(sub_topic_name,topic_id) Values('"+subTopic+"','"+topic_id+"')");
-					log.info("sub topic added ");
+					log.info("sub topic added " + t);
 				}
 			}
 
@@ -63,12 +59,12 @@ public class readFromExcel {
 			e.printStackTrace();
 		}
 		finally{
-			ConnectionDetails.closeConnection();
+			ConnectionService.closeConnection();
 		}
 	}
 
 	public static  int getTopicId(String topic) {
-		Connection connection = ConnectionDetails.getConnection();
+		Connection connection = ConnectionService.getConnection();
 		int topic_id = -1;
 		topic = topic.trim().toUpperCase();
 		Statement statement;
@@ -85,7 +81,7 @@ public class readFromExcel {
 			e.printStackTrace();
 		}
 		finally{
-			ConnectionDetails.closeConnection();
+			ConnectionService.closeConnection();
 		}
 		log.info("topic id fetched :  " + topic_id);
 		return topic_id;
@@ -94,7 +90,7 @@ public class readFromExcel {
 
 	public static  void insertState(String[] headers, String country){
 		HashSet<String> state = new HashSet<String>();
-		Connection connection = ConnectionDetails.getConnection();
+		Connection connection = ConnectionService.getConnection();
 		Statement statement;
 		try {
 			statement = connection.createStatement();
@@ -107,7 +103,7 @@ public class readFromExcel {
 			for (String stringState : state) {
 				int t1 = 1;
 				int response = statement.executeUpdate("insert into State(state_name,country_id) Values('"+stringState+"','"+t1+"')");
-				log.info("state added" + stringState);
+				log.info("state added" + stringState + "response "+ response);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -115,7 +111,7 @@ public class readFromExcel {
 			e.printStackTrace();
 		}
 		finally{
-			ConnectionDetails.closeConnection();
+			ConnectionService.closeConnection();
 		}
 
 
@@ -123,9 +119,8 @@ public class readFromExcel {
 	}
 
 	public  static void insertLawDesc(TreeMap<String, HashMap<String, String>> descriptionLib){ // descriptionLib ::  map of subTopic --> <state,law>
-		int law_id = 0;
 		log.info("inside method law desc insert");
-		//		Connection connection = ConnectionDetails.getConnection();
+		//		Connection connection = ConnectionService.getConnection();
 		//Statement statement;
 		try {
 			//			statement = connection.createStatement();
@@ -160,20 +155,20 @@ public class readFromExcel {
 			e.printStackTrace();
 		}
 		finally{
-			//ConnectionDetails.closeConnection();
+			//ConnectionService.closeConnection();
 		}
 	}
 	private static int  insertDescIntoDb(String Query) throws SQLException{
 
-		Connection connection = ConnectionDetails.getConnection();
+		Connection connection = ConnectionService.getConnection();
 		Statement statement = connection.createStatement();
 		int response = statement.executeUpdate(Query);
-		ConnectionDetails.closeConnection();
+		ConnectionService.closeConnection();
 		return response;
 
 	}
 	public static  int getstateId(String state){
-		Connection connection = ConnectionDetails.getConnection();
+		Connection connection = ConnectionService.getConnection();
 		int state_id = -1;
 		state = state.trim().toUpperCase();
 		Statement statement;
@@ -193,21 +188,20 @@ public class readFromExcel {
 			e.printStackTrace();
 		}
 		finally{
-			ConnectionDetails.closeConnection();
+			ConnectionService.closeConnection();
 		}
 		log.info("state id fetched : "+ state_id);
 		return state_id;
 	}
 
 	public static  int getSubTopicId(String subtopic){
-		Connection connection = ConnectionDetails.getConnection();
+		Connection connection = ConnectionService.getConnection();
 		int subTopic_id = -1;
 		subtopic = subtopic.trim().toUpperCase();
 		Statement statement;
 		try {
 			statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery("select sub_topic_id from SubTopics where sub_topic_name='"+subtopic+"';");
-			int id=-1;
 			while(rs.next()){
 				subTopic_id  = rs.getInt("sub_topic_id");
 
@@ -219,7 +213,7 @@ public class readFromExcel {
 			e.printStackTrace();
 		}
 		finally{
-			ConnectionDetails.closeConnection();
+			ConnectionService.closeConnection();
 		}
 		log.info("subTopic id added : "+ subTopic_id);
 		return subTopic_id;
@@ -227,7 +221,7 @@ public class readFromExcel {
 
 	public  static void insertQuestion(String question, String topic,String subtopic)  {
 		question = question.replaceAll("\'", "");
-		Connection connection = ConnectionDetails.getConnection();
+		Connection connection = ConnectionService.getConnection();
 		Statement statement;
 		try {
 			statement = connection.createStatement();	
@@ -235,14 +229,14 @@ public class readFromExcel {
 			int sub_topic_id = getSubTopicId(subtopic);
 			int uid = 1;
 			int t = statement.executeUpdate("insert into QuestionsMgnt(possible_questions,questions_type,User_id,topic_id,sub_topic_id) Values('"+question+"','SYSTEM','"+uid+"','"+topic_id+"','"+sub_topic_id+"')");	
-			log.info("sucessfully addded question");
+			log.info("sucessfully addded question" + t);
 		}catch (SQLException e) {
 			// TODO Auto-generated catch block
 			log.severe("exception adding question");
 			e.printStackTrace();
 		}
 		finally{
-			ConnectionDetails.closeConnection();
+			ConnectionService.closeConnection();
 		}
 	}
 
