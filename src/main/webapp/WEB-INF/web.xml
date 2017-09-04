@@ -72,7 +72,7 @@
     <servlet-name>testing</servlet-name>
     <url-pattern>/testing</url-pattern>
   </servlet-mapping>
-   <servlet>
+  <servlet>
     <description></description>
     <display-name>AddNewQuestion</display-name>
     <servlet-name>AddNewQuestion</servlet-name>
@@ -81,5 +81,15 @@
   <servlet-mapping>
     <servlet-name>AddNewQuestion</servlet-name>
     <url-pattern>/AddNewQuestion</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>DeleteQuestion</display-name>
+    <servlet-name>DeleteQuestion</servlet-name>
+    <servlet-class>com.EY.Admin.DeleteQuestion</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteQuestion</servlet-name>
+    <url-pattern>/DeleteQuestion</url-pattern>
   </servlet-mapping>
 </web-app>

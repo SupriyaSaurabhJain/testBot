@@ -14,13 +14,13 @@ public class DbOperation extends ConnectionService{
 		Connection connection = ConnectionService.getConnection();
 		try {
 			Statement statement =  connection.createStatement();
-			 ResultSet result = statement.executeQuery("SELECT topic_id , topic_name FROM Topics");
+			ResultSet result = statement.executeQuery("SELECT topic_id , topic_name FROM Topics");
 			log.info("Query executed response : "+ result);
-			 while (result.next()){
-				 topics.put(result.getString("topic_name"),result.getInt("topic_id") );
-			 }
-			 }
-		 catch (SQLException e) {
+			while (result.next()){
+				topics.put(result.getString("topic_name"),result.getInt("topic_id") );
+			}
+		}
+		catch (SQLException e) {
 			// TODO Auto-generated catch block
 			log.severe("exception while deleting from table :" + e);
 			e.printStackTrace();
@@ -49,8 +49,8 @@ public class DbOperation extends ConnectionService{
 		try {
 			Statement statement = connection.createStatement();
 			response = statement.executeUpdate("INSERT INTO SubTopics(sub_topic_name ,topic_id) VALUES('"+subTopic+"','"+topic_id+"')");
-			 }
-		 catch (SQLException e) {
+		}
+		catch (SQLException e) {
 			// TODO Auto-generated catch block
 			log.severe("exception while deleting from table :" + e);
 			e.printStackTrace();
@@ -87,10 +87,10 @@ public class DbOperation extends ConnectionService{
 		int response = -1;
 		try {
 			statement = connection.createStatement();
-				
-				response = statement.executeUpdate("insert into Topics(topic_name) Values('"+topic+"')");
-				log.info("added to table Topics : "+ response);
-					} 
+
+			response = statement.executeUpdate("insert into Topics(topic_name) Values('"+topic+"')");
+			log.info("added to table Topics : "+ response);
+		} 
 		catch (SQLException e) {
 			// TODO Auto-generated catch block
 			log.severe("Exception adding topic to table : " + e);
@@ -102,28 +102,39 @@ public class DbOperation extends ConnectionService{
 		}
 		return response ;
 	}
-	public int deleteFromDb(String topic , String subTopic){
+	public int deleteTopicFromDb(String topic){
 		log.info("inside method deleteTopic");
 		int response = 0;
 		Connection connection = ConnectionService.getConnection();
 		try {
 			Statement statement =  connection.createStatement();
-			 response = statement.executeUpdate("DELETE FROM sample WHERE subTopic = ' " +subTopic+ "'");
+			response = statement.executeUpdate("DELETE FROM Topics WHERE topic_name = ' " +topic+ "'");
 			log.info("Query executed response : "+ response);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			log.severe("exception while deleting from table :" + e);
+			log.severe("exception while deleting topic from table :" + e);
 			e.printStackTrace();
 		}
 		finally{
-			try {
-				connection.close();
-				log.info("connection closed");
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				log.severe("Error closing connection");
-				e.printStackTrace();
-			}
+			ConnectionService.closeConnection();
+		}
+		return response;
+	}
+	public int deleteSubTopicFromDb(String subTopic){
+		log.info("inside method deleteSubTopic");
+		int response = 0;
+		Connection connection = ConnectionService.getConnection();
+		try {
+			Statement statement =  connection.createStatement();
+			response = statement.executeUpdate("DELETE FROM SubTopics WHERE sub_topic_name = ' " +subTopic+ "'");
+			log.info("Query executed response : "+ response);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			log.severe("exception while deleting subTopic from table :" + e);
+			e.printStackTrace();
+		}
+		finally{
+			ConnectionService.closeConnection();
 		}
 		return response;
 	}
@@ -186,11 +197,11 @@ public class DbOperation extends ConnectionService{
 				log.severe("Error closing connection");
 				e.printStackTrace();
 			}
-	}
+		}
 		return response;
-	
-}
-	
+
+	}
+
 	public static  int getstateId(String state){
 		Connection connection = ConnectionService.getConnection();
 		int state_id = -1;
@@ -220,7 +231,7 @@ public class DbOperation extends ConnectionService{
 		int topicId = getTopicId(topic);
 		int subTopicId = getSubTopicId(subTopic);
 		String query = "INSERT INTO QuestionsManagement(possible_questions , questions_type , User_ID , sub_topic_id ,topic_id) VALUES" +
-		                " ('" +question+"' , 'USER' , ' "+ userId+"' , '"+ subTopicId+"' , '" + topicId +"') ;" ;
+				" ('" +question+"' , 'USER' , ' "+ userId+"' , '"+ subTopicId+"' , '" + topicId +"') ;" ;
 		log.info(query);
 		Connection connection = ConnectionService.getConnection();
 		Statement statement;
@@ -239,5 +250,27 @@ public class DbOperation extends ConnectionService{
 
 		}
 		return response ;
+	}
+
+	public static int deleteQuestionFromDb(int questionId) {
+		// TODO Auto-generated method stub
+		log.info("inside method deleteTopic");
+		int response = 0;
+		Connection connection = ConnectionService.getConnection();
+		String query = "DELETE FROM QuestionsManagement WHERE question_id  = ' " +questionId+ "'";
+		try {
+			Statement statement =  connection.createStatement();
+			response = statement.executeUpdate(query);
+			log.info("Query executed response : "+ response);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			log.severe("exception while deleting from table :" + e);
+			e.printStackTrace();
+		}
+		finally{
+			ConnectionService.closeConnection();
+
+		}
+		return response;	
 	}
 }
