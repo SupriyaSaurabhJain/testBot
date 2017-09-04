@@ -52,7 +52,7 @@ public class APIHandler {
 			log.info("add topic response : " + r);
 			if (response.getStatusLine().getStatusCode() != 200) {
 				log.severe("not added sucessfully");
-				new DbOperation().deleteFromDb(topic, subTopic);
+				new DbOperation().deleteSubTopicFromDb(subTopic);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
