@@ -4,6 +4,9 @@ import java.sql.*;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import com.EY.ChatBot.MyWebhookServlet;
 
 public class DbOperation extends ConnectionService{
@@ -332,5 +335,52 @@ public class DbOperation extends ConnectionService{
 			ConnectionService.closeConnection();
 		}
 		log.info("country_id fetched :  " + countryId);
-		return countryId;	}
+		return countryId;	
+		}
+	public static String fetchComplianceDetailsFromDB(){
+
+		log.info("Inside method fetchComplianceDetailsFromDB");
+		
+		JSONObject complianceDetails = new JSONObject();
+		JSONArray dataArray = new JSONArray();
+		
+		String queryToFetchTopicSubtopic = "select T.topic_id, T.topic_name, ST.sub_topic_id, ST.sub_topic_name from Topics T, SubTopics ST WHERE T.topic_id = ST.topic_id;";
+		
+		Connection connection = ConnectionService.getConnection();
+		
+		try {
+			
+			Statement statement = connection.createStatement();
+			
+			ResultSet rs = statement.executeQuery(queryToFetchTopicSubtopic);
+			while(rs.next()){
+				
+				JSONObject rowData = new JSONObject();
+				
+				rowData.put("topic_name" , rs.getString("topic_name"));
+				rowData.put("sub_topic_name", rs.getString("sub_topic_name"));
+				
+				String queryToFetchNumberOfQuestions = "select count(question_id) number_of_questions from QuestionsManagement group by sub_topic_id having sub_topic_id = "+rs.getInt("sub_topic_id")+";";
+				
+				Statement statement2 = connection.createStatement();
+				
+				ResultSet rs2 = statement2.executeQuery(queryToFetchNumberOfQuestions);
+				
+				rowData.put("number_of_questions", rs.getInt("number_of_questions"));
+				
+				dataArray.add(rowData);
+			
+			}
+			
+			complianceDetails.put("data", dataArray);
+			
+		} catch (Exception e) {
+			
+		}
+		finally{
+			ConnectionService.closeConnection();
+		}
+		
+		return complianceDetails.toString();
+	}
 }
