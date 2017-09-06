@@ -94,13 +94,13 @@
   </servlet-mapping>
   <servlet>
     <description></description>
-    <display-name>ListCompilanceDetails</display-name>
-    <servlet-name>ListCompilanceDetails</servlet-name>
-    <servlet-class>com.EY.Admin.ListCompilanceDetails</servlet-class>
+    <display-name>ListComplianceDetails</display-name>
+    <servlet-name>ListComplianceDetails</servlet-name>
+    <servlet-class>com.EY.Admin.ListComplianceDetails</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>ListCompilanceDetails</servlet-name>
-    <url-pattern>/ListCompilanceDetails</url-pattern>
+    <servlet-name>ListComplianceDetails</servlet-name>
+    <url-pattern>/ListComplianceDetails</url-pattern>
   </servlet-mapping>
   <servlet>
     <description></description>
