@@ -369,7 +369,7 @@ public class DbOperation extends ConnectionService{
 				ResultSet rs2 = statement2.executeQuery(queryToFetchNumberOfQuestions);
 				
 				if(rs2.next())
-					rowData.put("number_of_questions", rs.getInt("number_of_questions"));	
+					rowData.put("number_of_questions", rs2.getInt("number_of_questions"));	
 				else 
 					rowData.put("number_of_questions", 0); 
 				
