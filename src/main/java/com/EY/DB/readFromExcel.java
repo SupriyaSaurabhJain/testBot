@@ -219,7 +219,7 @@ public class readFromExcel {
 		return subTopic_id;
 	} 
 
-	public  static void insertQuestion(String question, String topic,String subtopic)  {
+	public  static void insertQuestion(String question, String topic, String subtopic)  {
 		question = question.replaceAll("\'", "");
 		Connection connection = ConnectionService.getConnection();
 		Statement statement;

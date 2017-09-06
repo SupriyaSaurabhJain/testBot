@@ -51,7 +51,7 @@ public class AddNewQuestion extends HttpServlet {
 		log.info("result in addTopic :" + result);
 		if (result == 1) {
 			// to api ai 
-			response = " {  \"status\": {    \"code\": 200,    \"errorType\": \"Sucess\"  }}" ;
+			response = " {  \"status\": {    \"code\": 200,    \"errorType\": \"Success\"  }}" ;
 
 		
 		}

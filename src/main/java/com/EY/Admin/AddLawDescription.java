@@ -61,7 +61,7 @@ public class AddLawDescription extends HttpServlet {
 
 		String response ;
 		if (result == 1 ) {
-			response = " {  \"status\": {    \"code\": 200,    \"errorType\": \"Sucess\"  }}" ;
+			response = " {  \"status\": {    \"code\": 200,    \"errorType\": \"Success\"  }}" ;
 
 		}
 		else {
