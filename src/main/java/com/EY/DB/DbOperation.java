@@ -283,8 +283,8 @@ public class DbOperation extends ConnectionService{
         log.info("Timestamp " + timestamp);
 		String query ;
 		if (descriptionId == -1) {
-			query = "INSERT INTO Law_Description(law_description , state_id , country_id , sub_topic_id ) VALUES" +
-					" ('" +description+"' , '"+ stateId  +"' , ' "+ countryId+"' , '"+ subTopicId+"') ;" ;
+			query = "INSERT INTO Law_Description(law_description , state_id , country_id , sub_topic_id, CreateTimeStamp, ModifiedTimestamp) VALUES" +
+					" ('" +description+"' , '"+ stateId  +"' , ' "+ countryId+"' , '"+ subTopicId+"' , '"+ timestamp+"' , '" +timestamp+"') ;" ;
 		}
 		else{
 			query = "UPDATE TABLE Law_Description SET law_description = '"+description+"', state_id = '"+ stateId +"', country_id = '"+countryId +"', sub_topic_id = '"+subTopicId +"' , ModifiedTimestamp = '"+timestamp +"'" +
