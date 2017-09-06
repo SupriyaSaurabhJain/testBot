@@ -273,4 +273,64 @@ public class DbOperation extends ConnectionService{
 		}
 		return response;	
 	}
+
+	public static int addLawDescriptionToDB(String topic, String subTopic, String country, String state,String description , int descriptionId) {
+		int response = -1;
+		int subTopicId = getSubTopicId(subTopic);
+		int countryId  = getCountryId(state);
+		int stateId = getstateId(state);
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        log.info("Timestamp " + timestamp);
+		String query ;
+		if (descriptionId == -1) {
+			query = "INSERT INTO Law_Description(law_description , state_id , country_id , sub_topic_id ) VALUES" +
+					" ('" +description+"' , '"+ stateId  +"' , ' "+ countryId+"' , '"+ subTopicId+"') ;" ;
+		}
+		else{
+			query = "UPDATE TABLE Law_Description SET law_description = '"+description+"', state_id = '"+ stateId +"', country_id = '"+countryId +"', sub_topic_id = '"+subTopicId +"' , ModifiedTimestamp = '"+timestamp +"'" +
+						"		WHERE law_desc_id = '" +descriptionId+ "' ; " ;
+		}
+		
+		log.info(query);
+		Connection connection = ConnectionService.getConnection();
+		Statement statement;
+		try {
+			statement = connection.createStatement();
+			response = statement.executeUpdate(query);
+			log.info("description added sucessfully");
+			ConnectionService.closeConnection();
+
+		} catch (SQLException e) {
+			// TODO: handle exception
+			log.severe("exception adding question : "+ e);
+		}
+		finally {
+			ConnectionService.closeConnection();
+
+		}
+		return response ;
+	}
+
+	private static int getCountryId(String state) {
+		Connection connection = ConnectionService.getConnection();
+		int countryId = -1;
+		state = state.trim().toUpperCase();
+		Statement statement;
+		try {
+			statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery("select country_id from States where UPPER(state_name) = '"+state+"';");
+			while(rs.next()){
+				countryId  = rs.getInt("country_id");
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			log.severe("exception fetching country_id");
+			e.printStackTrace();
+		}
+		finally{
+			ConnectionService.closeConnection();
+		}
+		log.info("country_id fetched :  " + countryId);
+		return countryId;	}
 }

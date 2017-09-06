@@ -102,4 +102,14 @@
     <servlet-name>ListCompilanceDetails</servlet-name>
     <url-pattern>/ListCompilanceDetails</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>AddLawDescription</display-name>
+    <servlet-name>AddLawDescription</servlet-name>
+    <servlet-class>com.EY.Admin.AddLawDescription</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddLawDescription</servlet-name>
+    <url-pattern>/AddLawDescription</url-pattern>
+  </servlet-mapping>
 </web-app>
