@@ -92,4 +92,14 @@
     <servlet-name>DeleteQuestion</servlet-name>
     <url-pattern>/DeleteQuestion</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ListCompilanceDetails</display-name>
+    <servlet-name>ListCompilanceDetails</servlet-name>
+    <servlet-class>com.EY.Admin.ListCompilanceDetails</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ListCompilanceDetails</servlet-name>
+    <url-pattern>/ListCompilanceDetails</url-pattern>
+  </servlet-mapping>
 </web-app>

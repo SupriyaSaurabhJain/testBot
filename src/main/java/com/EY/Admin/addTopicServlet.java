@@ -48,14 +48,14 @@ public class addTopicServlet extends HttpServlet {
 	public static String addTopic(String topic, String subTopic) {
 		// TODO Auto-generated method stub
 		String response = "";
-		int result = new DbOperation().addNewTopicToDB(topic, subTopic);
+		int result =  DbOperation.addNewTopicToDB(topic, subTopic);
 		log.info("result in addTopic :" + result);
 		if (result == 1) {
 			response =new APIHandler().addTopic(subTopic, subTopic);
 		
 		}
 		else{
-			response = " {  \"status\": {    \"code\": 400,    \"errorType\": \"Request Failed\"  }}" ;
+			response = getErrorResponse() ;
 			
 		}
 		log.info("Response : "+ response);
@@ -64,6 +64,10 @@ public class addTopicServlet extends HttpServlet {
 	private static String getJsonStringEntityForElement(String topic , String subTopic){
 		String inputJson = "[{\"value\": \""+ subTopic+ "\",\"synonyms\": []}]" ;
 		return inputJson;
+	}
+	private static String getErrorResponse(){
+		String errorResponse = " {  \"status\": {    \"code\": 400,    \"errorType\": \"Request Failed\"  }}" ;
+		return errorResponse;
 	}
 	
 }
