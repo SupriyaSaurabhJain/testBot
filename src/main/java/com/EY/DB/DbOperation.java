@@ -360,13 +360,15 @@ public class DbOperation extends ConnectionService{
 				rowData.put("topic_name" , rs.getString("topic_name"));
 				rowData.put("sub_topic_name", rs.getString("sub_topic_name"));
 				
-				//String queryToFetchNumberOfQuestions = "select count(question_id) number_of_questions from QuestionsManagement group by sub_topic_id having sub_topic_id = "+rs.getInt("sub_topic_id")+";";
+				String queryToFetchNumberOfQuestions = "select count(question_id) from QuestionsManagement group by sub_topic_id having sub_topic_id = "+rs.getInt("sub_topic_id")+";";
 				
-				//Statement statement2 = connection.createStatement();
+				log.info(queryToFetchNumberOfQuestions);
 				
-				//ResultSet rs2 = statement2.executeQuery(queryToFetchNumberOfQuestions);
+				Statement statement2 = connection.createStatement();
 				
-				//rowData.put("number_of_questions", rs.getInt("number_of_questions"));
+				ResultSet rs2 = statement2.executeQuery(queryToFetchNumberOfQuestions);
+				
+				rowData.put("number_of_questions", rs.getInt("count(question_id)"));
 				
 				dataArray.add(rowData);
 			
