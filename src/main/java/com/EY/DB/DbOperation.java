@@ -360,7 +360,7 @@ public class DbOperation extends ConnectionService{
 				rowData.put("topic_name" , rs.getString("topic_name"));
 				rowData.put("sub_topic_name", rs.getString("sub_topic_name"));
 				
-				String queryToFetchNumberOfQuestions = "select count(question_id) from QuestionsManagement group by sub_topic_id having sub_topic_id = "+rs.getInt("sub_topic_id")+";";
+				String queryToFetchNumberOfQuestions = "select count(question_id) as number_of_questions from QuestionsManagement group by sub_topic_id having sub_topic_id = "+rs.getInt("sub_topic_id")+";";
 				
 				log.info(queryToFetchNumberOfQuestions);
 				
@@ -368,7 +368,10 @@ public class DbOperation extends ConnectionService{
 				
 				ResultSet rs2 = statement2.executeQuery(queryToFetchNumberOfQuestions);
 				
-				rowData.put("number_of_questions", rs.getInt("count(question_id)"));
+				if(rs2.next())
+					rowData.put("number_of_questions", rs.getInt("number_of_questions"));	
+				else 
+					rowData.put("number_of_questions", 0); 
 				
 				dataArray.add(rowData);
 			
