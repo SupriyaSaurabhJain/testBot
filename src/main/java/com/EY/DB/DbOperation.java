@@ -290,7 +290,7 @@ public class DbOperation extends ConnectionService{
 					" ('" +description+"' , '"+ stateId  +"' , ' "+ countryId+"' , '"+ subTopicId+"' , '"+ timestamp+"' , '" +timestamp+"') ;" ;
 		}
 		else{
-			query = "UPDATE TABLE Law_Description SET law_description = '"+description+"', state_id = '"+ stateId +"', country_id = '"+countryId +"', sub_topic_id = '"+subTopicId +"' , ModifiedTimestamp = '"+timestamp +"'" +
+			query = "UPDATE  Law_Description SET law_description = '"+description+"', state_id = '"+ stateId +"', country_id = '"+countryId +"', sub_topic_id = '"+subTopicId +"' , ModifiedTimestamp = '"+timestamp +"'" +
 						"		WHERE law_desc_id = '" +descriptionId+ "' ; " ;
 		}
 		
@@ -321,7 +321,7 @@ public class DbOperation extends ConnectionService{
 		Statement statement;
 		try {
 			statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery("select country_id from States where UPPER(state_name) = '"+state+"';");
+			ResultSet rs = statement.executeQuery("select country_id from State where UPPER(state_name) = '"+state+"';");
 			while(rs.next()){
 				countryId  = rs.getInt("country_id");
 			}
