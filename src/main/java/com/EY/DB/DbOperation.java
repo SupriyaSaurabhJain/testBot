@@ -376,11 +376,14 @@ public class DbOperation extends ConnectionService{
 			
 		} catch (Exception e) {
 			
+			log.info("Error"+ e);
+			
+			e.printStackTrace();
 		}
 		finally{
 			ConnectionService.closeConnection();
 		}
 		
-		return complianceDetails.toString();
+		return complianceDetails.toJSONString();
 	}
 }
