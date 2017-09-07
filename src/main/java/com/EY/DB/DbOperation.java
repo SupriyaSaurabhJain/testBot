@@ -379,7 +379,8 @@ public class DbOperation extends ConnectionService{
 				
 				rowData.put("topic_name" , rs.getString("topic_name"));
 				rowData.put("sub_topic_name", rs.getString("sub_topic_name"));
-				
+				rowData.put("topic_id" , rs.getString("topic_id"));
+				rowData.put("sub_topic_id", rs.getString("sub_topic_id"));
 				String queryToFetchNumberOfQuestions = "select count(question_id) as number_of_questions from QuestionsManagement group by sub_topic_id having sub_topic_id = "+rs.getInt("sub_topic_id")+";";
 				
 				//log.info(queryToFetchNumberOfQuestions);
