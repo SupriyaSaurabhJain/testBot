@@ -34,11 +34,11 @@ public class ListComplianceDetails extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 
-		String requestJson  = ReadParameters.readPostParameter(request);
-		JSONParser parser = new JSONParser();
+		//String requestJson  = ReadParameters.readPostParameter(request);
+		//JSONParser parser = new JSONParser();
 		
 		try {
-			JSONObject requestObject = (JSONObject) parser.parse(requestJson);
+			//JSONObject requestObject = (JSONObject) parser.parse(requestJson);
 
 			//int page_number = Integer.parseInt(requestObject.get("page_number").toString());
 			
