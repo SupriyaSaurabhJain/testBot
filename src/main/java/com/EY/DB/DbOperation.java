@@ -445,13 +445,13 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 	public static HashMap<String,Integer> getCountryList(){
 		HashMap<String,Integer> countryList = new HashMap<String,Integer>();
 		Connection connection = ConnectionService.getConnection();
-		String query = "SELECT * FROM Country ;";
+		String query = "SELECT country_id , country_name FROM Country ;";
 		try {
 			Statement statement =  connection.createStatement();
 			ResultSet resultset = statement.executeQuery(query);
 			log.info("Query executed resultSet : "+ resultset);
 			while (resultset.next()) {
-				countryList.put(resultset.getString("country_name"), resultset.getInt("country_id "));
+				countryList.put(resultset.getString("country_name"), resultset.getInt("country_id"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -474,7 +474,7 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 			ResultSet resultset = statement.executeQuery(query);
 			log.info("Query executed resultSet : "+ resultset);
 			while (resultset.next()) {
-				stateList.put(resultset.getString("state_name"), resultset.getInt("state_id "));
+				stateList.put(resultset.getString("state_name"), resultset.getInt("state_id"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
