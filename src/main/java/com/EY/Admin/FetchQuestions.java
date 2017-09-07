@@ -36,6 +36,8 @@ public class FetchQuestions extends HttpServlet {
 
 		log.info("Inside FetchQuestions");
 		
+		response.setContentType("application/json");
+		
 		String requestJson  = ReadParameters.readPostParameter(request);
 		JSONParser parser = new JSONParser();
 		

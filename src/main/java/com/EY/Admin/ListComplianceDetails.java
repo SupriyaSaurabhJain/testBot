@@ -26,7 +26,8 @@ public class ListComplianceDetails extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
+		response.setContentType("application/json");
 		response.getWriter().write(DbOperation.fetchComplianceDetailsFromDB());
 		
 	}
