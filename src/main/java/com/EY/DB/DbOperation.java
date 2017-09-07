@@ -407,7 +407,7 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 
 		Connection connection = ConnectionService.getConnection();
 		
-		String queryToFetchQuestions = "select * QuestionsManagement where topic_id = "+topic_id+" and sub_topic_id = "+sub_topic_id+";";
+		String queryToFetchQuestions = "select * from QuestionsManagement where topic_id = "+topic_id+" and sub_topic_id = "+sub_topic_id+";";
 		
 		try {
 			JSONObject questionData = new JSONObject();
