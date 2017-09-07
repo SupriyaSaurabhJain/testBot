@@ -2,16 +2,12 @@ package com.EY.Admin;
 
 import java.io.IOException;
 import java.util.logging.Logger;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
-import com.EY.ChatBot.MyWebhookServlet;
 import com.EY.DB.DbOperation;
 import com.EY.Service.ReadParameters;
 
@@ -20,7 +16,7 @@ import com.EY.Service.ReadParameters;
  */
 public class FetchQuestions extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(MyWebhookServlet.class.getName());
+	private static final Logger log = Logger.getLogger(FetchQuestions.class.getName());
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -33,6 +29,10 @@ public class FetchQuestions extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		log.info("Inside FetchQuestions");
+		
+		response.setContentType("application/json");
 		
 		String requestJson  = ReadParameters.readPostParameter(request);
 		JSONParser parser = new JSONParser();
