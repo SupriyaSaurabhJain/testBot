@@ -10,7 +10,7 @@ import org.json.simple.JSONObject;
 import com.EY.ChatBot.MyWebhookServlet;
 
 public class DbOperation extends ConnectionService{
-	private static final Logger log = Logger.getLogger(MyWebhookServlet.class.getName());
+	private static final Logger log = Logger.getLogger(DbOperation.class.getName());
 	public static HashMap<String,Integer> getTopics(){
 		log.info("inside method getTopic");
 		HashMap<String,Integer> topics = new HashMap<String,Integer>();
@@ -337,6 +337,7 @@ public class DbOperation extends ConnectionService{
 		log.info("country_id fetched :  " + countryId);
 		return countryId;	
 		}
+	
 	public static String fetchComplianceDetailsFromDB(){
 
 		log.info("Inside method fetchComplianceDetailsFromDB");
@@ -373,7 +374,7 @@ public class DbOperation extends ConnectionService{
 				else 
 					rowData.put("number_of_questions", 0); 
 				
-				log.info(rowData.toJSONString());
+				//log.info(rowData.toJSONString());
 				
 				rs2.close();
 				
@@ -395,6 +396,7 @@ public class DbOperation extends ConnectionService{
 		
 		return complianceDetails.toJSONString();
 	}
+	
 public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 		
 		log.info("Inside method fetchQuestionsFromDB");
