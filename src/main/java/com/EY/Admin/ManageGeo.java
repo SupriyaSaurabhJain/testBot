@@ -44,11 +44,11 @@ public class ManageGeo extends HttpServlet {
 				int sub_topic_id = Integer.parseInt(requestObject.get("sub_topic_id").toString());
 				int stateId = Integer.parseInt(requestObject.get("state_id").toString());
 				response.getWriter().write(getLawDescription(sub_topic_id ,stateId));
+				break;
 			default:
 				break;
 			}
-				
-			
+					
 		} catch (Exception e) {
 			log.info("Error in doPost:"+e);
 
@@ -59,8 +59,8 @@ public class ManageGeo extends HttpServlet {
 
 	private String getLawDescription(int sub_topic_id, int stateId) {
 		// TODO Auto-generated method stub
-		DbOperation.getResponse(sub_topic_id, stateId);
-		return null;
+		
+		return DbOperation.getResponse(sub_topic_id, stateId);
 	}
 
 	@SuppressWarnings("unchecked")
