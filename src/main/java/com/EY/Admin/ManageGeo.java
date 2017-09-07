@@ -41,10 +41,9 @@ public class ManageGeo extends HttpServlet {
 			default:
 				break;
 			}
-			int topic_id = Integer.parseInt(requestObject.get("topic_id").toString());
+			/*int topic_id = Integer.parseInt(requestObject.get("topic_id").toString());
 			int sub_topic_id = Integer.parseInt(requestObject.get("sub_topic_id").toString());
-				
-			response.getWriter().write(DbOperation.fetchQuestionsFromDB(topic_id, sub_topic_id));	
+				*/
 			
 		} catch (Exception e) {
 			log.info("Error in doPost:"+e);
