@@ -122,4 +122,14 @@
     <servlet-name>FetchQuestions</servlet-name>
     <url-pattern>/FetchQuestions</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ManageGeo</display-name>
+    <servlet-name>ManageGeo</servlet-name>
+    <servlet-class>com.EY.Admin.ManageGeo</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ManageGeo</servlet-name>
+    <url-pattern>/ManageGeo</url-pattern>
+  </servlet-mapping>
 </web-app>

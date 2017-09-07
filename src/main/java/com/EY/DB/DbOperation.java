@@ -1,7 +1,9 @@
 package com.EY.DB;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.json.simple.JSONArray;
@@ -280,7 +282,7 @@ public class DbOperation extends ConnectionService{
 	public static int addLawDescriptionToDB(String topic, String subTopic, String country, String state,String description , int descriptionId) {
 		int response = -1;
 		int subTopicId = getSubTopicId(subTopic);
-		int countryId  = getCountryId(state);
+		int countryId  = getCountryIdFromState(state);
 		int stateId = getstateId(state);
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         log.info("Timestamp " + timestamp);
@@ -314,7 +316,7 @@ public class DbOperation extends ConnectionService{
 		return response ;
 	}
 
-	private static int getCountryId(String state) {
+	private static int getCountryIdFromState(String state) {
 		Connection connection = ConnectionService.getConnection();
 		int countryId = -1;
 		state = state.trim().toUpperCase();
@@ -438,5 +440,50 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 		
 		return listOfQuestions.toJSONString();
 	}
-	
+	public static HashMap<String,Integer> getCountryList(){
+		HashMap<String,Integer> countryList = new HashMap<String,Integer>();
+		Connection connection = ConnectionService.getConnection();
+		String query = "SELECT * FROM Country ;";
+		try {
+			Statement statement =  connection.createStatement();
+			ResultSet resultset = statement.executeQuery(query);
+			log.info("Query executed resultSet : "+ resultset);
+			while (resultset.next()) {
+				countryList.put(resultset.getString("country_name"), resultset.getInt("country_id "));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			log.severe("exception while fetching Countries from table :" + e);
+			e.printStackTrace();
+		}
+		finally{
+			ConnectionService.closeConnection();
+
+		}
+		
+		return countryList;
+	}
+	public static HashMap<String,Integer> getStateList(int countryId){
+		HashMap<String,Integer> stateList = new HashMap<String,Integer>();
+		Connection connection = ConnectionService.getConnection();
+		String query = "SELECT * FROM State WHERE country_id = '"+ countryId+" ;";
+		try {
+			Statement statement =  connection.createStatement();
+			ResultSet resultset = statement.executeQuery(query);
+			log.info("Query executed resultSet : "+ resultset);
+			while (resultset.next()) {
+				stateList.put(resultset.getString("state_name"), resultset.getInt("state_id "));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			log.severe("exception while fetching States from table :" + e);
+			e.printStackTrace();
+		}
+		finally{
+			ConnectionService.closeConnection();
+
+		}
+		
+		return stateList;
+	}
 }
