@@ -194,14 +194,31 @@ public class DbOperation extends ConnectionService{
 			e.printStackTrace();
 		}
 		finally{
-			try {
-				connection.close();
-				log.info("connection closed");
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				log.severe("Error closing connection");
-				e.printStackTrace();
+			ConnectionService.closeConnection();
+		}
+		return response;
+
+	}
+	public static String getResponse(int subTopicId , int stateId ){
+		log.info("inside getResponse");
+		String response = "";
+		String Query = "";
+		Connection connection = ConnectionService.getConnection();
+		Query = "SELECT law_description FROM Law_Description WHERE sub_topic_id = '"+subTopicId+"' AND state_id = '" +stateId+"';";
+		try {
+			Statement statement =  connection.createStatement();
+			ResultSet rs = statement.executeQuery(Query);
+			while(rs.next()){
+				response  = rs.getString("law_description");
 			}
+			log.info("Query executed response : "+ response);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			log.severe("exception while selecting from table :" + e);
+			e.printStackTrace();
+		}
+		finally{
+			ConnectionService.closeConnection();
 		}
 		return response;
 
@@ -468,7 +485,7 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 	public static HashMap<String,Integer> getStateList(int countryId){
 		HashMap<String,Integer> stateList = new HashMap<String,Integer>();
 		Connection connection = ConnectionService.getConnection();
-		String query = "SELECT * FROM State WHERE country_id = '"+ countryId+" ;";
+		String query = "SELECT * FROM State WHERE country_id = '"+ countryId+"' ;";
 		try {
 			Statement statement =  connection.createStatement();
 			ResultSet resultset = statement.executeQuery(query);

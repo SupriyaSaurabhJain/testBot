@@ -36,14 +36,18 @@ public class ManageGeo extends HttpServlet {
 				response.getWriter().write(getCountries());
 				break;
 			case 2:
-				int countryId = Integer.parseInt(requestObject.get("countryId").toString());
+				int countryId = Integer.parseInt(requestObject.get("country_id").toString());
 				response.getWriter().write(getStates(countryId));
+				break;
+			case 3:
+				int topic_id = Integer.parseInt(requestObject.get("topic_id").toString());
+				int sub_topic_id = Integer.parseInt(requestObject.get("sub_topic_id").toString());
+				int stateId = Integer.parseInt(requestObject.get("state_id").toString());
+				response.getWriter().write(getLawDescription(sub_topic_id ,stateId));
 			default:
 				break;
 			}
-			/*int topic_id = Integer.parseInt(requestObject.get("topic_id").toString());
-			int sub_topic_id = Integer.parseInt(requestObject.get("sub_topic_id").toString());
-				*/
+				
 			
 		} catch (Exception e) {
 			log.info("Error in doPost:"+e);
@@ -51,6 +55,12 @@ public class ManageGeo extends HttpServlet {
 			response.getWriter().write("{}");	
 		}
 		
+	}
+
+	private String getLawDescription(int sub_topic_id, int stateId) {
+		// TODO Auto-generated method stub
+		DbOperation.getResponse(sub_topic_id, stateId);
+		return null;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -74,6 +84,7 @@ public class ManageGeo extends HttpServlet {
 		for (String state : stateList.keySet()) {
 			response.put(state, stateList.get(state));
 		}
+		
 		return response.toJSONString();
 	}
 
