@@ -112,4 +112,14 @@
     <servlet-name>AddLawDescription</servlet-name>
     <url-pattern>/AddLawDescription</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>FetchQuestions</display-name>
+    <servlet-name>FetchQuestions</servlet-name>
+    <servlet-class>com.EY.Admin.FetchQuestions</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FetchQuestions</servlet-name>
+    <url-pattern>/FetchQuestions</url-pattern>
+  </servlet-mapping>
 </web-app>
