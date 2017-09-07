@@ -1,19 +1,25 @@
 package com.EY.Admin;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 import com.EY.DB.DbOperation;
+import com.EY.Service.ReadParameters;
 
 /**
  * Servlet implementation class ListCompilanceDetails
  */
 public class ListComplianceDetails extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final Logger log = Logger.getLogger(ListComplianceDetails.class.getName());
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -27,8 +33,24 @@ public class ListComplianceDetails extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		response.setContentType("application/json");
-		response.getWriter().write(DbOperation.fetchComplianceDetailsFromDB());
+
+		String requestJson  = ReadParameters.readPostParameter(request);
+		JSONParser parser = new JSONParser();
+		
+		try {
+			JSONObject requestObject = (JSONObject) parser.parse(requestJson);
+
+			//int page_number = Integer.parseInt(requestObject.get("page_number").toString());
+			
+			response.setContentType("application/json");
+			response.getWriter().write(DbOperation.fetchComplianceDetailsFromDB(0));	
+		
+		}
+		catch(Exception e){
+			
+			log.info("Error in ListComplianceDetails : "+e);
+		}
+		
 		
 	}
 

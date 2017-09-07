@@ -338,14 +338,14 @@ public class DbOperation extends ConnectionService{
 		return countryId;	
 		}
 	
-	public static String fetchComplianceDetailsFromDB(){
+	public static String fetchComplianceDetailsFromDB(int page_number){
 
 		log.info("Inside method fetchComplianceDetailsFromDB");
 		
 		JSONObject complianceDetails = new JSONObject();
 		JSONArray dataArray = new JSONArray();
 		
-		String queryToFetchTopicSubtopic = "select T.topic_id, T.topic_name, ST.sub_topic_id, ST.sub_topic_name from Topics T, SubTopics ST WHERE T.topic_id = ST.topic_id;";
+		String queryToFetchTopicSubtopic = "select T.topic_id, T.topic_name, ST.sub_topic_id, ST.sub_topic_name from Topics T, SubTopics ST WHERE T.topic_id = ST.topic_id limit "+(page_number*10)+",10;";
 		
 		Connection connection = ConnectionService.getConnection();
 		
@@ -427,7 +427,7 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 			
 			rs.close();
 			
-			listOfQuestions.put("data", questionData);
+			listOfQuestions.put("data", data);
 			
 		} catch (Exception e) {
 			log.info("Error in fetchQuestionsFromDB : "+ e);
