@@ -430,19 +430,19 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 		String queryToFetchQuestions = "select * from QuestionsManagement where topic_id = "+topic_id+" and sub_topic_id = "+sub_topic_id+";";
 		
 		try {
-			JSONObject questionData = new JSONObject();
 			Statement statement = connection.createStatement();
 			
 			ResultSet rs = statement.executeQuery(queryToFetchQuestions);
 			
 			while(rs.next()){
-
+				JSONObject questionData = new JSONObject();
 				questionData.put("question_id" , rs.getInt("question_id"));
 				questionData.put("question" , rs.getString("possible_questions"));
 				questionData.put("question_type" , rs.getString("questions_type"));
 				questionData.put("user_id" , rs.getInt("User_ID"));
 				
 				data.add(questionData);
+				
 			}
 			
 			rs.close();
