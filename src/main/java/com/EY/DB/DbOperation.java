@@ -471,6 +471,7 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 			while (resultset.next()) {
 				countryList.put(resultset.getString("country_name"), resultset.getInt("country_id"));
 			}
+			resultset.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			log.severe("exception while fetching Countries from table :" + e);
@@ -494,6 +495,8 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 			while (resultset.next()) {
 				stateList.put(resultset.getString("state_name"), resultset.getInt("state_id"));
 			}
+			resultset.close();
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			log.severe("exception while fetching States from table :" + e);
