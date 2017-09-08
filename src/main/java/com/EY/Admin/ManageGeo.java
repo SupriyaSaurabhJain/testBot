@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -67,11 +68,15 @@ public class ManageGeo extends HttpServlet {
 	private String getCountries() {
 		
 		JSONObject response = new JSONObject();
-
+		JSONArray reponseArray = new JSONArray();
 		HashMap<String,Integer> countryList = DbOperation.getCountryList();
 		for (String country : countryList.keySet()) {
-			response.put(country, countryList.get(country));
+			JSONObject countryDesc = new JSONObject();
+			countryDesc.put("country", country);
+			countryDesc.put("country_id", countryList.get(country).toString());
+			reponseArray.add(countryDesc);
 		}
+		response.put("countries", response);
 		return response.toJSONString();
 	}
 
@@ -79,12 +84,15 @@ public class ManageGeo extends HttpServlet {
 	private String getStates(int countryId) {
 		
 		JSONObject response = new JSONObject();
-
+		JSONArray reponseArray = new JSONArray();
 		HashMap<String,Integer> stateList = DbOperation.getStateList(countryId);
 		for (String state : stateList.keySet()) {
-			response.put(state, stateList.get(state));
+			JSONObject stateDesc = new JSONObject();
+			stateDesc.put(state, stateList.get(state));	
+			stateDesc.put("state_id", stateList.get(state));
+			reponseArray.add(stateDesc);
 		}
-		
+		response.put("states", reponseArray);
 		return response.toJSONString();
 	}
 
