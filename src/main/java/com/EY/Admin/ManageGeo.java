@@ -73,10 +73,10 @@ public class ManageGeo extends HttpServlet {
 		for (String country : countryList.keySet()) {
 			JSONObject countryDesc = new JSONObject();
 			countryDesc.put("country_name", country);
-			countryDesc.put("country_id", countryList.get(country).toString());
+			countryDesc.put("country_id", countryList.get(country));
 			reponseArray.add(countryDesc);
 		}
-		response.put("countries", response);
+		response.put("countries", reponseArray);
 		return response.toJSONString();
 	}
 
