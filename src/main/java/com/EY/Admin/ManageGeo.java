@@ -72,7 +72,7 @@ public class ManageGeo extends HttpServlet {
 		HashMap<String,Integer> countryList = DbOperation.getCountryList();
 		for (String country : countryList.keySet()) {
 			JSONObject countryDesc = new JSONObject();
-			countryDesc.put("country", country);
+			countryDesc.put("country_name", country);
 			countryDesc.put("country_id", countryList.get(country).toString());
 			reponseArray.add(countryDesc);
 		}
@@ -88,7 +88,7 @@ public class ManageGeo extends HttpServlet {
 		HashMap<String,Integer> stateList = DbOperation.getStateList(countryId);
 		for (String state : stateList.keySet()) {
 			JSONObject stateDesc = new JSONObject();
-			stateDesc.put(state, stateList.get(state));	
+			stateDesc.put("state_name", state);	
 			stateDesc.put("state_id", stateList.get(state));
 			reponseArray.add(stateDesc);
 		}
