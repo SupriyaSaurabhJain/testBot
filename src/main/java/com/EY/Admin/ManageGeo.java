@@ -60,8 +60,9 @@ public class ManageGeo extends HttpServlet {
 
 	private String getLawDescription(int sub_topic_id, int stateId) {
 		// TODO Auto-generated method stub
-		
-		return DbOperation.getResponse(sub_topic_id, stateId);
+		JSONObject response = DbOperation.getResponse(sub_topic_id, stateId);
+		return response.toJSONString();
+		 
 	}
 
 	@SuppressWarnings("unchecked")

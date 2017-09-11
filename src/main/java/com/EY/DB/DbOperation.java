@@ -24,6 +24,8 @@ public class DbOperation extends ConnectionService{
 			while (result.next()){
 				topics.put(result.getString("topic_name"),result.getInt("topic_id") );
 			}
+			result.close();
+
 		}
 		catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -73,6 +75,7 @@ public class DbOperation extends ConnectionService{
 			while(rs.next()){
 				topic_id  = rs.getInt("topic_id");
 			}
+			rs.close();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -155,6 +158,8 @@ public class DbOperation extends ConnectionService{
 				subTopic_id  = rs.getInt("sub_topic_id");
 
 			}
+			rs.close();
+
 		}
 		catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -187,6 +192,8 @@ public class DbOperation extends ConnectionService{
 			while(rs.next()){
 				response  = rs.getString("law_description");
 			}
+			rs.close();
+
 			log.info("Query executed response : "+ response);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -199,18 +206,23 @@ public class DbOperation extends ConnectionService{
 		return response;
 
 	}
-	public static String getResponse(int subTopicId , int stateId ){
+	public static JSONObject getResponse(int subTopicId , int stateId ){
 		log.info("inside getResponse");
-		String response = "";
+		String law_desription = "";
 		String Query = "";
+		JSONObject response = new JSONObject();
 		Connection connection = ConnectionService.getConnection();
-		Query = "SELECT law_description FROM Law_Description WHERE sub_topic_id = '"+subTopicId+"' AND state_id = '" +stateId+"';";
+		Query = "SELECT law_description , law_desc_id FROM Law_Description WHERE sub_topic_id = '"+subTopicId+"' AND state_id = '" +stateId+"';";
 		try {
 			Statement statement =  connection.createStatement();
 			ResultSet rs = statement.executeQuery(Query);
 			while(rs.next()){
-				response  = rs.getString("law_description");
+				law_desription  = rs.getString("law_description");
+				response.put("law_description_id", rs.getInt("law_desc_id"));
+				response.put("law_description", law_desription);
 			}
+			rs.close();
+
 			log.info("Query executed response : "+ response);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -236,6 +248,8 @@ public class DbOperation extends ConnectionService{
 				//Retrieve by column name
 				state_id  = rs.getInt("state_id");
 			}
+			rs.close();
+
 		}
 		catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -295,41 +309,64 @@ public class DbOperation extends ConnectionService{
 		}
 		return response;	
 	}
-
-	public static int addLawDescriptionToDB(String topic, String subTopic, String country, String state,String description , int descriptionId) {
+	public static int getLawDescriptionId(int subTopicId,int countryId, int stateId ){
+		int descriptionId = -1;
+		String query = "SELECT law_desc_id FROM Law_Description WHERE  subTopicId = '"+subTopicId+"' country_id = '"+countryId+"' state_id = '"+stateId+"' ;" ;
+		Connection connection = ConnectionService.getConnection();
+		Statement statement;
+		try {
+			statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery(query);
+			while (resultSet.next()) {
+				descriptionId = resultSet.getInt("law_desc_id");
+			}
+			resultSet.close();
+		} catch (SQLException e) {
+			log.severe("exception geting law desc id" +e);		
+			e.printStackTrace();
+		}
+		finally {
+			ConnectionService.closeConnection();
+		}
+		return descriptionId;
+	}
+	public static int addLawDescriptionToDB(String topic, String subTopic, String country, String state,String description) {
 		int response = -1;
 		int subTopicId = getSubTopicId(subTopic);
 		int countryId  = getCountryIdFromState(state);
 		int stateId = getstateId(state);
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         log.info("Timestamp " + timestamp);
-		String query ;
+        int descriptionId = getLawDescriptionId( subTopicId, countryId,  stateId );
+		String query = "" ;
 		if (descriptionId == -1) {
 			query = "INSERT INTO Law_Description(law_description , state_id , country_id , sub_topic_id, CreateTimeStamp, ModifiedTimestamp) VALUES" +
 					" ('" +description+"' , '"+ stateId  +"' , ' "+ countryId+"' , '"+ subTopicId+"' , '"+ timestamp+"' , '" +timestamp+"') ;" ;
+			Connection connection = ConnectionService.getConnection();
+			Statement statement;
+			try {
+				statement = connection.createStatement();
+				response = statement.executeUpdate(query);
+				log.info("description added sucessfully");
+				ConnectionService.closeConnection();
+
+			} catch (SQLException e) {
+				// TODO: handle exception
+				log.severe("exception adding question : "+ e);
+			}
+			finally {
+				ConnectionService.closeConnection();
+
+			}
 		}
 		else{
-			query = "UPDATE  Law_Description SET law_description = '"+description+"', state_id = '"+ stateId +"', country_id = '"+countryId +"', sub_topic_id = '"+subTopicId +"' , ModifiedTimestamp = '"+timestamp +"'" +
-						"		WHERE law_desc_id = '" +descriptionId+ "' ; " ;
+			response = updateLawDescription(descriptionId, description);
+			/*query = "UPDATE  Law_Description SET law_description = '"+description+"', state_id = '"+ stateId +"', country_id = '"+countryId +"', sub_topic_id = '"+subTopicId +"' , ModifiedTimestamp = '"+timestamp +"'" +
+						"		WHERE law_desc_id = '" +descriptionId+ "' ; " ;*/
 		}
 		
 		log.info(query);
-		Connection connection = ConnectionService.getConnection();
-		Statement statement;
-		try {
-			statement = connection.createStatement();
-			response = statement.executeUpdate(query);
-			log.info("description added sucessfully");
-			ConnectionService.closeConnection();
-
-		} catch (SQLException e) {
-			// TODO: handle exception
-			log.severe("exception adding question : "+ e);
-		}
-		finally {
-			ConnectionService.closeConnection();
-
-		}
+		
 		return response ;
 	}
 
@@ -344,7 +381,7 @@ public class DbOperation extends ConnectionService{
 			while(rs.next()){
 				countryId  = rs.getInt("country_id");
 			}
-
+			rs.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			log.severe("exception fetching country_id");
@@ -508,5 +545,22 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 		}
 		
 		return stateList;
+	}
+
+	public static int updateLawDescription(int law_description_id, String law_description) {
+		String  query = "UPDATE  Law_Description SET law_description = '"+law_description+"' WHERE law_desc_id = '" +law_description_id+ "' ; " ;
+		Connection connection = ConnectionService.getConnection();
+		int response = -1;
+		try {
+			Statement statement =  connection.createStatement();
+			response = statement.executeUpdate(query);
+		} catch (SQLException e) {
+			log.severe("exception updating Law desc ");
+			e.printStackTrace();
+		}
+		finally {
+			ConnectionService.closeConnection();
+		}
+		return response;
 	}
 }

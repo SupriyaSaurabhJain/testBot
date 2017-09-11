@@ -132,4 +132,14 @@
     <servlet-name>ManageGeo</servlet-name>
     <url-pattern>/ManageGeo</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ModifyLawDescription</display-name>
+    <servlet-name>ModifyLawDescription</servlet-name>
+    <servlet-class>com.EY.Admin.ModifyLawDescription</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ModifyLawDescription</servlet-name>
+    <url-pattern>/ModifyLawDescription</url-pattern>
+  </servlet-mapping>
 </web-app>

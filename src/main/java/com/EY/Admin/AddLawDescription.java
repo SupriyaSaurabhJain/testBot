@@ -36,18 +36,16 @@ public class AddLawDescription extends HttpServlet {
 			String country = jsonResponseObject.get("country").toString();
 			String state = jsonResponseObject.get("state").toString();
 			String description = jsonResponseObject.get("description").toString();	
-			int descriptionId = Integer.parseInt(jsonResponseObject.get("descriptionId").toString());			
-
-			response.getWriter().write(addLawDescription(topic, subTopic, country , state, description,descriptionId));
+			response.getWriter().write(addLawDescription(topic, subTopic, country , state, description));
 
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private String addLawDescription(String topic, String subTopic, String country, String state, String description , int descriptionId) {
+	private String addLawDescription(String topic, String subTopic, String country, String state, String description ) {
 		String response = "";
-		int result =  DbOperation.addLawDescriptionToDB(topic, subTopic, country , state, description ,descriptionId);
+		int result =  DbOperation.addLawDescriptionToDB(topic, subTopic, country , state, description );
 		log.info("result in add desc :" + result);
 
 		response = getErrorResponse(result) ;
