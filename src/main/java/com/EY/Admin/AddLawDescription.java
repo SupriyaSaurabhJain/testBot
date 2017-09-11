@@ -11,59 +11,54 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import com.EY.ChatBot.MyWebhookServlet;
 import com.EY.DB.DbOperation;
 import com.EY.Service.ReadParameters;
 
 public class AddLawDescription extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(MyWebhookServlet.class.getName());
+	private static final Logger log = Logger.getLogger(AddLawDescription.class.getName());
 
-	public AddLawDescription() {
-		super();
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String responseJson  = ReadParameters.readPostParameter(request);
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String responseJson = ReadParameters.readPostParameter(request);
 		JSONParser parser = new JSONParser();
 		Object responseObject = null;
 		try {
 			responseObject = parser.parse(responseJson);
 			JSONObject jsonResponseObject = (JSONObject) responseObject;
-			//System.out.println(jsonResponseObject);
-			String topic = jsonResponseObject.get("topic").toString();
-			String subTopic = jsonResponseObject.get("subTopic").toString();
-			String country = jsonResponseObject.get("country").toString();
-			String state = jsonResponseObject.get("state").toString();
-			String description = jsonResponseObject.get("description").toString();	
-			response.getWriter().write(addLawDescription(topic, subTopic, country , state, description));
+			// System.out.println(jsonResponseObject);
+			int topicId = Integer.parseInt(jsonResponseObject.get("topicId").toString());
+			int subTopicId = Integer.parseInt(jsonResponseObject.get("subTopicId").toString());
+			int countryId = Integer.parseInt(jsonResponseObject.get("countryId").toString());
+			int stateId = Integer.parseInt(jsonResponseObject.get("stateId").toString());
+			String description = jsonResponseObject.get("description").toString();
+			response.getWriter().write(addLawDescription(topicId, subTopicId, countryId, stateId, description));
 
 		} catch (ParseException e) {
+
 			e.printStackTrace();
 		}
 	}
 
-	private String addLawDescription(String topic, String subTopic, String country, String state, String description ) {
+	private String addLawDescription(int topicId, int subTopicId, int countryId, int stateId, String description) {
 		String response = "";
-		int result =  DbOperation.addLawDescriptionToDB(topic, subTopic, country , state, description );
+		int result = DbOperation.addLawDescriptionToDB(topicId, subTopicId, countryId, stateId, description);
 		log.info("result in add desc :" + result);
 
-		response = getErrorResponse(result) ;
+		response = getErrorResponse(result);
 
-
-		log.info("Response : "+ response);
-		return response;	
+		log.info("Response : " + response);
+		return response;
 	}
-	private static String getErrorResponse(int result){
 
+	private static String getErrorResponse(int result) {
 
-		String response ;
-		if (result == 1 ) {
-			response = " {  \"status\": {    \"code\": 200,    \"errorType\": \"Success\"  }}" ;
+		String response;
+		if (result == 1) {
+			response = " {  \"status\": {    \"code\": 200,    \"errorType\": \"Success\"  }}";
 
-		}
-		else {
-			response = " {  \"status\": {    \"code\": 400,    \"errorType\": \"Request Failed\"  }}" ;
+		} else {
+			response = " {  \"status\": {    \"code\": 400,    \"errorType\": \"Request Failed\"  }}";
 		}
 		return response;
 	}

@@ -13,7 +13,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import com.EY.ChatBot.MyWebhookServlet;
 import com.EY.DB.DbOperation;
 import com.EY.Service.ReadParameters;
 

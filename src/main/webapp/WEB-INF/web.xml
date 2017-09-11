@@ -142,4 +142,24 @@
     <servlet-name>ModifyLawDescription</servlet-name>
     <url-pattern>/ModifyLawDescription</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ModifyQuestion</display-name>
+    <servlet-name>ModifyQuestion</servlet-name>
+    <servlet-class>com.EY.Admin.ModifyQuestion</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ModifyQuestion</servlet-name>
+    <url-pattern>/ModifyQuestion</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>UpdateTopic</display-name>
+    <servlet-name>UpdateTopic</servlet-name>
+    <servlet-class>com.EY.Admin.UpdateTopic</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateTopic</servlet-name>
+    <url-pattern>/UpdateTopic</url-pattern>
+  </servlet-mapping>
 </web-app>

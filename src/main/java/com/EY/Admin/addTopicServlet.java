@@ -22,11 +22,8 @@ public class addTopicServlet extends HttpServlet {
 	private static final Logger log = Logger.getLogger(MyWebhookServlet.class.getName());
 
 	private static final long serialVersionUID = 1L;
-	private static final String USER_AGENT = "Mozilla/5.0";
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
+
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String responseJson  = ReadParameters.readPostParameter(request);
