@@ -521,13 +521,13 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 		String query;
 		if(isadmin)
 		{
-			query = "INSERT INTO User(Email , Password , Status , IsAdmin, account_creation_date) VALUES" +
-				" ('" +emailID+"' , '"+ password  +"' , ' "+ status+"' , '"+ isadmin+"' , '"+ dateFormat.format(date).toString()+"') ;" ;
+			query = "INSERT INTO User(Username, Email , Password , Status , IsAdmin, account_creation_date) VALUES" +
+				" ('"+userName+"' , '"+emailID+"' , '"+ password  +"' , ' "+ status+"' , '"+ isadmin+"' , '"+ dateFormat.format(date).toString()+"') ;" ;
 		}
 		else
 		{
-			query = "INSERT INTO User(Email , Status , IsAdmin, account_creation_date) VALUES" +
-					" ('" +emailID+"' , '"+  status +"' , '"+ isadmin+"' , '"+ dateFormat.format(date).toString()+"') ;" ;
+			query = "INSERT INTO User(Username, Email , Status , IsAdmin, account_creation_date) VALUES" +
+					" ('"+userName+"' , '"+emailID+"' , '"+  status +"' , '"+ isadmin+"' , '"+ dateFormat.format(date).toString()+"') ;" ;
 		}
 		log.info(query);
 		Connection connection=null;
@@ -539,7 +539,12 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 			response = stmt.executeUpdate(query);
 			log.info("subscriber added successfully");
 			
-		} catch (Exception e) {
+		} 
+		catch(SQLIntegrityConstraintViolationException e){
+			log.info("email id repeated");
+			response = -2;
+		}
+		catch (Exception e) {
 			// TODO: handle exception
 			log.severe("exception inserting the subscriber");
 		}

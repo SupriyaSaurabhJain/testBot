@@ -54,7 +54,14 @@ public class AddSubscriber extends HttpServlet {
 			String email = jsonResponseObject.get("email").toString();
 			boolean isadmin = Boolean.parseBoolean(jsonResponseObject.get("isadmin").toString());
 			
-			response.getWriter().write(addSubscriber(username, email, "NULL", "ACTIVE", isadmin));
+			if(isadmin)
+			{
+				String password = jsonResponseObject.get("password").toString();
+				response.getWriter().write(addSubscriber(username, email, password, "ACTIVE", isadmin));
+			}
+			else{
+				response.getWriter().write(addSubscriber(username, email, "NULL", "ACTIVE", isadmin));
+			}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -78,6 +85,9 @@ public class AddSubscriber extends HttpServlet {
 		if (result == 1 ) {
 			response = " {  \"status\": {    \"code\": 200,    \"errorType\": \"Success\"  }}" ;
 
+		}
+		else if (result == -2) {
+			response = " {  \"status\": {    \"code\": 201,    \"errorType\": \"ExistingMailID\"  }}" ;
 		}
 		else {
 			response = " {  \"status\": {    \"code\": 400,    \"errorType\": \"Request Failed\"  }}" ;
