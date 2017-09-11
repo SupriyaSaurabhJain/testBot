@@ -132,4 +132,14 @@
     <servlet-name>ManageGeo</servlet-name>
     <url-pattern>/ManageGeo</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>AddSubscriber</display-name>
+    <servlet-name>AddSubscriber</servlet-name>
+    <servlet-class>com.EY.Subscriber.AddSubscriber</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddSubscriber</servlet-name>
+    <url-pattern>/AddSubscriber</url-pattern>
+  </servlet-mapping>
 </web-app>

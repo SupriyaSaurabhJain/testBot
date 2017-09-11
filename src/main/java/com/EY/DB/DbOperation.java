@@ -1,6 +1,8 @@
 package com.EY.DB;
 
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -508,5 +510,42 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 		}
 		
 		return stateList;
+	}
+	
+	public static int addSubscriber(String userName, String emailID, String password, boolean isadmin, String status){
+		log.info("inside add subscriber");
+		int response = -1;
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+		Date date = new Date(System.currentTimeMillis());
+		log.info(dateFormat.format(date));
+		String query;
+		if(isadmin)
+		{
+			query = "INSERT INTO User(Email , Password , Status , IsAdmin, account_creation_date) VALUES" +
+				" ('" +emailID+"' , '"+ password  +"' , ' "+ status+"' , '"+ isadmin+"' , '"+ dateFormat.format(date).toString()+"') ;" ;
+		}
+		else
+		{
+			query = "INSERT INTO User(Email , Status , IsAdmin, account_creation_date) VALUES" +
+					" ('" +emailID+"' , '"+  status +"' , '"+ isadmin+"' , '"+ dateFormat.format(date).toString()+"') ;" ;
+		}
+		log.info(query);
+		Connection connection=null;
+		Statement stmt = null;
+		try {
+			
+			connection = ConnectionService.getConnection();
+			stmt = connection.createStatement();
+			response = stmt.executeUpdate(query);
+			log.info("subscriber added successfully");
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.severe("exception inserting the subscriber");
+		}
+		finally{
+			ConnectionService.closeConnection();
+		}
+		return response;
 	}
 }
