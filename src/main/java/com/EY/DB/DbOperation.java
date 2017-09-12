@@ -521,11 +521,13 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 		String query;
 		if(isadmin)
 		{
+			String role = "Admin";
 			query = "INSERT INTO User(Username, Email , Password , Status , IsAdmin, account_creation_date) VALUES" +
 				" ('"+userName+"' , '"+emailID+"' , '"+ password  +"' , ' "+ status+"' , '"+ isadmin+"' , '"+ dateFormat.format(date).toString()+"') ;" ;
 		}
 		else
 		{
+			String role = "User";
 			query = "INSERT INTO User(Username, Email , Status , IsAdmin, account_creation_date) VALUES" +
 					" ('"+userName+"' , '"+emailID+"' , '"+  status +"' , '"+ isadmin+"' , '"+ dateFormat.format(date).toString()+"') ;" ;
 		}
@@ -552,5 +554,104 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 			ConnectionService.closeConnection();
 		}
 		return response;
+	}
+	
+	public static int deleteSubscriberFromDb(int userID) {
+		// TODO Auto-generated method stub
+		log.info("inside method deleteSubscriber");
+		int response = 0;
+		Connection connection = ConnectionService.getConnection();
+		String query = "DELETE FROM User WHERE User_ID  = ' " +userID+ "'";
+		try {
+			Statement statement =  connection.createStatement();
+			response = statement.executeUpdate(query);
+			log.info("Query executed response : "+ response);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			log.severe("exception while deleting from table :" + e);
+			e.printStackTrace();
+		}
+		finally{
+			ConnectionService.closeConnection();
+
+		}
+		return response;	
+	}
+	
+	public static int ModifySubscriberFromDb(int userID,String Username,String email, String password, String Status, boolean isadmin) {
+		// TODO Auto-generated method stub
+		log.info("inside method ModifySubscriber");
+		int response = 0;
+		Connection connection = ConnectionService.getConnection();
+		String query="";
+		if(isadmin){
+			query = "UPDATE User SET Username  = ' " +Username+" ' , Email = ' "+email+
+					" ' , Password = ' "+password+" ' , Status = ' "+Status+" ' , IsAdmin = ' "+isadmin+" ' WHERE User_ID = ' "+userID+" ' ;";
+					
+		}
+		else{
+			query = "UPDATE User SET Username  = ' " +Username+" ' , Email = ' "+email+
+					" ' , Status = ' "+Status+" ' , IsAdmin = ' "+isadmin+" ' WHERE User_ID = ' "+userID+" ' ;";
+		}
+		log.info(query);
+		try {
+			Statement statement =  connection.createStatement();
+			response = statement.executeUpdate(query);
+			log.info("Query executed response : "+ response);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			log.severe("exception while modifying in table :" + e);
+			e.printStackTrace();
+		}
+		finally{
+			ConnectionService.closeConnection();
+
+		}
+		return response;	
+	}
+	
+  public static String fetchSubscribersFromDB(){
+		
+		log.info("Inside method fetchSubscriberFromDB");
+		
+		JSONObject listOfSubscribers = new JSONObject();
+		
+		JSONArray data = new JSONArray();
+
+		Connection connection = ConnectionService.getConnection();
+		
+		String query = "select * from User;";
+		
+		try {
+			Statement statement = connection.createStatement();
+			
+			ResultSet rs = statement.executeQuery(query);
+			
+			while(rs.next()){
+				JSONObject SubscriberData = new JSONObject();
+				SubscriberData.put("User_ID" , rs.getInt("User_ID"));
+				SubscriberData.put("Username" , rs.getString("Username"));
+				SubscriberData.put("Email" , rs.getString("Email"));
+				SubscriberData.put("Status" , rs.getString("Status"));
+				SubscriberData.put("IsAdmin" , rs.getString("IsAdmin"));
+				
+				data.add(SubscriberData);
+				
+			}
+			
+			rs.close();
+			
+			listOfSubscribers.put("data", data);
+			
+		} catch (Exception e) {
+			log.info("Error in fetchSubscribersFromDB : "+ e);
+			
+			e.printStackTrace();
+		}
+		finally{
+			ConnectionService.closeConnection();
+		}
+		
+		return listOfSubscribers.toJSONString();
 	}
 }

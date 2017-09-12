@@ -17,16 +17,16 @@ import com.EY.DB.DbOperation;
 import com.EY.Service.ReadParameters;
 
 /**
- * Servlet implementation class AddSubscriber
+ * Servlet implementation class DeleteSubscriber
  */
-public class AddSubscriber extends HttpServlet {
+public class DeleteSubscriber extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(AddNewQuestion.class.getName());
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AddSubscriber() {
+    public DeleteSubscriber() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -44,58 +44,37 @@ public class AddSubscriber extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String responseJson  = ReadParameters.readPostParameter(request);
-		response.setContentType("application/json");
 		JSONParser parser = new JSONParser();
 		Object responseObject = null;
 		try {
 			responseObject = parser.parse(responseJson);
 			JSONObject jsonResponseObject = (JSONObject) responseObject;
 			//System.out.println(jsonResponseObject);
-			String username = jsonResponseObject.get("username").toString();
-			String email = jsonResponseObject.get("email").toString();
-			boolean isadmin = Boolean.parseBoolean(jsonResponseObject.get("isadmin").toString());
-			
-			if(isadmin)
-			{
-				String password = jsonResponseObject.get("password").toString();
-				response.getWriter().write(addSubscriber(username, email, password, "ACTIVE", isadmin));
-			}
-			else{
-				response.getWriter().write(addSubscriber(username, email, "NULL", "ACTIVE", isadmin));
-			}
+			int User_ID = Integer.parseInt(jsonResponseObject.get("User_ID").toString());
+			response.getWriter().write(removeSubscriber(User_ID));
+
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		
 	}
 	
-	private String addSubscriber(String username, String email, String password, String status, boolean isadmin) {
+	public String removeSubscriber(int User_ID){
 		String response = "";
-		int result =  DbOperation.addSubscriber(username, email, password, isadmin, status);
-		log.info("result in add subscriber :" + result);
+		int result = DbOperation.deleteSubscriberFromDb(User_ID);
+		log.info("result in delete que :" + result);
+		if (result == 1) {
+			// to api ai 
+			response = " {  \"status\": {    \"code\": 200,    \"errorType\": \"Sucess\"  }}" ;
 
-		response = getErrorResponse(result) ;
-
-
-		log.info("Response : "+ response);
-		return response;	
-	}
-	private static String getErrorResponse(int result){
-
-
-		String response ;
-		if (result == 1 ) {
-			response = " {  \"status\": {    \"code\": 200,    \"errorType\": \"Success\"  }}" ;
 
 		}
-		else if (result == -2) {
-			response = " {  \"status\": {    \"code\": 201,    \"errorType\": \"ExistingMailID\"  }}" ;
-		}
-		else {
+		else{
 			response = " {  \"status\": {    \"code\": 400,    \"errorType\": \"Request Failed\"  }}" ;
+
 		}
+		log.info("Response : "+ response);
 		return response;
 	}
-	
-	
 
 }
