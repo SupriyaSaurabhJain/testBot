@@ -4,11 +4,6 @@ import java.io.IOException;
 import java.util.logging.Logger;
 import java.security.Key;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.commons.codec.binary.Base64;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,8 +26,7 @@ import com.EY.Service.ReadParameters;
 public class AddSubscriber extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(AddNewQuestion.class.getName());
-	private static final String ALGORITHM = "AES";
-	private static final String KEY = "1Hbfh667adfDEJ78";
+
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -66,9 +60,9 @@ public class AddSubscriber extends HttpServlet {
 				String password = RandomStringUtils.random( 9 , characters );
 				log.info("randomly created plain password :" + password);
 				
-	            String encryptedPassword = AddSubscriber.encrypt(password);
+	            String encryptedPassword = EncryptDecrypt.encrypt(password);
 	            log.info("encrypted pass="+encryptedPassword);
-	            String decryptedPassword = AddSubscriber.decrypt(encryptedPassword);    
+	            String decryptedPassword = EncryptDecrypt.decrypt(encryptedPassword);    
 	            log.info("decrypted pass="+decryptedPassword);
 				
 				response.getWriter().write(addSubscriber(username, email, encryptedPassword, "ACTIVE", isadmin));
@@ -112,34 +106,4 @@ public class AddSubscriber extends HttpServlet {
 		return response;
 	}
 	
-	public static String encrypt(String value) throws Exception
-    {
-        Key key = generateKey();
-        Cipher cipher = Cipher.getInstance(AddSubscriber.ALGORITHM);
-        cipher.init(Cipher.ENCRYPT_MODE, key);
-        byte [] encryptedByteValue = cipher.doFinal(value.getBytes("utf-8"));
-        byte[] bencryptedValue64 = new Base64().encode(encryptedByteValue);
-        String encryptedValue64 = new String(bencryptedValue64);
-        return encryptedValue64;
-               
-    }
-	
-	 public static String decrypt(String value) throws Exception
-	    {
-	        Key key = generateKey();
-	        Cipher cipher = Cipher.getInstance(AddSubscriber.ALGORITHM);
-	        cipher.init(Cipher.DECRYPT_MODE, key);
-			byte [] decryptedValue64 = new Base64().decode(value);
-	        byte [] decryptedByteValue = cipher.doFinal(decryptedValue64);
-	        String decryptedValue = new String(decryptedByteValue,"utf-8");
-	        return decryptedValue;
-	                
-	    }
-	    
-	    private static Key generateKey() throws Exception 
-	    {
-	        Key key = new SecretKeySpec(AddSubscriber.KEY.getBytes(),AddSubscriber.ALGORITHM);
-	        return key;
-	    }
-
 }
