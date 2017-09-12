@@ -43,6 +43,7 @@ public class ManageGeo extends HttpServlet {
 				int topic_id = Integer.parseInt(requestObject.get("topic_id").toString());
 				int sub_topic_id = Integer.parseInt(requestObject.get("sub_topic_id").toString());
 				int stateId = Integer.parseInt(requestObject.get("state_id").toString());
+				response.setContentType("text/html; charset=UTF-8");
 				response.getWriter().write(getLawDescription(sub_topic_id ,stateId));
 				break;
 			default:

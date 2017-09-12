@@ -35,10 +35,10 @@ public class ModifyTopic extends HttpServlet {
 		
 		try {
 			JSONObject requestObject = (JSONObject) parser.parse(requestJson);
-			int topicId = Integer.parseInt(requestObject.get("topicId").toString());
-			String topic = requestObject.get("topic").toString();
-			int subTopicId = Integer.parseInt(requestObject.get("subtopicId").toString());
-			String subTopic = requestObject.get("subtTopic").toString();
+			int topicId = Integer.parseInt(requestObject.get("topicId").toString().trim());
+			String topic = requestObject.get("topic").toString().trim();
+			int subTopicId = Integer.parseInt(requestObject.get("subtopicId").toString().trim());
+			String subTopic = requestObject.get("subtTopic").toString().trim();
 			
 			response.getWriter().write(modifyTopic(topicId , topic , subTopicId , subTopic));
 					

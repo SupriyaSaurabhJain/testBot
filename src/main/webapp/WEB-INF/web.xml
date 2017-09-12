@@ -42,16 +42,7 @@
     <servlet-name>LoginServlet</servlet-name>
     <url-pattern>/LoginServlet</url-pattern>
   </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>AddUser</display-name>
-    <servlet-name>AddUser</servlet-name>
-    <servlet-class>com.ey.admin.AddUser</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>AddUser</servlet-name>
-    <url-pattern>/AddUser</url-pattern>
-  </servlet-mapping>
+
   <servlet>
     <description></description>
     <display-name>addTopic</display-name>
