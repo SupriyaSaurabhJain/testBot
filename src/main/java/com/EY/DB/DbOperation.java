@@ -521,13 +521,11 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 		String query;
 		if(isadmin)
 		{
-			String role = "Admin";
 			query = "INSERT INTO User(Username, Email , Password , Status , IsAdmin, account_creation_date) VALUES" +
 				" ('"+userName+"' , '"+emailID+"' , '"+ password  +"' , ' "+ status+"' , '"+ isadmin+"' , '"+ dateFormat.format(date).toString()+"') ;" ;
 		}
 		else
 		{
-			String role = "User";
 			query = "INSERT INTO User(Username, Email , Status , IsAdmin, account_creation_date) VALUES" +
 					" ('"+userName+"' , '"+emailID+"' , '"+  status +"' , '"+ isadmin+"' , '"+ dateFormat.format(date).toString()+"') ;" ;
 		}
@@ -561,7 +559,7 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 		log.info("inside method deleteSubscriber");
 		int response = 0;
 		Connection connection = ConnectionService.getConnection();
-		String query = "DELETE FROM User WHERE User_ID  = ' " +userID+ "'";
+		String query = "DELETE FROM User WHERE User_ID  = ' " +userID+ " ';";
 		try {
 			Statement statement =  connection.createStatement();
 			response = statement.executeUpdate(query);
