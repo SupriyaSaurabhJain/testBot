@@ -656,8 +656,8 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
    public static boolean IsUserAdmin(int User_ID)
    {
 	   log.info("checking if user is admin");
-	   boolean isadmin=false;
-	   String query = "select IsAdmin from User where User_ID = '"+User_ID+" ';";
+	   boolean isadmin = false;
+	   String query = "select IsAdmin from User where User_ID = ' "+User_ID+" ';";
 	   log.info(query);
 	   Connection connection = ConnectionService.getConnection();
 	   try{
@@ -666,7 +666,7 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 		   if(rs.next())
 		   {
 			   isadmin = rs.getBoolean("IsAdmin");
-			   log.info("Collected user's role");
+			   log.info("Collected user's role : "+isadmin);
 		   }
 		   rs.close();
 		   stmt.close();
