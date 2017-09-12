@@ -113,7 +113,7 @@ public class testing extends HttpServlet {
 					}
 					HashMap<String, String> stateLawMap = new HashMap<String, String>();
 					for(int k = 3 ; k < cRow.length ; k++){
-						stateLawMap.put(headers[k].trim().toUpperCase() , cRow[k].trim().toUpperCase());
+						stateLawMap.put(headers[k].trim().toUpperCase() , cRow[k].trim());
 					}
 					descriptionLib.put(cRow[1].trim().toUpperCase(), stateLawMap);
 					questionLib.put(cRow[1].trim().toUpperCase(), cRow[2]);

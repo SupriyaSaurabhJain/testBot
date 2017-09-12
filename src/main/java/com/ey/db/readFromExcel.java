@@ -133,7 +133,7 @@ public class readFromExcel {
 
 
 					log.info("state : " + state);
-					String lawDescription = stateLawMap.get(state).replaceAll("\'", "/\'").replaceAll("\"", "/\"").replaceAll("\n", "/\n").replaceAll("\t", "/\t");
+					String lawDescription = stateLawMap.get(state).replaceAll("'", "\'").replaceAll("\"", "\""); //.replaceAll("\n", "/\n").replaceAll("\t", "/\t");
 					if (state.equalsIgnoreCase("FEDERAL")) {
 						log.info("insert into Law_Description(law_description1,country_id,state_id,sub_topic_id) Values('"+lawDescription+"','"+"1"+"','"+"NULL"+"','"+subTopicId+"')");
 						insertDescIntoDb("insert into Law_Description1(law_description,country_id,sub_topic_id) Values('"+lawDescription+"','"+"1"+"','"+subTopicId+"')");
