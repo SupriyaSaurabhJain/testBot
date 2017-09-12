@@ -143,16 +143,7 @@
     <servlet-name>ModifyQuestion</servlet-name>
     <url-pattern>/ModifyQuestion</url-pattern>
   </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>UpdateTopic</display-name>
-    <servlet-name>UpdateTopic</servlet-name>
-    <servlet-class>com.ey.admin.UpdateTopic</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>UpdateTopic</servlet-name>
-    <url-pattern>/UpdateTopic</url-pattern>
-  </servlet-mapping>
+  
   <servlet>
     <description></description>
     <display-name>ModifyTopic</display-name>
