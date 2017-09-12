@@ -55,23 +55,17 @@ public class ModifySubscriber extends HttpServlet {
 			String email = jsonResponseObject.get("email").toString();
 			boolean isadmin = Boolean.parseBoolean(jsonResponseObject.get("isadmin").toString());
 			
-			if(isadmin)
-			{
-				String password = jsonResponseObject.get("password").toString();
-				response.getWriter().write(modifySubscriber(User_ID,username, email, password, "ACTIVE", isadmin));
-			}
-			else{
-				response.getWriter().write(modifySubscriber(User_ID, username, email, "NULL", "ACTIVE", isadmin));
-			}
+			response.getWriter().write(modifySubscriber(User_ID, username, email, "ACTIVE", isadmin));
+		
 			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public String modifySubscriber(int User_ID, String Username, String Email, String Password, String Status, boolean IsAdmin){
+	public String modifySubscriber(int User_ID, String Username, String Email, String Status, boolean IsAdmin){
 		String response = "";
-		int result = DbOperation.ModifySubscriberFromDb(User_ID,Username,Email,Password,Status,IsAdmin);
+		int result = DbOperation.ModifySubscriberFromDb(User_ID,Username,Email,Status,IsAdmin);
 		log.info("result in delete que :" + result);
 		if (result == 1) {
 			// to api ai 

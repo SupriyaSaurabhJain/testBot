@@ -578,21 +578,13 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 		return response;	
 	}
 	
-	public static int ModifySubscriberFromDb(int userID,String Username,String email, String password, String Status, boolean isadmin) {
+	public static int ModifySubscriberFromDb(int userID,String Username,String email, String Status, boolean isadmin) {
 		// TODO Auto-generated method stub
 		log.info("inside method ModifySubscriber");
 		int response = 0;
 		Connection connection = ConnectionService.getConnection();
-		String query="";
-		if(isadmin){
-			query = "UPDATE User SET Username  = ' " +Username+" ' , Email = ' "+email+
-					" ' , Password = ' "+password+" ' , Status = ' "+Status+" ' , IsAdmin = ' "+isadmin+" ' WHERE User_ID = ' "+userID+" ' ;";
-					
-		}
-		else{
-			query = "UPDATE User SET Username  = ' " +Username+" ' , Email = ' "+email+
+		String query="UPDATE User SET Username  = ' " +Username+" ' , Email = ' "+email+
 					" ' , Status = ' "+Status+" ' , IsAdmin = ' "+isadmin+" ' WHERE User_ID = ' "+userID+" ' ;";
-		}
 		log.info(query);
 		try {
 			Statement statement =  connection.createStatement();
