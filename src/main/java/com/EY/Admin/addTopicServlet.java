@@ -1,8 +1,7 @@
-package com.EY.Admin;
+package com.ey.admin;
 
 import java.io.IOException;
 import java.util.logging.Logger;
-import com.EY.DB.DbOperation;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,14 +11,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import com.EY.APIai.Handler.APIHandler;
-import com.EY.ChatBot.MyWebhookServlet;
-import com.EY.Service.ReadParameters;
-/**
- * Servlet implementation class addTopic
- */
+import com.ey.apiai.Handler.*;
+import com.ey.db.*;
+import com.ey.service.*;
+
 public class addTopicServlet extends HttpServlet {
-	private static final Logger log = Logger.getLogger(MyWebhookServlet.class.getName());
+	private static final Logger log = Logger.getLogger(addTopicServlet.class.getName());
 
 	private static final long serialVersionUID = 1L;
 

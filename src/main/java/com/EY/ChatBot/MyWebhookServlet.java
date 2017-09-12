@@ -1,10 +1,10 @@
-package com.EY.ChatBot;
+package com.ey.chatbot;
 //https://beta-007-dot-poc-iot.appspot.com/webhook
 
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import com.EY.DB.DbOperation;
+import com.ey.db.DbOperation;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 

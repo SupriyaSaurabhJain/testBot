@@ -1,4 +1,4 @@
-package com.EY.DB;
+package com.ey.db;
 
 import java.io.File;
 import java.io.FileInputStream;

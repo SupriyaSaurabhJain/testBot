@@ -1,8 +1,8 @@
-package com.EY.DB;
+package com.ey.db;
 import java.sql.*;
 import java.util.logging.Logger;
 
-import com.EY.ChatBot.MyWebhookServlet;
+import com.ey.chatbot.MyWebhookServlet;
 
 public class ConnectionService {
 	private static final String JDBC_DRIVER = "com.mysql.jdbc.GoogleDriver";

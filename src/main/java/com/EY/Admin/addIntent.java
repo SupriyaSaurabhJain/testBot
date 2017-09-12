@@ -1,4 +1,4 @@
-package com.EY.Admin;
+package com.ey.admin;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,12 +16,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-import com.EY.ChatBot.MyWebhookServlet;
-/**
- * Servlet implementation class addTopic
- */
 public class addIntent extends HttpServlet {
-	private static final Logger log = Logger.getLogger(MyWebhookServlet.class.getName());
+	private static final Logger log = Logger.getLogger(addIntent.class.getName());
 
 	private static final long serialVersionUID = 1L;
 	private static final String USER_AGENT = "Mozilla/5.0";

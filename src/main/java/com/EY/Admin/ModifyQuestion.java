@@ -1,4 +1,4 @@
-package com.EY.Admin;
+package com.ey.admin;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import com.EY.DB.DbOperation;
-import com.EY.Service.ReadParameters;
+import com.ey.db.*;
+import com.ey.service.*;
  class ModifyQuestion extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(ModifyQuestion.class.getName());

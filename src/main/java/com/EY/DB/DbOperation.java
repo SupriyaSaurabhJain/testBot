@@ -1,4 +1,4 @@
-package com.EY.DB;
+package com.ey.db;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import com.EY.ChatBot.MyWebhookServlet;
+import com.ey.chatbot.MyWebhookServlet;
 
 public class DbOperation extends ConnectionService {
 	private static final Logger log = Logger.getLogger(DbOperation.class.getName());
@@ -29,12 +29,30 @@ public class DbOperation extends ConnectionService {
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			log.severe("exception while deleting from table :" + e);
-			e.printStackTrace();
+			log.severe("exception while fetching list of Topics from table :" + e);
+
 		}
 		return topics;
 	}
+	public static HashMap<String, Integer> getSubTopics() {
+		log.info("inside method getTopic");
+		HashMap<String, Integer> subTopics = new HashMap<String, Integer>();
+		Connection connection = ConnectionService.getConnection();
+		try {
+			Statement statement = connection.createStatement();
+			ResultSet result = statement.executeQuery("SELECT sub_topic_id , sub_topic_name FROM SubTopics");
+			log.info("Query executed response : " + result);
+			while (result.next()) {
+				subTopics.put(result.getString("sub_topic_name"), result.getInt("sub_topic_id"));
+			}
+			result.close();
 
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			log.severe("exception while fetching list of subTopics from table :" + e);
+		}
+		return subTopics;
+	}
 	public static int addNewTopicToDB(String topic, String subTopic) {
 		log.info("inside method addTopic");
 		Connection connection = ConnectionService.getConnection();
@@ -351,7 +369,7 @@ public class DbOperation extends ConnectionService {
 				// TODO: handle exception
 				log.severe("Exception Adding Law Description : " + e);
 			} finally {
-				
+
 				ConnectionService.closeConnection();
 
 			}
@@ -574,6 +592,73 @@ public class DbOperation extends ConnectionService {
 		try {
 			Statement statement = connection.createStatement();
 			response = statement.executeUpdate(query);
+		} catch (SQLException e) {
+			log.severe("exception updating question management ");
+			e.printStackTrace();
+		} finally {
+			ConnectionService.closeConnection();
+		}
+		return response;
+	}
+
+	public static int modifyTopic(int topicId, String topic, int subTopicId, String subTopic) {
+		HashMap<String, Integer> topicList = getTopics();
+		int checkCount = 0;
+		String query="";
+		int response = -1;
+		Connection connection = ConnectionService.getConnection();
+		for (String topicInDb : topicList.keySet()) {
+			if (topicInDb.equalsIgnoreCase(topic)) {
+				if(topicList.get(topicInDb) == getTopicId(topic)){ //check if it is the same one by comparing their topic-id
+					break;									   	  //if same no operation required break
+				}
+				else{
+					query = "UPDATE  SubTopics SET topic_id = '" + topicList.get(topicInDb) + "' WHERE sub_topic_id = '"
+							+ subTopicId + "' ; ";//update TopicId in subTopics
+					break;
+
+				}
+			}
+			checkCount++;
+		}
+		if (checkCount == topicList.size()) {
+			query = "UPDATE  Topics SET topic_name = '" + topic + "' WHERE topic_id = '"
+					+ topicId + "' ; ";//modify topic name in table 
+		}
+		try {
+			Statement statement = connection.createStatement();
+			response = statement.executeUpdate(query);
+			statement.close();
+		} catch (SQLException e) {
+			log.severe("exception updating question management ");
+			e.printStackTrace();
+		} finally {
+			ConnectionService.closeConnection();
+		}
+		checkCount = 0;
+		HashMap<String, Integer> subTopicList = getSubTopics();
+		for (String subTopicInDb : subTopicList.keySet()) {
+			if (subTopicInDb.equalsIgnoreCase(subTopic)) {
+				if(subTopicList.get(subTopicInDb) == getSubTopicId(subTopic)){//check if it is the same one by comparing the  sub - topic ids
+					break;
+					//no operation required break
+				}
+				else{
+					query = "UPDATE  SubTopics SET topic_id = '" + topicId + "' WHERE UPPER(sub_topic) = '"
+							+ subTopic.toUpperCase() + "' ; ";
+					break; //update the topic-id of, given sub-topic
+				}
+			}
+			checkCount++;
+		}
+		if (checkCount == subTopicList.size()) {
+			query = "UPDATE  SubTopics SET sub_topic_name = '" + subTopic + "' WHERE sub_topic_id = '"
+					+ subTopicId + "' ; ";//modify topic name in table 
+		}
+		try {
+			Statement statement = connection.createStatement();
+			response = statement.executeUpdate(query);
+			statement.close();
 		} catch (SQLException e) {
 			log.severe("exception updating question management ");
 			e.printStackTrace();

@@ -14,12 +14,19 @@ import org.json.simple.parser.JSONParser;
 import com.ey.db.*;
 import com.ey.service.*;
 
-public class ModifyLawDescription extends HttpServlet {
+/**
+ * Servlet implementation class ModifyTopic
+ */
+public class ModifyTopic extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(ModifyLawDescription.class.getName());
+	private static final Logger log = Logger.getLogger(ModifyTopic.class.getName());
 
-    public ModifyLawDescription() {
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ModifyTopic() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -28,21 +35,22 @@ public class ModifyLawDescription extends HttpServlet {
 		
 		try {
 			JSONObject requestObject = (JSONObject) parser.parse(requestJson);
-			int law_description_id = Integer.parseInt(requestObject.get("law_description_id").toString());
-			String law_description = requestObject.get("law_description").toString();
-			response.getWriter().write(ModifyLawDescription(law_description_id , law_description));
+			int topicId = Integer.parseInt(requestObject.get("topicId").toString());
+			String topic = requestObject.get("topic").toString();
+			int subTopicId = Integer.parseInt(requestObject.get("subtopicId").toString());
+			String subTopic = requestObject.get("subtTopic").toString();
+			
+			response.getWriter().write(modifyTopic(topicId , topic , subTopicId , subTopic));
 					
 		} catch (Exception e) {
 			log.info("Error in doPost:"+e);
 
 			response.getWriter().write("{}");	
 		}
-		
 	}
 
-	private String ModifyLawDescription(int law_description_id, String law_description) {
-		int result = DbOperation.updateLawDescription(law_description_id, law_description);
-		
+	private String modifyTopic(int topicId, String topic, int subTopicId, String subTopic) {
+		int result = DbOperation.modifyTopic(topicId , topic, subTopicId, subTopic);
 		return getErrorResponse(result);
 	}
 	private static String getErrorResponse(int result){
@@ -58,5 +66,4 @@ public class ModifyLawDescription extends HttpServlet {
 		}
 		return response;
 	}
-
 }

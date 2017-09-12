@@ -1,4 +1,4 @@
-package com.EY.Admin;
+package com.ey.admin;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -13,8 +13,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import com.EY.DB.DbOperation;
-import com.EY.Service.ReadParameters;
+import com.ey.db.*;
+import com.ey.service.*;
 
 public class ManageGeo extends HttpServlet {
 	private static final long serialVersionUID = 1L;

@@ -1,4 +1,4 @@
-package com.EY.ChatBot;
+package com.ey.chatbot;
 
 import java.io.FileReader;
 import java.util.HashMap;

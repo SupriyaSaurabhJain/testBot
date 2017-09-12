@@ -1,4 +1,4 @@
-package com.EY.APIai.Handler;
+package com.ey.apiai.Handler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,15 +11,13 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-import com.EY.Admin.addTopicServlet;
-import com.EY.DB.DbOperation;
-
-
+import com.ey.admin.*;
+import com.ey.db.*;
 public class APIHandler {
 	private static final Logger log = Logger.getLogger(addTopicServlet.class.getName());
 	private static final String USER_AGENT = "Mozilla/5.0";
 	public String addTopic(String subTopic , String topic){
-		String entityId = "d7b4ab70-c537-40e3-b1dc-083aba5ed555";
+		String entityId = "037dfac8-f6e6-40c3-8448-6b868c8f5a85";
 		String url = "https://api.api.ai/v1/entities/"+entityId+"/entries?v=20150910";
 		log.severe("topic : "+ topic + "   subTopic : "+subTopic + "\n  url : "+url);
 		HttpClient client = HttpClientBuilder.create().build();
@@ -28,7 +26,7 @@ public class APIHandler {
 		// add header
 		post.setHeader("User-Agent", USER_AGENT);
 		post.setHeader("Content-Type" , "application/json");
-		post.setHeader("Authorization" , "Bearer 36f114a183b241ad8fda33e11c962a5f");
+		post.setHeader("Authorization" , "Bearer ff28c61a38424a3684af062f491003ca");
 
 		StringEntity entity;
 		String r = "no ";

@@ -2,7 +2,7 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
   <servlet>
     <servlet-name>ai</servlet-name>
-    <servlet-class>com.EY.Service.MyServiceServlet</servlet-class>
+    <servlet-class>com.ey.service.MyServiceServlet</servlet-class>
     <init-param>
       <param-name>apiaiKey</param-name>
       <param-value>ac58148412f548278206014caf233f45</param-value>
@@ -10,7 +10,7 @@
   </servlet>
   <servlet>
     <servlet-name>webhook</servlet-name>
-    <servlet-class>com.EY.ChatBot.MyWebhookServlet</servlet-class>
+    <servlet-class>com.ey.chatbot.MyWebhookServlet</servlet-class>
     <init-param>
       <param-name>apiaiKey</param-name>
       <param-value>c17ce92704f14b0f85181127e2f0e6b6</param-value>
@@ -18,7 +18,7 @@
   </servlet>
   <servlet>
     <servlet-name>login</servlet-name>
-    <servlet-class>com.EY.Login.LoginServlet</servlet-class>
+    <servlet-class>com.ey.login.LoginServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>webhook</servlet-name>
@@ -36,7 +36,7 @@
     <description></description>
     <display-name>LoginServlet</display-name>
     <servlet-name>LoginServlet</servlet-name>
-    <servlet-class>com.EY.Login.LoginServlet</servlet-class>
+    <servlet-class>com.ey.login.LoginServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>LoginServlet</servlet-name>
@@ -46,7 +46,7 @@
     <description></description>
     <display-name>AddUser</display-name>
     <servlet-name>AddUser</servlet-name>
-    <servlet-class>com.EY.Admin.AddUser</servlet-class>
+    <servlet-class>com.ey.admin.AddUser</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>AddUser</servlet-name>
@@ -56,7 +56,7 @@
     <description></description>
     <display-name>addTopic</display-name>
     <servlet-name>addTopic</servlet-name>
-    <servlet-class>com.EY.Admin.addTopicServlet</servlet-class>
+    <servlet-class>com.ey.admin.addTopicServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>addTopic</servlet-name>
@@ -66,7 +66,7 @@
     <description></description>
     <display-name>testing</display-name>
     <servlet-name>testing</servlet-name>
-    <servlet-class>com.EY.DB.testing</servlet-class>
+    <servlet-class>com.ey.db.testing</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>testing</servlet-name>
@@ -76,7 +76,7 @@
     <description></description>
     <display-name>AddNewQuestion</display-name>
     <servlet-name>AddNewQuestion</servlet-name>
-    <servlet-class>com.EY.Admin.AddNewQuestion</servlet-class>
+    <servlet-class>com.ey.admin.AddNewQuestion</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>AddNewQuestion</servlet-name>
@@ -86,7 +86,7 @@
     <description></description>
     <display-name>DeleteQuestion</display-name>
     <servlet-name>DeleteQuestion</servlet-name>
-    <servlet-class>com.EY.Admin.DeleteQuestion</servlet-class>
+    <servlet-class>com.ey.admin.DeleteQuestion</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>DeleteQuestion</servlet-name>
@@ -96,7 +96,7 @@
     <description></description>
     <display-name>ListComplianceDetails</display-name>
     <servlet-name>ListComplianceDetails</servlet-name>
-    <servlet-class>com.EY.Admin.ListComplianceDetails</servlet-class>
+    <servlet-class>com.ey.admin.ListComplianceDetails</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ListComplianceDetails</servlet-name>
@@ -106,7 +106,7 @@
     <description></description>
     <display-name>AddLawDescription</display-name>
     <servlet-name>AddLawDescription</servlet-name>
-    <servlet-class>com.EY.Admin.AddLawDescription</servlet-class>
+    <servlet-class>com.ey.admin.AddLawDescription</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>AddLawDescription</servlet-name>
@@ -116,7 +116,7 @@
     <description></description>
     <display-name>FetchQuestions</display-name>
     <servlet-name>FetchQuestions</servlet-name>
-    <servlet-class>com.EY.Admin.FetchQuestions</servlet-class>
+    <servlet-class>com.ey.admin.FetchQuestions</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>FetchQuestions</servlet-name>
@@ -126,7 +126,7 @@
     <description></description>
     <display-name>ManageGeo</display-name>
     <servlet-name>ManageGeo</servlet-name>
-    <servlet-class>com.EY.Admin.ManageGeo</servlet-class>
+    <servlet-class>com.ey.admin.ManageGeo</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ManageGeo</servlet-name>
@@ -136,7 +136,7 @@
     <description></description>
     <display-name>ModifyLawDescription</display-name>
     <servlet-name>ModifyLawDescription</servlet-name>
-    <servlet-class>com.EY.Admin.ModifyLawDescription</servlet-class>
+    <servlet-class>com.ey.admin.ModifyLawDescription</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ModifyLawDescription</servlet-name>
@@ -146,7 +146,7 @@
     <description></description>
     <display-name>ModifyQuestion</display-name>
     <servlet-name>ModifyQuestion</servlet-name>
-    <servlet-class>com.EY.Admin.ModifyQuestion</servlet-class>
+    <servlet-class>com.ey.admin.ModifyQuestion</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ModifyQuestion</servlet-name>
@@ -156,10 +156,20 @@
     <description></description>
     <display-name>UpdateTopic</display-name>
     <servlet-name>UpdateTopic</servlet-name>
-    <servlet-class>com.EY.Admin.UpdateTopic</servlet-class>
+    <servlet-class>com.ey.admin.UpdateTopic</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>UpdateTopic</servlet-name>
     <url-pattern>/UpdateTopic</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ModifyTopic</display-name>
+    <servlet-name>ModifyTopic</servlet-name>
+    <servlet-class>com.ey.admin.ModifyTopic</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ModifyTopic</servlet-name>
+    <url-pattern>/ModifyTopic</url-pattern>
   </servlet-mapping>
 </web-app>
