@@ -576,13 +576,21 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 		return response;	
 	}
 	
-	public static int ModifySubscriberFromDb(int userID,String Username,String email, String Status, boolean isadmin) {
+	public static int ModifySubscriberFromDb(int userID, String Username, String email, String Password, String Status, boolean isadmin, boolean isRoleChange) {
 		// TODO Auto-generated method stub
 		log.info("inside method ModifySubscriber");
 		int response = 0;
 		Connection connection = ConnectionService.getConnection();
-		String query="UPDATE User SET Username  = ' " +Username+" ' , Email = ' "+email+
+		String query = "";
+		if(isRoleChange)
+		{
+			query="UPDATE User SET Username  = ' " +Username+" ' , Email = ' "+email+
+					" ' , Password = ' "+Password+" ' , Status = ' "+Status+" ' , IsAdmin = ' "+isadmin+" ' WHERE User_ID = ' "+userID+" ' ;";
+		}
+		else{
+			query="UPDATE User SET Username  = ' " +Username+" ' , Email = ' "+email+
 					" ' , Status = ' "+Status+" ' , IsAdmin = ' "+isadmin+" ' WHERE User_ID = ' "+userID+" ' ;";
+		}
 		log.info(query);
 		try {
 			Statement statement =  connection.createStatement();
@@ -644,4 +652,32 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 		
 		return listOfSubscribers.toJSONString();
 	}
+  
+   public static boolean IsUserAdmin(int User_ID)
+   {
+	   log.info("checking if user is admin");
+	   boolean isadmin=false;
+	   String query = "select IsAdmin from User where User_ID = '"+User_ID+" ';";
+	   log.info(query);
+	   Connection connection = ConnectionService.getConnection();
+	   try{
+		   Statement stmt = connection.createStatement();
+		   ResultSet rs = stmt.executeQuery(query);
+		   if(rs.next())
+		   {
+			   isadmin = rs.getBoolean("IsAdmin");
+			   log.info("Collected user's role");
+		   }
+		   rs.close();
+		   stmt.close();
+		   
+	   }catch(Exception e){
+		   log.info("Exception while cheking user role");
+		   e.printStackTrace();
+	   }
+	   finally{
+		   ConnectionService.closeConnection();
+	   }
+	   return isadmin;
+   }
 }

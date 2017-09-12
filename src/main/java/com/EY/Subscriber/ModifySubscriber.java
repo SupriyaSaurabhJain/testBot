@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -53,24 +54,43 @@ public class ModifySubscriber extends HttpServlet {
 			int User_ID = Integer.parseInt(jsonResponseObject.get("User_ID").toString());
 			String username = jsonResponseObject.get("username").toString();
 			String email = jsonResponseObject.get("email").toString();
+			String status = jsonResponseObject.get("status").toString();
 			boolean isadmin = Boolean.parseBoolean(jsonResponseObject.get("isadmin").toString());
 			
-			response.getWriter().write(modifySubscriber(User_ID, username, email, "ACTIVE", isadmin));
-		
+			if(DbOperation.IsUserAdmin(User_ID)==false&&isadmin)
+			{
+				log.info("User getting Modified to Admin");
+				String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+				String password = RandomStringUtils.random( 9 , characters );
+				log.info("randomly created plain password :" + password);
+				
+	            String encryptedPassword = EncryptDecrypt.encrypt(password);
+	            log.info("encrypted pass="+encryptedPassword);
+	            String decryptedPassword = EncryptDecrypt.decrypt(encryptedPassword);    
+	            log.info("decrypted pass="+decryptedPassword);
+				
+				response.getWriter().write(modifySubscriber(User_ID,username, email, encryptedPassword, status, isadmin, true));
+			}
+			else
+			{
+				response.getWriter().write(modifySubscriber(User_ID,username, email, "NULL", status, isadmin, false));
+			}
 			
 		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public String modifySubscriber(int User_ID, String Username, String Email, String Status, boolean IsAdmin){
+	public String modifySubscriber(int User_ID, String Username, String Email, String Password,String Status, boolean IsAdmin, boolean IsRoleChange){
 		String response = "";
-		int result = DbOperation.ModifySubscriberFromDb(User_ID,Username,Email,Status,IsAdmin);
+		int result = DbOperation.ModifySubscriberFromDb(User_ID,Username,Email,Password,Status,IsAdmin,IsRoleChange);
 		log.info("result in delete que :" + result);
 		if (result == 1) {
 			// to api ai 
 			response = " {  \"status\": {    \"code\": 200,    \"errorType\": \"Sucess\"  }}" ;
-
 
 		}
 		else{
