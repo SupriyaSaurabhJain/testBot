@@ -44,6 +44,7 @@ public class ModifySubscriber extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		log.info("Inside Modify Subscriber");
 		String responseJson  = ReadParameters.readPostParameter(request);
 		JSONParser parser = new JSONParser();
 		Object responseObject = null;
@@ -73,6 +74,7 @@ public class ModifySubscriber extends HttpServlet {
 			}
 			else
 			{
+				log.info("No change into role");
 				response.getWriter().write(modifySubscriber(User_ID,username, email, "NULL", status, isadmin, false));
 			}
 			
