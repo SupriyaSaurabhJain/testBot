@@ -58,7 +58,7 @@ public class ModifySubscriber extends HttpServlet {
 			String status = jsonResponseObject.get("status").toString();
 			boolean isadmin = Boolean.parseBoolean(jsonResponseObject.get("isadmin").toString());
 			
-			if(DbOperation.IsUserAdmin(User_ID)==false&&isadmin)
+			if(DbOperation.IsUserAdmin(User_ID)==false&&isadmin==true)
 			{
 				log.info("User getting Modified to Admin");
 				String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
