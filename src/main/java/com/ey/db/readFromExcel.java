@@ -135,13 +135,13 @@ public class readFromExcel {
 					log.info("state : " + state);
 					String lawDescription = stateLawMap.get(state).replaceAll("\'", escapeSequence+"\'").replaceAll("\"", escapeSequence+"\""); //.replaceAll("\n", "/\n").replaceAll("\t", "/\t");
 					if (state.equalsIgnoreCase("FEDERAL")) {
-						log.info("insert into Law_Description(law_description1,country_id,state_id,sub_topic_id) Values('"+lawDescription+"','"+"1"+"','"+"NULL"+"','"+subTopicId+"')");
-						insertDescIntoDb("insert into Law_Description1(law_description,country_id,sub_topic_id) Values('"+lawDescription+"','"+"1"+"','"+subTopicId+"')");
+						log.info("insert into Law_Description(law_description,country_id,state_id,sub_topic_id) Values('"+lawDescription+"','"+"1"+"','"+"NULL"+"','"+subTopicId+"')");
+						insertDescIntoDb("insert into Law_Description(law_description,country_id,sub_topic_id) Values('"+lawDescription+"','"+"1"+"','"+subTopicId+"')");
 					}
 					else{
 						int state_id = getstateId(state); 
-						log.info("insert into Law_Description(law_description1,state_id,sub_topic_id) Values('"+lawDescription+"','"+state_id+"','"+subTopicId+"')");
-						insertDescIntoDb("insert into Law_Description1(law_description,country_id,state_id,sub_topic_id) Values('"+lawDescription+"','"+"1"+"','"+state_id+"','"+subTopicId+"')");
+						log.info("insert into Law_Description(law_description,state_id,sub_topic_id) Values('"+lawDescription+"','"+state_id+"','"+subTopicId+"')");
+						insertDescIntoDb("insert into Law_Description(law_description,country_id,state_id,sub_topic_id) Values('"+lawDescription+"','"+"1"+"','"+state_id+"','"+subTopicId+"')");
 
 					}
 				}
