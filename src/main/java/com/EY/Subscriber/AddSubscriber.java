@@ -7,8 +7,7 @@ import java.security.Key;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
+import org.apache.commons.codec.binary.Base64;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -119,7 +118,8 @@ public class AddSubscriber extends HttpServlet {
         Cipher cipher = Cipher.getInstance(AddSubscriber.ALGORITHM);
         cipher.init(Cipher.ENCRYPT_MODE, key);
         byte [] encryptedByteValue = cipher.doFinal(value.getBytes("utf-8"));
-        String encryptedValue64 = new BASE64Encoder().encode(encryptedByteValue);
+        byte[] bencryptedValue64 = new Base64().encode(encryptedByteValue);
+        String encryptedValue64 = new String(bencryptedValue64);
         return encryptedValue64;
                
     }
@@ -129,8 +129,7 @@ public class AddSubscriber extends HttpServlet {
 	        Key key = generateKey();
 	        Cipher cipher = Cipher.getInstance(AddSubscriber.ALGORITHM);
 	        cipher.init(Cipher.DECRYPT_MODE, key);
-	        @SuppressWarnings("restriction")
-			byte [] decryptedValue64 = new BASE64Decoder().decodeBuffer(value);
+			byte [] decryptedValue64 = new Base64().decode(value);
 	        byte [] decryptedByteValue = cipher.doFinal(decryptedValue64);
 	        String decryptedValue = new String(decryptedByteValue,"utf-8");
 	        return decryptedValue;
