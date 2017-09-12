@@ -663,9 +663,9 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 	   try{
 		   Statement stmt = connection.createStatement();
 		   ResultSet rs = stmt.executeQuery(query);
-		   if(rs.next())
+		   while(rs.next())
 		   {
-			   isadmin = rs.getBoolean("IsAdmin");
+			   isadmin = Boolean.parseBoolean(rs.getString("IsAdmin"));
 			   log.info(" database value :"+rs.getBoolean("IsAdmin"));
 			   log.info("Collected user's role : "+isadmin);
 		   }
