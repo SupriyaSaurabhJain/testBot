@@ -745,7 +745,7 @@ public class DbOperation extends ConnectionService {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		try {
-			String isUserAdminQuery = "select IsAdmin from User where User_ID = ? ;";
+			String isUserAdminQuery = "select IsAdmin from User where User_ID = ?";
 			log.info(isUserAdminQuery);
 			connection = ConnectionService.getConnection();
 			statement = connection.prepareStatement(isUserAdminQuery);
