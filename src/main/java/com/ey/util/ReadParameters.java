@@ -1,4 +1,4 @@
-package com.ey.service;
+package com.ey.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;

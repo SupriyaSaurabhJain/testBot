@@ -10,7 +10,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import com.ey.db.*;
-import com.ey.service.ReadParameters;
+import com.ey.util.ReadParameters;
 
 public class AddNewQuestion extends HttpServlet {
 	private static final Logger log = Logger.getLogger(AddNewQuestion.class.getName());

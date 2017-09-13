@@ -12,7 +12,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import com.ey.db.*;
-import com.ey.service.ReadParameters;
+import com.ey.util.ReadParameters;
 
 
 public class ModifyTopic extends HttpServlet {

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import com.ey.db.*;
-import com.ey.service.*;
+import com.ey.util.ReadParameters;
 
 public class FetchQuestions extends HttpServlet {
 	private static final long serialVersionUID = 1L;
