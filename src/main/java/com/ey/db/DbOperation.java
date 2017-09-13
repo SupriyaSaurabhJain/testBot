@@ -16,7 +16,8 @@ public class DbOperation extends ConnectionService {
 		HashMap<String, Integer> topics = new HashMap<String, Integer>();
 		Connection connection = ConnectionService.getConnection();
 		try {
-			PreparedStatement statement = connection.prepareStatement(Queries.getQuery("GetTopicDetails"));
+			//PreparedStatement statement = connection.prepareStatement(Queries.getQuery("GetTopicDetails"));
+			Statement statement = connection.createStatement();
 			ResultSet result = statement.executeQuery("SELECT topic_id , topic_name FROM Topics");
 			log.info("Query executed response : " + result);
 			while (result.next()) {
