@@ -42,7 +42,6 @@
     <servlet-name>LoginServlet</servlet-name>
     <url-pattern>/LoginServlet</url-pattern>
   </servlet-mapping>
-
   <servlet>
     <description></description>
     <display-name>addTopic</display-name>
@@ -143,7 +142,6 @@
     <servlet-name>ModifyQuestion</servlet-name>
     <url-pattern>/ModifyQuestion</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <description></description>
     <display-name>ModifyTopic</display-name>
@@ -153,5 +151,15 @@
   <servlet-mapping>
     <servlet-name>ModifyTopic</servlet-name>
     <url-pattern>/ModifyTopic</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>test</display-name>
+    <servlet-name>test</servlet-name>
+    <servlet-class>com.ey.util.test</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>test</servlet-name>
+    <url-pattern>/test</url-pattern>
   </servlet-mapping>
 </web-app>

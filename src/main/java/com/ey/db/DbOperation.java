@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.logging.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
+import com.ey.util.Queries;
 public class DbOperation extends ConnectionService {
 	private static final Logger log = Logger.getLogger(DbOperation.class.getName());
 	//Method to get list of topics along with their Id 
@@ -14,7 +16,7 @@ public class DbOperation extends ConnectionService {
 		HashMap<String, Integer> topics = new HashMap<String, Integer>();
 		Connection connection = ConnectionService.getConnection();
 		try {
-			Statement statement = connection.createStatement();
+			PreparedStatement statement = connection.prepareStatement(Queries.getQuery("GetTopicDetails"));
 			ResultSet result = statement.executeQuery("SELECT topic_id , topic_name FROM Topics");
 			log.info("Query executed response : " + result);
 			while (result.next()) {
