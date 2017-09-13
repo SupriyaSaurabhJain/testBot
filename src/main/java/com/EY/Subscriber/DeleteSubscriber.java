@@ -1,6 +1,7 @@
 package com.EY.Subscriber;
 
 import java.io.IOException;
+
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -12,7 +13,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import com.EY.Admin.AddNewQuestion;
 import com.EY.DB.DbOperation;
 import com.EY.Service.ReadParameters;
 

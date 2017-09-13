@@ -639,32 +639,37 @@ public class DbOperation extends ConnectionService {
 		return response;
 	}
 
-	public static int modifySubscriber(int userID, String Username,
-			String email, String Password, String Status, boolean isadmin,
+	public static int modifySubscriber(int userId, String username,
+			String email, String password, String status, boolean isadmin,
 			boolean isRoleChange) {
 		// TODO Auto-generated method stub
 		log.info("inside method ModifySubscriber");
 		int response = 0;
-		String query = "";
-		if (isRoleChange) {
-			query = "UPDATE User SET Username  = ' " + Username
-					+ " ' , Email = ' " + email + " ' , Password = ' "
-					+ Password + " ' , Status = ' " + Status
-					+ " ' , IsAdmin = ' " + isadmin + " ' WHERE User_ID = ' "
-					+ userID + " ' ;";
-		} else {
-			query = "UPDATE User SET Username  = ' " + Username
-					+ " ' , Email = ' " + email + " ' , Status = ' " + Status
-					+ " ' , IsAdmin = ' " + isadmin + " ' WHERE User_ID = ' "
-					+ userID + " ' ;";
-		}
-		log.info(query);
 		Connection connection = null;
-		Statement statement = null;
+		PreparedStatement statement = null;
 		try {
 			connection = ConnectionService.getConnection();
-			statement = connection.createStatement();
-			response = statement.executeUpdate(query);
+			String modifySubscriberAsAdmin, modifySubscriberAsUser;
+			if (isRoleChange) {
+				modifySubscriberAsAdmin = "UPDATE User SET Username  = ? , Email = ? , Password = ? , Status = ? , IsAdmin = ? WHERE User_ID = ?;";
+				statement= connection.prepareStatement(modifySubscriberAsAdmin);
+				statement.setString(1, username);
+				statement.setString(2, email);
+				statement.setString(3, password);
+				statement.setString(4, status);
+				statement.setString(5, String.valueOf(isadmin));
+				statement.setInt(6, userId);
+			} else {
+				modifySubscriberAsUser = "UPDATE User SET Username  = ? , Email = ?, Status = ? , IsAdmin = ? WHERE User_ID = ?;";
+				statement= connection.prepareStatement(modifySubscriberAsUser);
+				statement.setString(1, username);
+				statement.setString(2, email);
+				statement.setString(3, status);
+				statement.setString(4, String.valueOf(isadmin));
+				statement.setInt(5, userId);
+			}
+			
+			response = statement.executeUpdate();
 			log.info("Query executed response : " + response);
 
 		} catch (SQLException e) {

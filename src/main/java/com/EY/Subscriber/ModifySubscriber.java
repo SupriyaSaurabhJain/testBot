@@ -1,6 +1,7 @@
 package com.EY.Subscriber;
 
 import java.io.IOException;
+
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -13,7 +14,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import com.EY.Admin.AddNewQuestion;
 import com.EY.DB.DbOperation;
 import com.EY.Service.ReadParameters;
 
@@ -30,11 +30,9 @@ public class ModifySubscriber extends HttpServlet {
 		log.info("Inside Modify Subscriber");
 		String responseJson  = ReadParameters.readPostParameter(request);
 		JSONParser parser = new JSONParser();
-		Object responseObject = null;
 		try {
-			responseObject = parser.parse(responseJson);
-			JSONObject jsonResponseObject = (JSONObject) responseObject;
-			//System.out.println(jsonResponseObject);
+
+			JSONObject jsonResponseObject = (JSONObject) parser.parse(responseJson);
 			int userId = Integer.parseInt(jsonResponseObject.get("userId").toString());
 			String username = jsonResponseObject.get("username").toString();
 			String email = jsonResponseObject.get("email").toString();
@@ -49,7 +47,6 @@ public class ModifySubscriber extends HttpServlet {
 			{
 				log.info("User getting Modified to Admin");
 				String password = RandomStringUtils.random( 9 , characters );
-				log.info("randomly created plain password :" + password);
 				encryptedPassword = EncryptDecrypt.encrypt(password);
 	            isRoleChange = true;
 			}
