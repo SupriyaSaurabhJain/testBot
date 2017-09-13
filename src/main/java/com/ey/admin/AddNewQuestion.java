@@ -10,7 +10,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import com.ey.service.*;
-import com.ey.util.ReadParameters;
 import com.ey.db.*;
 
 public class AddNewQuestion extends HttpServlet {

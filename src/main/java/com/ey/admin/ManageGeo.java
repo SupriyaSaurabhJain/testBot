@@ -15,7 +15,6 @@ import org.json.simple.parser.JSONParser;
 
 import com.ey.db.*;
 import com.ey.service.*;
-import com.ey.util.ReadParameters;
 
 public class ManageGeo extends HttpServlet {
 	private static final long serialVersionUID = 1L;

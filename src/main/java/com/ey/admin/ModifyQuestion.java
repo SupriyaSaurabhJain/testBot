@@ -13,7 +13,6 @@ import org.json.simple.parser.JSONParser;
 
 import com.ey.db.*;
 import com.ey.service.*;
-import com.ey.util.ReadParameters;
  public class ModifyQuestion extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(ModifyQuestion.class.getName());

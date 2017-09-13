@@ -12,13 +12,16 @@ public class ConnectionService {
 	private static final Logger log = Logger.getLogger(MyWebhookServlet.class.getName());
 	private static Connection connection = null;
 	protected static Connection getConnection() {
-	try {
+		// TODO Auto-generated method stub
+		try {
 			Class.forName(JDBC_DRIVER);
+
 			connection = DriverManager.getConnection(DB_URL, USER_NAME, PASSWORD);
 			log.info("connection Established :" + connection);
 			return connection ;
 		} catch (SQLException | ClassNotFoundException e) {
-			log.severe("exception creating connection:" + e);
+			// TODO Auto-generated catch block
+			log.severe("exception :" + e);
 			e.printStackTrace();
 		}
 		return null ;
@@ -28,7 +31,9 @@ public class ConnectionService {
 			connection.close();
 			log.info("connection closed");
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			log.severe("exception closing connection" + e);
+			e.printStackTrace();
 		}
 
 	}

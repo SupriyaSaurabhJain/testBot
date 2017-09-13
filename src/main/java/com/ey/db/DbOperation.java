@@ -108,7 +108,7 @@ public class DbOperation extends ConnectionService {
 				topic_id = rs.getInt("topic_id");
 			}
 			rs.close();
-			statement.close();
+
 		} catch (SQLException e) {
 			log.severe("exception fetching topic id " + e);
 			e.printStackTrace();
@@ -147,7 +147,9 @@ public class DbOperation extends ConnectionService {
 			response = statement.executeUpdate("DELETE FROM Topics WHERE topic_name = ' " + topic + "'");
 			log.info("Query executed response : " + response);
 			statement.close();
+
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			log.severe("exception while deleting topic from table :" + e);
 		} finally {
 			ConnectionService.closeConnection();
@@ -237,7 +239,7 @@ public class DbOperation extends ConnectionService {
 		String Query = "";
 		JSONObject response = new JSONObject();
 		Connection connection = ConnectionService.getConnection();
-		Query = "SELECT law_description , law_desc_id FROM Law_Description WHERE sub_topic_id = '" + subTopicId	//same querry as above for state
+		Query = "SELECT law_description , law_desc_id FROM Law_Description WHERE sub_topic_id = '" + subTopicId
 				+ "' AND state_id = '" + stateId + "';";
 		try {
 			Statement statement = connection.createStatement();
@@ -328,10 +330,9 @@ public class DbOperation extends ConnectionService {
 	}
 //Method to get law description Id
 	public static int getLawDescriptionId(int subTopicId, int countryId, int stateId) {
-		log.info("inside method getLawDescriptionId");
 		int descriptionId = -1;
-		String query = "SELECT law_desc_id FROM Law_Description WHERE  subTopicId = '" + subTopicId + "' AND country_id = '"
-				+ countryId + "' AND state_id = '" + stateId + "' ;";
+		String query = "SELECT law_desc_id FROM Law_Description WHERE  subTopicId = '" + subTopicId + "' country_id = '"
+				+ countryId + "' state_id = '" + stateId + "' ;";
 		Connection connection = ConnectionService.getConnection();
 		Statement statement;
 		try {
@@ -341,25 +342,22 @@ public class DbOperation extends ConnectionService {
 				descriptionId = resultSet.getInt("law_desc_id");
 			}
 			resultSet.close();
-			statement.close();
 		} catch (SQLException e) {
 			log.severe("exception geting law desc id" + e);
+			e.printStackTrace();
 		} finally {
 			ConnectionService.closeConnection();
 		}
 		return descriptionId;
 	}
 
-	//Method to add New law description
 	public static int addLawDescriptionToDB(int topicId, int subTopicId, int countryId, int stateId,
 			String description) {
-		log.info("inside method addLawDescriptionToDB");
 		int response = -1;
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		log.info("Timestamp " + timestamp);
 		int descriptionId = getLawDescriptionId(subTopicId, countryId, stateId);
 		String query = "";
-		//check if law description for provided state already exists
 		if (descriptionId == -1) {
 			query = "INSERT INTO Law_Description(law_description , state_id , country_id , sub_topic_id, CreateTimeStamp, ModifiedTimestamp) VALUES"
 					+ " ('" + description + "' , '" + stateId + "' , ' " + countryId + "' , '" + subTopicId + "' , '"
@@ -372,14 +370,14 @@ public class DbOperation extends ConnectionService {
 				log.info("description added sucessfully");
 				statement.close();
 			} catch (SQLException e) {
+				// TODO: handle exception
 				log.severe("Exception Adding Law Description : " + e);
 			} finally {
+
 				ConnectionService.closeConnection();
 
 			}
-		} 
-		//if already present update the same
-		else {
+		} else {
 			response = updateLawDescription(descriptionId, description);
 			/*
 			 * query = "UPDATE  Law_Description SET law_description = '"
@@ -389,12 +387,13 @@ public class DbOperation extends ConnectionService {
 			 * "		WHERE law_desc_id = '" +descriptionId+ "' ; " ;
 			 */
 		}
+
+		log.info(query);
+
 		return response;
 	}
-//Method to get countryId of state provided
-	private static int getCountryIdFromState(String state) {
-		log.info("inside method getCountryIdFromState");
 
+	private static int getCountryIdFromState(String state) {
 		Connection connection = ConnectionService.getConnection();
 		int countryId = -1;
 		state = state.trim().toUpperCase();
@@ -407,9 +406,10 @@ public class DbOperation extends ConnectionService {
 				countryId = rs.getInt("country_id");
 			}
 			rs.close();
-			statement.close();
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			log.severe("exception fetching country_id");
+			e.printStackTrace();
 		} finally {
 			ConnectionService.closeConnection();
 		}
@@ -522,9 +522,7 @@ public class DbOperation extends ConnectionService {
 		return listOfQuestions.toJSONString();
 	}
 
-//method to get list of countries with their respective ids
 	public static HashMap<String, Integer> getCountryList() {
-		log.info("inside method getCountryList");
 		HashMap<String, Integer> countryList = new HashMap<String, Integer>();
 		Connection connection = ConnectionService.getConnection();
 		String query = "SELECT country_id , country_name FROM Country ;";
@@ -536,18 +534,19 @@ public class DbOperation extends ConnectionService {
 				countryList.put(resultset.getString("country_name"), resultset.getInt("country_id"));
 			}
 			resultset.close();
-			statement.close();
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			log.severe("exception while fetching Countries from table :" + e);
+			e.printStackTrace();
 		} finally {
 			ConnectionService.closeConnection();
 
 		}
+
 		return countryList;
 	}
-	//method to get list of states with their respective ids
+
 	public static HashMap<String, Integer> getStateList(int countryId) {
-		log.info("inside method getStateList");
 		HashMap<String, Integer> stateList = new HashMap<String, Integer>();
 		Connection connection = ConnectionService.getConnection();
 		String query = "SELECT * FROM State WHERE country_id = '" + countryId + "' ;";
@@ -559,19 +558,21 @@ public class DbOperation extends ConnectionService {
 				stateList.put(resultset.getString("state_name"), resultset.getInt("state_id"));
 			}
 			resultset.close();
-			statement.close();
+
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			log.severe("exception while fetching States from table :" + e);
+			e.printStackTrace();
 		} finally {
 			ConnectionService.closeConnection();
+
 		}
+
 		return stateList;
 	}
-//Method to update law description in db
+
 	public static int updateLawDescription(int law_description_id, String law_description) {
-		log.info("inside method updateLawDescription");
-		String query = "UPDATE  Law_Description SET law_description = '" + law_description + "'"
-				+ " WHERE law_desc_id = '"
+		String query = "UPDATE  Law_Description SET law_description = '" + law_description + "' WHERE law_desc_id = '"
 				+ law_description_id + "' ; ";
 		Connection connection = ConnectionService.getConnection();
 		int response = -1;
@@ -580,14 +581,14 @@ public class DbOperation extends ConnectionService {
 			response = statement.executeUpdate(query);
 		} catch (SQLException e) {
 			log.severe("exception updating Law desc ");
+			e.printStackTrace();
 		} finally {
 			ConnectionService.closeConnection();
 		}
 		return response;
 	}
-//Method to modify question in db
+
 	public static int ModifyQuestion(int question_id, String question) {
-		log.info("inside method ModifyQuestion");
 		String query = "UPDATE  QuestionsManagement SET possible_questions = '" + question + "' WHERE question_id = '"
 				+ question_id + "' ; ";
 		Connection connection = ConnectionService.getConnection();
@@ -595,17 +596,16 @@ public class DbOperation extends ConnectionService {
 		try {
 			Statement statement = connection.createStatement();
 			response = statement.executeUpdate(query);
-			statement.close();
 		} catch (SQLException e) {
-			log.severe("exception updating question in ModifyQuestion ");
+			log.severe("exception updating question management ");
+			e.printStackTrace();
 		} finally {
 			ConnectionService.closeConnection();
 		}
 		return response;
 	}
-//Method to modify topic/subtopic in db
+
 	public static int modifyTopic(int topicId, String topic, int subTopicId, String subTopic) {
-		log.info("inside method modifyTopic");
 		HashMap<String, Integer> topicList = getTopics();
 		int checkCount = 0;
 		String query="";
@@ -634,7 +634,8 @@ public class DbOperation extends ConnectionService {
 			response = statement.executeUpdate(query);
 			statement.close();
 		} catch (SQLException e) {
-			log.severe("exception updating topic ");
+			log.severe("exception updating question management ");
+			e.printStackTrace();
 		} finally {
 			ConnectionService.closeConnection();
 		}
@@ -647,7 +648,7 @@ public class DbOperation extends ConnectionService {
 					//no operation required break
 				}
 				else{
-					query = "UPDATE  SubTopics SET topic_id = '" + topicId + "' WHERE UPPER(sub_topic) = '" //use above update query fetching subtopic ids
+					query = "UPDATE  SubTopics SET topic_id = '" + topicId + "' WHERE UPPER(sub_topic) = '"
 							+ subTopic.toUpperCase() + "' ; ";
 					break; //update the topic-id of, given sub-topic
 				}
@@ -664,6 +665,7 @@ public class DbOperation extends ConnectionService {
 			statement.close();
 		} catch (SQLException e) {
 			log.severe("exception updating question management ");
+			e.printStackTrace();
 		} finally {
 			ConnectionService.closeConnection();
 		}

@@ -13,7 +13,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import com.ey.db.*;
 import com.ey.service.*;
-import com.ey.util.ReadParameters;
 
 public class DeleteQuestion extends HttpServlet {
 	private static final long serialVersionUID = 1L;
