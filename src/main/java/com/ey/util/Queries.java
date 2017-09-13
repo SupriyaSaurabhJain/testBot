@@ -7,7 +7,7 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 public class Queries {
-    private static final String propertyFileName = "queries.properties";
+    private static final String propertyFileName = "Queries.properties";
     private static Properties property;
 	private static final Logger log = Logger.getLogger(Queries.class.getName());
 
