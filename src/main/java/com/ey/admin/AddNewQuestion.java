@@ -12,10 +12,6 @@ import org.json.simple.parser.ParseException;
 import com.ey.service.*;
 import com.ey.db.*;
 
-
-/**
- * Servlet implementation class AddNewQuestion
- */
 public class AddNewQuestion extends HttpServlet {
 	private static final Logger log = Logger.getLogger(AddNewQuestion.class.getName());
 
@@ -25,6 +21,7 @@ public class AddNewQuestion extends HttpServlet {
 		String responseJson  = ReadParameters.readPostParameter(request);
 		JSONParser parser = new JSONParser();
 		Object responseObject = null;
+		log.info("inside AddNewQuestion");
 		try {
 			responseObject = parser.parse(responseJson);
 			JSONObject jsonResponseObject = (JSONObject) responseObject;
@@ -33,11 +30,13 @@ public class AddNewQuestion extends HttpServlet {
 			String subTopic = jsonResponseObject.get("subTopic").toString();
 			String question =  jsonResponseObject.get("question").toString();
 			int userId = Integer.parseInt(jsonResponseObject.get("userId").toString());
+			log.info("parameters received :  topic : " + topic + " subTopic : " + subTopic + " question : "
+					+ question + " userId : " + userId);
+
 			response.getWriter().write(addQuestion(topic, subTopic , question ,userId));
 
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.severe("Exception while extracting parameters inside addNewQuestion : "+ e);
 		}
 	}
 	private static String addQuestion(String topic, String subTopic ,String question, int userId) {
@@ -45,20 +44,19 @@ public class AddNewQuestion extends HttpServlet {
 		String response = "";
 		
 		int result = DbOperation.addNewQuestionToDB(topic, subTopic , question ,userId);
-		log.info("result in addTopic :" + result);
-		if (result == 1) {
-			// to api ai 
-			response = " {  \"status\": {    \"code\": 200,    \"errorType\": \"Success\"  }}" ;
-
-		
-		}
-		else{
-			response = " {  \"status\": {    \"code\": 400,    \"errorType\": \"Request Failed\"  }}" ;
-			
-		}
-		log.info("Response : "+ response);
+		response = getErrorResponse(result);
+		log.info("Response to be sent : " + response);
 		return response;
 	}
 	
+	private static String getErrorResponse(int result) {
+		String response;
+		if (result == 1) {
+			response = " {  \"status\": {    \"code\": 200,    \"errorType\": \"Success\"  }}";
 
+		} else {
+			response = " {  \"status\": {    \"code\": 400,    \"errorType\": \"Request Failed\"  }}";
+		}
+		return response;
+	}
 }

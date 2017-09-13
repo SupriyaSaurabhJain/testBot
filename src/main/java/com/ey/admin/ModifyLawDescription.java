@@ -18,40 +18,32 @@ public class ModifyLawDescription extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(ModifyLawDescription.class.getName());
 
-    public ModifyLawDescription() {
-        super();
-    }
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String requestJson  = ReadParameters.readPostParameter(request);
 		JSONParser parser = new JSONParser();
-		
+		log.info("Inside ModifyLawDescription ");
 		try {
 			JSONObject requestObject = (JSONObject) parser.parse(requestJson);
 			int law_description_id = Integer.parseInt(requestObject.get("law_description_id").toString());
 			String law_description = requestObject.get("law_description").toString();
-			response.getWriter().write(ModifyLawDescription(law_description_id , law_description));
+			log.info("law_description_id : " + law_description_id + " law_description : "+law_description);
+			response.getWriter().write(modifyLawDescription(law_description_id , law_description));
 					
 		} catch (Exception e) {
-			log.info("Error in doPost:"+e);
-
-			response.getWriter().write("{}");	
+			log.info("Exception in fetching request parameters in ModifyLawDescription:"+e);
 		}
 		
 	}
 
-	private String ModifyLawDescription(int law_description_id, String law_description) {
-		int result = DbOperation.updateLawDescription(law_description_id, law_description);
-		
+	private String modifyLawDescription(int law_description_id, String law_description) {
+		log.info("inside method modify law description");
+		int result = DbOperation.updateLawDescription(law_description_id, law_description);		//function call to modify law description in database
 		return getErrorResponse(result);
 	}
 	private static String getErrorResponse(int result){
-
-
 		String response ;
 		if (result == 1 ) {
 			response = " {  \"status\": {    \"code\": 200,    \"errorType\": \"Success\"  }}" ;
-
 		}
 		else {
 			response = " {  \"status\": {    \"code\": 400,    \"errorType\": \"Request Failed\"  }}" ;

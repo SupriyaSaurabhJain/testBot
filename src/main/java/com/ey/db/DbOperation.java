@@ -1,19 +1,14 @@
 package com.ey.db;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Logger;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
-import com.ey.chatbot.MyWebhookServlet;
-
 public class DbOperation extends ConnectionService {
 	private static final Logger log = Logger.getLogger(DbOperation.class.getName());
-
+	//Method to get list of topics along with their Id 
+	//Returns hashMap <topic, topicId>
 	public static HashMap<String, Integer> getTopics() {
 		log.info("inside method getTopic");
 		HashMap<String, Integer> topics = new HashMap<String, Integer>();
@@ -26,14 +21,16 @@ public class DbOperation extends ConnectionService {
 				topics.put(result.getString("topic_name"), result.getInt("topic_id"));
 			}
 			result.close();
+			statement.close();
 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} 
+		catch (SQLException e) {
 			log.severe("exception while fetching list of Topics from table :" + e);
-
 		}
 		return topics;
 	}
+	//Method to get list of sub-topics along with their Id 
+	//Returns hashMap <sub-topic, sub-topicId>
 	public static HashMap<String, Integer> getSubTopics() {
 		log.info("inside method getTopic");
 		HashMap<String, Integer> subTopics = new HashMap<String, Integer>();
@@ -46,43 +43,57 @@ public class DbOperation extends ConnectionService {
 				subTopics.put(result.getString("sub_topic_name"), result.getInt("sub_topic_id"));
 			}
 			result.close();
+			statement.close();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			log.severe("exception while fetching list of subTopics from table :" + e);
 		}
 		return subTopics;
 	}
-	public static int addNewTopicToDB(String topic, String subTopic) {
+	//Method to add new topic & subTopic to database
+	//returns 1 if success
+	public static int addNewTopicSubTopicToDB(String topic, String subTopic) {
 		log.info("inside method addTopic");
-		Connection connection = ConnectionService.getConnection();
 		HashMap<String, Integer> topicSet = getTopics();
-		int topic_id = -1;
+		int topicId = -1;
 		int check = 0;
 		int response = -1;
-		for (String topicVal : topicSet.keySet()) {
+		for (String topicVal : topicSet.keySet()) { //Check if topic already exists or not
 			check++;
 			if (topicVal.equalsIgnoreCase(topic)) {
-				topic_id = topicSet.get(topicVal);
+				topicId = topicSet.get(topicVal);
 				break;
 			}
 		}
 		if (check == topicSet.keySet().size()) {
-			insertTopic(topic);
-			topic_id = getTopicId(topic);
+			insertTopic(topic);					// if topic not present add it to database
+			topicId = getTopicId(topic); 	//get topic Id for the topic
 		}
+		response = insertSubTopic(subTopic, topicId) ; //Method call to add subtopic to database
+		return response;
+	}
+//Method to add sub-topic for given topic-id to database
+	 private static int insertSubTopic(String subTopic ,int topicId) {
+		Connection connection = ConnectionService.getConnection();
+		Statement statement;
+		int response = -1;
+		String query = "INSERT INTO SubTopics(sub_topic_name ,topic_id) VALUES('" + subTopic + "','" + topicId + "')" ;
 		try {
-			Statement statement = connection.createStatement();
-			response = statement.executeUpdate(
-					"INSERT INTO SubTopics(sub_topic_name ,topic_id) VALUES('" + subTopic + "','" + topic_id + "')");
+			statement = connection.createStatement();
+			response = statement.executeUpdate(query);	
+			log.info("Subtopic added to table SubTopics : " + response);
+			statement.close();
+
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			log.severe("exception while deleting from table :" + e);
+			log.severe("Exception adding sub topic to table : " + e);
+
 			e.printStackTrace();
+		} finally {
+			ConnectionService.closeConnection();
 		}
 		return response;
 	}
-
+	 //Method to get topic-id for given topic
 	public static int getTopicId(String topic) {
 		Connection connection = ConnectionService.getConnection();
 		int topic_id = -1;
@@ -97,8 +108,7 @@ public class DbOperation extends ConnectionService {
 			rs.close();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			log.severe("exception fetching topic id");
+			log.severe("exception fetching topic id " + e);
 			e.printStackTrace();
 		} finally {
 			ConnectionService.closeConnection();
@@ -107,27 +117,25 @@ public class DbOperation extends ConnectionService {
 		return topic_id;
 
 	}
-
-	static int insertTopic(String topic) {
+//Method to insert topic in database
+	 private static int insertTopic(String topic) {
 		Connection connection = ConnectionService.getConnection();
 		Statement statement;
 		int response = -1;
 		try {
 			statement = connection.createStatement();
-
 			response = statement.executeUpdate("insert into Topics(topic_name) Values('" + topic + "')");
 			log.info("added to table Topics : " + response);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			log.severe("Exception adding topic to table : " + e);
+			statement.close();
 
-			e.printStackTrace();
+		} catch (SQLException e) {
+			log.severe("Exception adding topic to table : " + e);
 		} finally {
 			ConnectionService.closeConnection();
 		}
 		return response;
 	}
-
+//Method to delete topic from database
 	public int deleteTopicFromDb(String topic) {
 		log.info("inside method deleteTopic");
 		int response = 0;
@@ -136,17 +144,18 @@ public class DbOperation extends ConnectionService {
 			Statement statement = connection.createStatement();
 			response = statement.executeUpdate("DELETE FROM Topics WHERE topic_name = ' " + topic + "'");
 			log.info("Query executed response : " + response);
+			statement.close();
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			log.severe("exception while deleting topic from table :" + e);
-			e.printStackTrace();
 		} finally {
 			ConnectionService.closeConnection();
 		}
 		return response;
 	}
-
-	public int deleteSubTopicFromDb(String subTopic) {
+//Method to delete sub topic from databases
+	public static int deleteSubTopicFromDb(String subTopic) {
 		log.info("inside method deleteSubTopic");
 		int response = 0;
 		Connection connection = ConnectionService.getConnection();
@@ -154,8 +163,9 @@ public class DbOperation extends ConnectionService {
 			Statement statement = connection.createStatement();
 			response = statement.executeUpdate("DELETE FROM SubTopics WHERE sub_topic_name = ' " + subTopic + "'");
 			log.info("Query executed response : " + response);
+			statement.close();
+
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			log.severe("exception while deleting subTopic from table :" + e);
 			e.printStackTrace();
 		} finally {
@@ -163,7 +173,7 @@ public class DbOperation extends ConnectionService {
 		}
 		return response;
 	}
-
+//Method to get subTopicId for given sub topic
 	public static int getSubTopicId(String subtopic) {
 		Connection connection = ConnectionService.getConnection();
 		int subTopic_id = -1;
@@ -175,28 +185,26 @@ public class DbOperation extends ConnectionService {
 					.executeQuery("SELECT sub_topic_id FROM SubTopics WHERE sub_topic_name='" + subtopic + "';");
 			while (rs.next()) {
 				subTopic_id = rs.getInt("sub_topic_id");
-
 			}
 			rs.close();
+			statement.close();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			log.severe("exception fetching sub topic id");
+			log.severe("exception fetching sub topic id "+ e);
 			e.printStackTrace();
 		} finally {
 			ConnectionService.closeConnection();
 		}
-		log.info("subTopic id added : " + subTopic_id);
 		return subTopic_id;
 	}
-
+//Method to get lawDescription(Response for Query) for provided subtopic state & country returning law description string 
 	public static String getResponse(String subTopic, String state, String country) {
-		log.info("inside getResponse");
+		log.info("inside getResponse(String subTopic, String state, String country)");
 		String response = "";
 		String Query = "";
 		int subTopic_id = getSubTopicId(subTopic.toUpperCase());
 		Connection connection = ConnectionService.getConnection();
-		if (state.toUpperCase().equalsIgnoreCase("FEDERAL")) {
+		if (state.toUpperCase().equalsIgnoreCase("FEDERAL")) { // check if its for federal or some state
 			Query = "SELECT law_description FROM Law_Description WHERE sub_topic_id = '" + subTopic_id
 					+ "' AND state_id IS NULL;";
 		} else {
@@ -211,21 +219,20 @@ public class DbOperation extends ConnectionService {
 				response = rs.getString("law_description");
 			}
 			rs.close();
-
+			statement.close();
 			log.info("Query executed response : " + response);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			log.severe("exception while selecting from table :" + e);
-			e.printStackTrace();
+			log.severe("exception while fetching response / lawDescription from table :" + e);
 		} finally {
 			ConnectionService.closeConnection();
 		}
 		return response;
 
 	}
-
+// overloaded getResponse method to fetch law description for provide subtopicId & stateId
+	@SuppressWarnings("unchecked")
 	public static JSONObject getResponse(int subTopicId, int stateId) {
-		log.info("inside getResponse");
+		log.info("inside JSONObject getResponse(int subTopicId, int stateId) ");
 		String law_desription = "";
 		String Query = "";
 		JSONObject response = new JSONObject();
@@ -241,19 +248,16 @@ public class DbOperation extends ConnectionService {
 				response.put("law_description", law_desription);
 			}
 			rs.close();
-
+			statement.close();
 			log.info("Query executed response : " + response);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			log.severe("exception while selecting from table :" + e);
-			e.printStackTrace();
+			log.severe("exception while fetching response / lawDescription from table :" + e);
 		} finally {
 			ConnectionService.closeConnection();
 		}
 		return response;
-
 	}
-
+//Method to get state id for given state
 	public static int getstateId(String state) {
 		Connection connection = ConnectionService.getConnection();
 		int state_id = -1;
@@ -278,8 +282,9 @@ public class DbOperation extends ConnectionService {
 		log.info("state id fetched : " + state_id);
 		return state_id;
 	}
-
+//Method to add new question to database
 	public static int addNewQuestionToDB(String topic, String subTopic, String question, int userId) {
+		log.info("inside addNewQuestionToDB(String topic, String subTopic, String question, int userId)");
 		int response = -1;
 		int topicId = getTopicId(topic);
 		int subTopicId = getSubTopicId(subTopic);
@@ -292,10 +297,8 @@ public class DbOperation extends ConnectionService {
 			statement = connection.createStatement();
 			response = statement.executeUpdate(query);
 			log.info("question added sucessfully");
-			ConnectionService.closeConnection();
-
+			statement.close();
 		} catch (SQLException e) {
-			// TODO: handle exception
 			log.severe("exception adding question : " + e);
 		} finally {
 			ConnectionService.closeConnection();
@@ -303,10 +306,10 @@ public class DbOperation extends ConnectionService {
 		}
 		return response;
 	}
-
+//Method to delete question from db
 	public static int deleteQuestionFromDb(int questionId) {
 		// TODO Auto-generated method stub
-		log.info("inside method deleteTopic");
+		log.info("inside method deleteQuestion");
 		int response = 0;
 		Connection connection = ConnectionService.getConnection();
 		String query = "DELETE FROM QuestionsManagement WHERE question_id  = ' " + questionId + "'";
@@ -314,17 +317,16 @@ public class DbOperation extends ConnectionService {
 			Statement statement = connection.createStatement();
 			response = statement.executeUpdate(query);
 			log.info("Query executed response : " + response);
+			statement.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			log.severe("exception while deleting from table :" + e);
-			e.printStackTrace();
 		} finally {
 			ConnectionService.closeConnection();
 
 		}
 		return response;
 	}
-
+//Method to get law description Id
 	public static int getLawDescriptionId(int subTopicId, int countryId, int stateId) {
 		int descriptionId = -1;
 		String query = "SELECT law_desc_id FROM Law_Description WHERE  subTopicId = '" + subTopicId + "' country_id = '"

@@ -17,21 +17,21 @@ import com.ey.service.*;
 
 public class addTopicServlet extends HttpServlet {
 	private static final Logger log = Logger.getLogger(addTopicServlet.class.getName());
-
 	private static final long serialVersionUID = 1L;
-
-
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String responseJson  = ReadParameters.readPostParameter(request);
 		JSONParser parser = new JSONParser();
 		Object responseObject = null;
+		log.info("inside addTopicServlet");
+
 		try {
 			responseObject = parser.parse(responseJson);
 			JSONObject jsonResponseObject = (JSONObject) responseObject;
 			//System.out.println(jsonResponseObject);
 			String topic = jsonResponseObject.get("topic").toString();
 			String subTopic = jsonResponseObject.get("subTopic").toString();
+			log.info("parameters received :  topic : " + topic + " subTopic : " + subTopic );
 			response.getWriter().write(addTopic(topic, subTopic));
 
 		} catch (ParseException e) {
@@ -42,26 +42,35 @@ public class addTopicServlet extends HttpServlet {
 	public static String addTopic(String topic, String subTopic) {
 		// TODO Auto-generated method stub
 		String response = "";
-		int result =  DbOperation.addNewTopicToDB(topic, subTopic);
-		log.info("result in addTopic :" + result);
-		if (result == 1) {
-			response =new APIHandler().addTopic(subTopic, subTopic);
-		
+		int resultFromAPI ;
+		int resultFromDb =  DbOperation.addNewTopicSubTopicToDB(topic, subTopic); // Method call to add topic & sub-topic to database
+		log.info("result in addTopic :" + resultFromDb);
+		if (resultFromDb == 1) {			// if topic/subtopic addition to database is succeeded result = 1, then add tp API AI
+			resultFromAPI = APIHandler.addTopic(subTopic, subTopic); //Method call to add topic to API AI
+			if (resultFromAPI == 1) { //check if subTopic successfully added to API AI
+				response = getErrorResponse(resultFromAPI);  //if success set response message  
+			}
+			else{
+				DbOperation.deleteSubTopicFromDb(subTopic); // if not added successfully roll back all the transactions, deleting entries from database
+			}
 		}
 		else{
-			response = getErrorResponse() ;
-			
+			response = getErrorResponse(resultFromDb) ; // if entity not added successfully set response
+
 		}
-		log.info("Response : "+ response);
+		log.info("Response from assTopicServlet: "+ response);
 		return response;
 	}
-	private static String getJsonStringEntityForElement(String topic , String subTopic){
-		String inputJson = "[{\"value\": \""+ subTopic+ "\",\"synonyms\": []}]" ;
-		return inputJson;
-	}
-	private static String getErrorResponse(){
-		String errorResponse = " {  \"status\": {    \"code\": 400,    \"errorType\": \"Request Failed\"  }}" ;
+
+	private static String getErrorResponse(int resultFromDb){
+		String errorResponse ="";
+		if (resultFromDb == 1) {
+			errorResponse = " {  \"status\": {    \"code\": 200,    \"errorType\": \"Success\"  }}";
+		}
+		else{
+			errorResponse = " {  \"status\": {    \"code\": 400,    \"errorType\": \"Request Failed\"  }}" ;
+		}
 		return errorResponse;
 	}
-	
+
 }
