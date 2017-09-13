@@ -1,18 +1,20 @@
-package com.ey.service;
+package com.ey.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class ReadParameters {
+	private static final Logger log = Logger.getLogger(ReadParameters.class.getName());
+//Method to read parameters from request object body
 public static String readPostParameter(HttpServletRequest request) {
-	// TODO Auto-generated method stub
+	log.info("inside method read parameters");
 	StringBuilder stringBuilder = new StringBuilder();  
     BufferedReader bufferedReader = null;  
-    
     try {  
         InputStream inputStream = request.getInputStream(); 
 
@@ -29,17 +31,17 @@ public static String readPostParameter(HttpServletRequest request) {
             stringBuilder.append("");  
         }  
     } catch (IOException ex) {  
-        System.out.println(("Error reading the request body..."));  
+        log.info(("Error reading the request body..."));  
     } finally {  
         if (bufferedReader != null) {  
             try {  
                 bufferedReader.close();  
             } catch (IOException ex) {  
-              System.out.println("Error closing bufferedReader...");  
+            	log.info("Error closing bufferedReader...");  
             }  
         }  
     }  
-    System.out.println(stringBuilder.toString());
+    log.info("response body : "+stringBuilder.toString());
     return stringBuilder.toString();
 }
 }
