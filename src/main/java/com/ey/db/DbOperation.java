@@ -356,6 +356,10 @@ public class DbOperation extends ConnectionService {
 		Connection connection = ConnectionService.getConnection();
 		try {
 			PreparedStatement statement = connection.prepareStatement(Queries.getQuery("GetLawDescriptionId"));
+			statement.setInt(1, subTopicId);			
+			statement.setInt(2, countryId);
+			statement.setInt(3, stateId);
+
 			ResultSet resultSet = statement.executeQuery();
 			while (resultSet.next()) {
 				descriptionId = resultSet.getInt("law_desc_id");
@@ -633,7 +637,6 @@ public class DbOperation extends ConnectionService {
 		log.info("inside method modifyTopic");
 		HashMap<String, Integer> topicList = getTopics();
 		int checkCount = 0;
-		String query="";
 		int response = -1;
 		Connection connection = ConnectionService.getConnection();
 		PreparedStatement statement = null;
@@ -641,12 +644,17 @@ public class DbOperation extends ConnectionService {
 		for (String topicInDb : topicList.keySet()) {
 			if (topicInDb.equalsIgnoreCase(topic)) {
 				if(topicList.get(topicInDb) == getTopicId(topic)){ //check if it is the same one by comparing their topic-id
+					log.info("Topics up to date - no change required");
 					break;									   	  //if same no operation required break
 				}
 				else{					
 						statement = connection.prepareStatement(Queries.getQuery("UpdteTopicIdinSubTopics")); //update TopicId in subTopics
 						statement.setInt(1,topicList.get(topicInDb) );
 						statement.setInt(2, subTopicId);
+						log.info("query formed for UpdteTopicIdinSubTopics");
+						response = statement.executeUpdate();
+						log.info("Topic changes updated");
+						statement.close();
 					/*query = "UPDATE  SubTopics SET topic_id = '" + topicList.get(topicInDb) + "' WHERE sub_topic_id = '"
 							+ subTopicId + "' ; ";//update TopicId in subTopics
 */					break;
@@ -655,15 +663,17 @@ public class DbOperation extends ConnectionService {
 			checkCount++;
 		}
 		if (checkCount == topicList.size()) {
-			
+				log.info("Updating spelling mistake in topic");
 				statement = connection.prepareStatement(Queries.getQuery("UpdateTopicName")); //modify topic name in table 
 				statement.setString(1,topic );
 				statement.setInt(2, topicId);
+				log.info("query formed for spelling change");
+				response = statement.executeUpdate();
+				log.info("Topic changes updated");
+				statement.close();
 				/*query = "UPDATE  Topics SET topic_name = '" + topic + "' WHERE topic_id = '"
 					+ topicId + "' ; ";*/
-		}		
-			response = statement.executeUpdate();
-			statement.close();
+		}			
 		} catch (SQLException e) {
 			log.severe("exception updating question management ");
 			e.printStackTrace();
@@ -671,23 +681,25 @@ public class DbOperation extends ConnectionService {
 			ConnectionService.closeConnection();
 		}
 		checkCount = 0;
+		log.info("checking sub topic for updates");
 		HashMap<String, Integer> subTopicList = getSubTopics();
+		try{
 		for (String subTopicInDb : subTopicList.keySet()) {
 			if (subTopicInDb.equalsIgnoreCase(subTopic)) {
 				if(subTopicList.get(subTopicInDb) == getSubTopicId(subTopic)){//check if it is the same one by comparing the  sub - topic ids
+					log.info("no update required in sub topic");
 					break;
 					//no operation required break
 				}
 				else{
-					
-					try {
 						statement = connection.prepareStatement(Queries.getQuery("UpdteTopicIdinSubTopics")); //update the topic-id of, given sub-topic 
 						statement.setInt(1,topicId );
 						statement.setInt(2, getSubTopicId(subTopic));
-					} catch (SQLException e) {
-						log.severe("exception creating query : " + e);
-					}
-					/*query = "UPDATE  SubTopics SET topic_id = '" + topicId + "' WHERE UPPER(sub_topic) = '"
+						log.info("query formed for UpdteTopicIdinSubTopics");
+						response = statement.executeUpdate();
+						log.info("Sub Topic changes updated");
+						statement.close();
+					 /*query = "UPDATE  SubTopics SET topic_id = '" + topicId + "' WHERE UPPER(sub_topic) = '"
 							+ subTopic.toUpperCase() + "' ; ";*/
 					break; //update the topic-id of, given sub-topic
 				}
@@ -695,20 +707,18 @@ public class DbOperation extends ConnectionService {
 			checkCount++;
 		}
 		if (checkCount == subTopicList.size()) {
-			try {
 				statement = connection.prepareStatement(Queries.getQuery("UpdateSubTopicName")); //update the topic-id of, given sub-topic 
 				statement.setString(1,subTopic );
 				statement.setInt(2, subTopicId);
-			} catch (SQLException e) {
-				log.severe("exception creating query : " + e);
-			}
-			/*query = "UPDATE  SubTopics SET sub_topic_name = '" + subTopic + "' WHERE sub_topic_id = '"
+				log.info("query formed for spelling correction in SubTopic");
+				response = statement.executeUpdate();
+				log.info("Sub Topic changes updated");
+				statement.close();
+								/*query = "UPDATE  SubTopics SET sub_topic_name = '" + subTopic + "' WHERE sub_topic_id = '"
 					+ subTopicId + "' ; ";//modify topic name in table 
-*/		}
-		try {
-			response = statement.executeUpdate();
-			statement.close();
-		} catch (SQLException e) {
+*/					
+		}
+		}catch (SQLException e) {
 			log.severe("exception updating question management ");
 			e.printStackTrace();
 		} finally {
