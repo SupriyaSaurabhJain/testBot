@@ -531,14 +531,14 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 		}
 		log.info(query);
 		Connection connection=null;
-		Statement stmt = null;
+		Statement statement = null;
 		try {
 			
 			connection = ConnectionService.getConnection();
-			stmt = connection.createStatement();
-			response = stmt.executeUpdate(query);
+			statement = connection.createStatement();
+			response = statement.executeUpdate(query);
 			log.info("subscriber added successfully");
-			
+			statement.close();
 		} 
 		catch(SQLIntegrityConstraintViolationException e){
 			log.info("email id repeated");
@@ -554,7 +554,7 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 		return response;
 	}
 	
-	public static int deleteSubscriberFromDb(int userID) {
+	public static int deleteSubscriber(int userID) {
 		// TODO Auto-generated method stub
 		log.info("inside method deleteSubscriber");
 		int response = 0;
@@ -564,6 +564,7 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 			Statement statement =  connection.createStatement();
 			response = statement.executeUpdate(query);
 			log.info("Query executed response : "+ response);
+			statement.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			log.severe("exception while deleting from table :" + e);
@@ -576,7 +577,7 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 		return response;	
 	}
 	
-	public static int ModifySubscriberFromDb(int userID, String Username, String email, String Password, String Status, boolean isadmin, boolean isRoleChange) {
+	public static int ModifySubscriber(int userID, String Username, String email, String Password, String Status, boolean isadmin, boolean isRoleChange) {
 		// TODO Auto-generated method stub
 		log.info("inside method ModifySubscriber");
 		int response = 0;
@@ -596,6 +597,7 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 			Statement statement =  connection.createStatement();
 			response = statement.executeUpdate(query);
 			log.info("Query executed response : "+ response);
+			statement.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			log.severe("exception while modifying in table :" + e);
@@ -608,7 +610,7 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 		return response;	
 	}
 	
-  public static String fetchSubscribersFromDB(){
+  public static String fetchSubscribers(){
 		
 		log.info("Inside method fetchSubscriberFromDB");
 		
@@ -623,21 +625,22 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 		try {
 			Statement statement = connection.createStatement();
 			
-			ResultSet rs = statement.executeQuery(query);
+			ResultSet subscribers = statement.executeQuery(query);
 			
-			while(rs.next()){
+			while(subscribers.next()){
 				JSONObject SubscriberData = new JSONObject();
-				SubscriberData.put("User_ID" , rs.getInt("User_ID"));
-				SubscriberData.put("Username" , rs.getString("Username"));
-				SubscriberData.put("Email" , rs.getString("Email"));
-				SubscriberData.put("Status" , rs.getString("Status"));
-				SubscriberData.put("IsAdmin" , rs.getString("IsAdmin"));
+				SubscriberData.put("User_ID" , subscribers.getInt("User_ID"));
+				SubscriberData.put("Username" , subscribers.getString("Username"));
+				SubscriberData.put("Email" , subscribers.getString("Email"));
+				SubscriberData.put("Status" , subscribers.getString("Status"));
+				SubscriberData.put("IsAdmin" , subscribers.getString("IsAdmin"));
 				
 				data.add(SubscriberData);
 				
 			}
 			
-			rs.close();
+			subscribers.close();
+			statement.close();
 			
 			listOfSubscribers.put("data", data);
 			
@@ -661,17 +664,17 @@ public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id){
 	   log.info(query);
 	   Connection connection = ConnectionService.getConnection();
 	   try{
-		   Statement stmt = connection.createStatement();
-		   ResultSet rs = stmt.executeQuery(query);
-		   while(rs.next())
+		   Statement statement = connection.createStatement();
+		   ResultSet roles = statement.executeQuery(query);
+		   while(roles.next())
 		   {
-			   String role = rs.getString("IsAdmin");
+			   String role = roles.getString("IsAdmin");
 			   isadmin = Boolean.parseBoolean(role.trim());
 			   log.info(" database value :"+role);
 			   log.info("Collected user's role : "+isadmin);
 		   }
-		   rs.close();
-		   stmt.close();
+		   roles.close();
+		   statement.close();
 		   
 	   }catch(Exception e){
 		   log.info("Exception while cheking user role");

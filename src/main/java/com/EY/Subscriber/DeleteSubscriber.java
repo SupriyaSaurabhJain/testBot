@@ -23,24 +23,7 @@ public class DeleteSubscriber extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(AddNewQuestion.class.getName());
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public DeleteSubscriber() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+    
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String responseJson  = ReadParameters.readPostParameter(request);
@@ -61,7 +44,7 @@ public class DeleteSubscriber extends HttpServlet {
 	
 	public String removeSubscriber(int User_ID){
 		String response = "";
-		int result = DbOperation.deleteSubscriberFromDb(User_ID);
+		int result = DbOperation.deleteSubscriber(User_ID);
 		log.info("result in delete que :" + result);
 		if (result == 1) {
 			// to api ai 

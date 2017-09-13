@@ -24,24 +24,7 @@ public class ModifySubscriber extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(AddNewQuestion.class.getName());
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ModifySubscriber() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+  
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		log.info("Inside Modify Subscriber");
@@ -74,6 +57,7 @@ public class ModifySubscriber extends HttpServlet {
 			}
 			else if(DbOperation.IsUserAdmin(User_ID)==true&&isadmin==false){
 				
+				log.info("Admin changed to user");
 				response.getWriter().write(modifySubscriber(User_ID,username, email, "NULL", status, isadmin, true));
 			}
 			else
@@ -92,7 +76,7 @@ public class ModifySubscriber extends HttpServlet {
 	
 	public String modifySubscriber(int User_ID, String Username, String Email, String Password,String Status, boolean IsAdmin, boolean IsRoleChange){
 		String response = "";
-		int result = DbOperation.ModifySubscriberFromDb(User_ID,Username,Email,Password,Status,IsAdmin,IsRoleChange);
+		int result = DbOperation.ModifySubscriber(User_ID,Username,Email,Password,Status,IsAdmin,IsRoleChange);
 		log.info("result in delete que :" + result);
 		if (result == 1) {
 			// to api ai 

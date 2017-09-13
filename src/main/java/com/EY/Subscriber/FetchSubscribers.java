@@ -20,31 +20,13 @@ public class FetchSubscribers extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(AddNewQuestion.class.getName());
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public FetchSubscribers() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		log.info("Inside FetchSubscribers");
 		response.setContentType("application/json");
 		try {
 				
-			response.getWriter().write(DbOperation.fetchSubscribersFromDB());	
+			response.getWriter().write(DbOperation.fetchSubscribers());	
 			
 		} catch (Exception e) {
 			log.info("Error in doPost:"+e);

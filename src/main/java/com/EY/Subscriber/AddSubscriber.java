@@ -2,8 +2,6 @@ package com.EY.Subscriber;
 
 import java.io.IOException;
 import java.util.logging.Logger;
-import java.security.Key;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,19 +25,6 @@ public class AddSubscriber extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(AddNewQuestion.class.getName());
 
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AddSubscriber() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-	
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String responseJson  = ReadParameters.readPostParameter(request);
