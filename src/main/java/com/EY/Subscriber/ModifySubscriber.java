@@ -55,11 +55,6 @@ public class ModifySubscriber extends HttpServlet {
 				
 				response.getWriter().write(modifySubscriber(User_ID,username, email, encryptedPassword, status, isadmin, true));
 			}
-			else if(DbOperation.IsUserAdmin(User_ID)==true&&isadmin==false){
-				
-				log.info("Admin changed to user");
-				response.getWriter().write(modifySubscriber(User_ID,username, email, "NULL", status, isadmin, true));
-			}
 			else
 			{
 				log.info("No change into role");
@@ -79,7 +74,7 @@ public class ModifySubscriber extends HttpServlet {
 		int result = DbOperation.ModifySubscriber(User_ID,Username,Email,Password,Status,IsAdmin,IsRoleChange);
 		log.info("result in delete que :" + result);
 		if (result == 1) {
-			// to api ai 
+			
 			response = " {  \"status\": {    \"code\": 200,    \"errorType\": \"Sucess\"  }}" ;
 
 		}
