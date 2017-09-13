@@ -637,7 +637,7 @@ public class DbOperation extends ConnectionService {
 		log.info("inside method modifyTopic");
 		HashMap<String, Integer> topicList = getTopics();
 		int checkCount = 0;
-		int response = -1;
+		int response = 2;
 		Connection connection = ConnectionService.getConnection();
 		PreparedStatement statement = null;
 		try {

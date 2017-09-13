@@ -47,6 +47,10 @@ public class ModifyTopic extends HttpServlet {
 			response = " {  \"status\": {    \"code\": 200,    \"errorType\": \"Success\"  }}" ;
 
 		}
+		else if(result == 0){
+			response = " {  \"status\": {    \"code\": 300,    \"errorType\": \"System upto date\"  }}" ;
+
+		}
 		else {
 			response = " {  \"status\": {    \"code\": 400,    \"errorType\": \"Request Failed\"  }}" ;
 		}
