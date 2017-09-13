@@ -72,6 +72,10 @@ public class ModifySubscriber extends HttpServlet {
 				
 				response.getWriter().write(modifySubscriber(User_ID,username, email, encryptedPassword, status, isadmin, true));
 			}
+			else if(DbOperation.IsUserAdmin(User_ID)==true&&isadmin==false){
+				
+				response.getWriter().write(modifySubscriber(User_ID,username, email, "NULL", status, isadmin, true));
+			}
 			else
 			{
 				log.info("No change into role");
