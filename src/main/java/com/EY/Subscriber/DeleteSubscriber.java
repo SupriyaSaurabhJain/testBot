@@ -21,42 +21,35 @@ import com.EY.Service.ReadParameters;
  */
 public class DeleteSubscriber extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(AddNewQuestion.class.getName());
+	private static final Logger log = Logger.getLogger(DeleteSubscriber.class.getName());
        
-    
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		String responseJson  = ReadParameters.readPostParameter(request);
 		JSONParser parser = new JSONParser();
-		Object responseObject = null;
 		try {
-			responseObject = parser.parse(responseJson);
-			JSONObject jsonResponseObject = (JSONObject) responseObject;
-			//System.out.println(jsonResponseObject);
-			int User_ID = Integer.parseInt(jsonResponseObject.get("User_ID").toString());
-			response.getWriter().write(removeSubscriber(User_ID));
+			JSONObject jsonResponseObject = (JSONObject) parser.parse(responseJson);
+			
+			int userId = Integer.parseInt(jsonResponseObject.get("userId").toString());
+			int result = DbOperation.deleteSubscriber(userId);
+			
+			response.getWriter().write(getResponseJson(result));
 
 		} catch (ParseException e) {
-			e.printStackTrace();
+			log.severe("Parse Exception in deleting subscriber");
 		}
 		
 	}
 	
-	public String removeSubscriber(int User_ID){
-		String response = "";
-		int result = DbOperation.deleteSubscriber(User_ID);
-		log.info("result in delete que :" + result);
+	private static String getResponseJson(int result) {
+		log.info("inside getResponse json");
+		String response;
 		if (result == 1) {
-			// to api ai 
-			response = " {  \"status\": {    \"code\": 200,    \"errorType\": \"Sucess\"  }}" ;
+			response = " {  \"status\": {    \"code\": 200,    \"errorType\": \"Success\"  }}";
 
-
+		}else {
+			response = " {  \"status\": {    \"code\": 400,    \"errorType\": \"Request Failed\"  }}";
 		}
-		else{
-			response = " {  \"status\": {    \"code\": 400,    \"errorType\": \"Request Failed\"  }}" ;
-
-		}
-		log.info("Response : "+ response);
 		return response;
 	}
 

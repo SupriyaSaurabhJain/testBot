@@ -22,9 +22,9 @@ import com.EY.Service.ReadParameters;
  */
 public class ModifySubscriber extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(AddNewQuestion.class.getName());
-       
-  
+	private static final Logger log = Logger.getLogger(ModifySubscriber.class.getName());
+	private static String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		log.info("Inside Modify Subscriber");
@@ -35,54 +35,49 @@ public class ModifySubscriber extends HttpServlet {
 			responseObject = parser.parse(responseJson);
 			JSONObject jsonResponseObject = (JSONObject) responseObject;
 			//System.out.println(jsonResponseObject);
-			int User_ID = Integer.parseInt(jsonResponseObject.get("User_ID").toString());
+			int userId = Integer.parseInt(jsonResponseObject.get("userId").toString());
 			String username = jsonResponseObject.get("username").toString();
 			String email = jsonResponseObject.get("email").toString();
 			String status = jsonResponseObject.get("status").toString();
 			boolean isadmin = Boolean.parseBoolean(jsonResponseObject.get("isadmin").toString());
 			
-			if(DbOperation.IsUserAdmin(User_ID)==false&&isadmin==true)
+			boolean isUserAlreadyAdmin = DbOperation.isUserAdmin(userId);
+			boolean isRoleChange =false;
+			String encryptedPassword = null;
+			
+			if(!isUserAlreadyAdmin&&isadmin)
 			{
 				log.info("User getting Modified to Admin");
-				String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 				String password = RandomStringUtils.random( 9 , characters );
 				log.info("randomly created plain password :" + password);
-				
-	            String encryptedPassword = EncryptDecrypt.encrypt(password);
-	            log.info("encrypted pass="+encryptedPassword);
-	            String decryptedPassword = EncryptDecrypt.decrypt(encryptedPassword);    
-	            log.info("decrypted pass="+decryptedPassword);
-				
-				response.getWriter().write(modifySubscriber(User_ID,username, email, encryptedPassword, status, isadmin, true));
+				encryptedPassword = EncryptDecrypt.encrypt(password);
+	            isRoleChange = true;
 			}
-			else
-			{
-				log.info("No change into role");
-				response.getWriter().write(modifySubscriber(User_ID,username, email, "NULL", status, isadmin, false));
-			}
+			response.getWriter().write(modifySubscriber(userId,username, email, encryptedPassword, status, isadmin, isRoleChange));
 			
 		} catch (ParseException e) {
-			e.printStackTrace();
+			log.severe("Parse exception in modifying the subscriber");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.severe("exception in modifying the subscriber");
 		}
 	}
 	
 	public String modifySubscriber(int User_ID, String Username, String Email, String Password,String Status, boolean IsAdmin, boolean IsRoleChange){
-		String response = "";
-		int result = DbOperation.ModifySubscriber(User_ID,Username,Email,Password,Status,IsAdmin,IsRoleChange);
-		log.info("result in delete que :" + result);
+		
+		int result = DbOperation.modifySubscriber(User_ID,Username,Email,Password,Status,IsAdmin,IsRoleChange);
+		log.info("result in delete subscriber :" + result);
+		return getResponseJson(result);
+	}
+	
+	private static String getResponseJson(int result) {
+		log.info("inside getResponse json");
+		String response;
 		if (result == 1) {
-			
-			response = " {  \"status\": {    \"code\": 200,    \"errorType\": \"Sucess\"  }}" ;
+			response = " {  \"status\": {    \"code\": 200,    \"errorType\": \"Success\"  }}";
 
+		}else {
+			response = " {  \"status\": {    \"code\": 400,    \"errorType\": \"Request Failed\"  }}";
 		}
-		else{
-			response = " {  \"status\": {    \"code\": 400,    \"errorType\": \"Request Failed\"  }}" ;
-
-		}
-		log.info("Response : "+ response);
 		return response;
 	}
 

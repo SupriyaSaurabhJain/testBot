@@ -18,21 +18,21 @@ import com.EY.DB.DbOperation;
  */
 public class FetchSubscribers extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(AddNewQuestion.class.getName());
-       
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+	private static final Logger log = Logger.getLogger(FetchSubscribers.class
+			.getName());
+
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		
 		log.info("Inside FetchSubscribers");
 		response.setContentType("application/json");
+		String responseText = "{}";
 		try {
-				
-			response.getWriter().write(DbOperation.fetchSubscribers());	
-			
+			responseText = DbOperation.fetchSubscribers();
 		} catch (Exception e) {
-			log.info("Error in doPost:"+e);
-
-			response.getWriter().write("{}");	
+			log.severe("Exception in fetching subscribers");
 		}
+		response.getWriter().write(responseText);
 	}
 
 }
