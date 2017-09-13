@@ -13,7 +13,7 @@ import org.json.simple.parser.ParseException;
 
 import com.ey.apiai.Handler.*;
 import com.ey.db.*;
-import com.ey.service.*;
+import com.ey.service.ReadParameters;
 
 public class addTopicServlet extends HttpServlet {
 	private static final Logger log = Logger.getLogger(addTopicServlet.class.getName());

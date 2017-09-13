@@ -12,7 +12,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import com.ey.db.*;
-import com.ey.service.*;
+import com.ey.service.ReadParameters;
+
 
 public class ModifyTopic extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -26,8 +27,8 @@ public class ModifyTopic extends HttpServlet {
 			JSONObject requestObject = (JSONObject) parser.parse(requestJson);
 			int topicId = Integer.parseInt(requestObject.get("topicId").toString().trim());
 			String topic = requestObject.get("topic").toString().trim();
-			int subTopicId = Integer.parseInt(requestObject.get("subtopicId").toString().trim());
-			String subTopic = requestObject.get("subtTopic").toString().trim();
+			int subTopicId = Integer.parseInt(requestObject.get("subTopicId").toString().trim());
+			String subTopic = requestObject.get("subTopic").toString().trim();
 			log.info("topicId : " + topicId + " subTopicId : "+subTopicId+ "  topic : "+topic + " subTopic : "+subTopic);
 			response.getWriter().write(modifyTopic(topicId , topic , subTopicId , subTopic));
 

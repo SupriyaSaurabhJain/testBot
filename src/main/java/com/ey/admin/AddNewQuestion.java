@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import com.ey.service.*;
 import com.ey.db.*;
+import com.ey.service.ReadParameters;
 
 public class AddNewQuestion extends HttpServlet {
 	private static final Logger log = Logger.getLogger(AddNewQuestion.class.getName());

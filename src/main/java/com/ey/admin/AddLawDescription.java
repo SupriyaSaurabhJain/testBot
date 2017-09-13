@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import com.ey.service.*;
 import com.ey.db.DbOperation;
+import com.ey.service.ReadParameters;
 
 public class AddLawDescription extends HttpServlet {
 	private static final long serialVersionUID = 1L;
