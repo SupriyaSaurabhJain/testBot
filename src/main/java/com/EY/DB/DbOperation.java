@@ -745,12 +745,12 @@ public class DbOperation extends ConnectionService {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		try {
-			String isUserAdminQuery = "select IsAdmin from User where User_ID = ?";
+			String isUserAdminQuery = "SELECT IsAdmin FROM User WHERE User_ID = ?;";
 			log.info(isUserAdminQuery);
 			connection = ConnectionService.getConnection();
 			statement = connection.prepareStatement(isUserAdminQuery);
 			statement.setInt(1, userId);
-			ResultSet rolesResultSet = statement.executeQuery(isUserAdminQuery);
+			ResultSet rolesResultSet = statement.executeQuery();
 			while (rolesResultSet.next()) {
 				String role = rolesResultSet.getString("IsAdmin");
 				isadmin = Boolean.parseBoolean(role.trim());
@@ -758,7 +758,6 @@ public class DbOperation extends ConnectionService {
 			}
 			rolesResultSet.close();
 		}catch(SQLException e){
-			log.info("exception :"+e);
 			log.severe("SQLException while cheking user role");
 		}
 		catch (Exception e) {
