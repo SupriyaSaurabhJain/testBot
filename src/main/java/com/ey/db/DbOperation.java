@@ -216,12 +216,12 @@ public class DbOperation extends ConnectionService {
 		PreparedStatement statement ;	
 		try {
 		if (state.toUpperCase().equalsIgnoreCase("FEDERAL")) { // check if its for federal or some state
-			/*Query = "SELECT law_description FROM Law_Description WHERE sub_topic_id = '" + subTopic_id
-					+ "' AND state_id IS NULL;";*/
-			query = Queries.getQuery("GetLawDescriptionForFederal");
+			query = "SELECT LD.law_description , LD.law_desc_id,S.state_id,ST.sub_topic_id FROM Law_Description AS LD INNER JOIN SubTopics AS ST ON LD.sub_topic_id = ST.sub_topic_id LEFT JOIN State AS S  ON S.state_id = LD.state_id WHERE S.state_id = 1 and ST.sub_topic_id = 1;" ;
+			 statement = connection.prepareStatement(query);
+			/*query = Queries.getQuery("GetLawDescriptionForFederal");
 			log.info("Query : "+query);
 			statement = connection.prepareStatement(query);
-			statement.setInt(1, subTopic_id);
+			statement.setInt(1, subTopic_id);*/
 		} else {
 			int state_id = getstateId(state.toUpperCase());
 		/*	Query = "SELECT law_description FROM Law_Description WHERE sub_topic_id = '" + subTopic_id
