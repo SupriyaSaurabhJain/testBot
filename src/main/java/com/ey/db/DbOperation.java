@@ -442,108 +442,122 @@ public class DbOperation extends ConnectionService {
 		return countryId;
 	}
 
-	public static String fetchComplianceDetailsFromDB(int page_number) {
+	public static String fetchComplianceDetails(){
 
 		log.info("Inside method fetchComplianceDetailsFromDB");
-
+		
 		JSONObject complianceDetails = new JSONObject();
 		JSONArray dataArray = new JSONArray();
-
-		String queryToFetchTopicSubtopic = "select T.topic_id, T.topic_name, ST.sub_topic_id, ST.sub_topic_name from Topics T, SubTopics ST WHERE T.topic_id = ST.topic_id limit "
-				+ (page_number * 10) + ",10;";
-
+		
+		String queryToFetchTopicSubtopic = "select T.topic_id, T.topic_name, ST.sub_topic_id, ST.sub_topic_name from Topics T, SubTopics ST WHERE T.topic_id = ST.topic_id;";
+		
 		Connection connection = ConnectionService.getConnection();
-
+		
 		try {
-
-			Statement statement = connection.createStatement();
-
-			ResultSet rs = statement.executeQuery(queryToFetchTopicSubtopic);
-			while (rs.next()) {
-
+			
+			PreparedStatement statement = connection.prepareStatement(queryToFetchTopicSubtopic);
+			
+			ResultSet resultSet = statement.executeQuery();
+			while(resultSet.next()){
+				
 				JSONObject rowData = new JSONObject();
+				
+				rowData.put("topic_id",  resultSet.getString("topic_id"));
+				rowData.put("topic_name" , resultSet.getString("topic_name"));
 
-				rowData.put("topic_name", rs.getString("topic_name"));
-				rowData.put("sub_topic_name", rs.getString("sub_topic_name"));
-				rowData.put("topic_id", rs.getString("topic_id"));
-				rowData.put("sub_topic_id", rs.getString("sub_topic_id"));
-				String queryToFetchNumberOfQuestions = "select count(question_id) as number_of_questions from QuestionsManagement group by sub_topic_id having sub_topic_id = "
-						+ rs.getInt("sub_topic_id") + ";";
+				rowData.put("sub_topic_id",  resultSet.getString("sub_topic_id"));
+				rowData.put("sub_topic_name", resultSet.getString("sub_topic_name"));
+				
+				String queryToFetchNumberOfQuestions = "select count(question_id) as number_of_questions from QuestionsManagement group by sub_topic_id having sub_topic_id = ?;";
+				
+				log.info(queryToFetchNumberOfQuestions);
+				
+				PreparedStatement statement2 = connection.prepareStatement(queryToFetchNumberOfQuestions);
+				
+				//SET PARAMETERS 
+				statement2.setInt(1, resultSet.getInt("sub_topic_id"));
+				
+				ResultSet numberOfQuestions = statement2.executeQuery();
+				
+				if(numberOfQuestions.next())
+					rowData.put("number_of_questions", numberOfQuestions.getInt("number_of_questions"));	
+				else 
+					rowData.put("number_of_questions", 0); 
+				
+				log.info(rowData.toJSONString());
 
-				// log.info(queryToFetchNumberOfQuestions);
-
-				Statement statement2 = connection.createStatement();
-
-				ResultSet rs2 = statement2.executeQuery(queryToFetchNumberOfQuestions);
-
-				if (rs2.next())
-					rowData.put("number_of_questions", rs2.getInt("number_of_questions"));
-				else
-					rowData.put("number_of_questions", 0);
-
-				// log.info(rowData.toJSONString());
-
-				rs2.close();
-
+				numberOfQuestions.close();
+				statement2.close();
+				
 				dataArray.add(rowData);
-
+			
 			}
-
+			
+			//CLOSE DB CONNECTIONS
+			resultSet.close();
+			statement.close();
+			
+			//ADD DATA TO JSON
 			complianceDetails.put("data", dataArray);
-
-		} catch (Exception e) {
-
-			log.info("Error" + e);
-
+			
+		} catch (SQLException e) {
+			
+			log.info("Error in fetchComplianceDetailsFromDB : "+ e);
+			
 			e.printStackTrace();
-		} finally {
+		}
+		finally{
 			ConnectionService.closeConnection();
 		}
-
+		
 		return complianceDetails.toJSONString();
 	}
-
-	public static String fetchQuestionsFromDB(int topic_id, int sub_topic_id) {
-
-		log.info("Inside method fetchQuestionsFromDB");
-
+	
+	public static String fetchQuestions(int topic_id, int sub_topic_id){
+		
+		log.info("Inside method fetchQuestions");
+		
 		JSONObject listOfQuestions = new JSONObject();
-
+		
 		JSONArray data = new JSONArray();
 
 		Connection connection = ConnectionService.getConnection();
-
-		String queryToFetchQuestions = "select * from QuestionsManagement where topic_id = " + topic_id
-				+ " and sub_topic_id = " + sub_topic_id + ";";
-
+		
+		String queryToFetchQuestions = "select * from QuestionsManagement where topic_id = ? and sub_topic_id = ?;";
+		
 		try {
-			Statement statement = connection.createStatement();
+			PreparedStatement statement = connection.prepareStatement(queryToFetchQuestions);
 
-			ResultSet rs = statement.executeQuery(queryToFetchQuestions);
-
-			while (rs.next()) {
+			//SET PARAMETERS
+			statement.setInt(1, topic_id);
+			statement.setInt(2, sub_topic_id);
+			
+			ResultSet resultSet = statement.executeQuery();
+			
+			while(resultSet.next()){
 				JSONObject questionData = new JSONObject();
-				questionData.put("question_id", rs.getInt("question_id"));
-				questionData.put("question", rs.getString("possible_questions"));
-				questionData.put("question_type", rs.getString("questions_type"));
-				questionData.put("user_id", rs.getInt("User_ID"));
-
+				
+				questionData.put("question_id" , resultSet.getInt("question_id"));
+				questionData.put("question" , resultSet.getString("possible_questions"));
+				questionData.put("question_type" , resultSet.getString("questions_type"));
+				questionData.put("user_id" , resultSet.getInt("User_ID"));
+				
 				data.add(questionData);
-
 			}
-
-			rs.close();
-
+			
+			resultSet.close();
+			statement.close();
+			
 			listOfQuestions.put("data", data);
-
-		} catch (Exception e) {
-			log.info("Error in fetchQuestionsFromDB : " + e);
-
-			e.printStackTrace();
-		} finally {
+			
+		} catch (SQLException e) {
+			log.info("Error in fetchQuestionsFromDB : "+ e);
+			
+		}
+		finally{
 			ConnectionService.closeConnection();
 		}
-
+		
 		return listOfQuestions.toJSONString();
 	}
 
@@ -637,7 +651,7 @@ public class DbOperation extends ConnectionService {
 		log.info("inside method modifyTopic");
 		HashMap<String, Integer> topicList = getTopics();
 		int checkCount = 0;
-		int response = 2;
+		int response = 0;
 		Connection connection = ConnectionService.getConnection();
 		PreparedStatement statement = null;
 		try {

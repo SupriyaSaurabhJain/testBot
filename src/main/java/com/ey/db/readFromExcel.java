@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 public class readFromExcel {
 	private static final Logger log = Logger.getLogger(testing.class.getName());
-
+	static int count = 14;
 	public static void toDb(){
 	}
 	static void insertTopic(Set<String> topics)  {
@@ -124,23 +124,27 @@ public class readFromExcel {
 		//Statement statement;
 		try {
 			//			statement = connection.createStatement();
+		
 			for (String  subTopic : descriptionLib.keySet()) {
+				
 				log.info("subTopic : " + subTopic);
 				int subTopicId = getSubTopicId(subTopic);
 				HashMap<String , String> stateLawMap = descriptionLib.get(subTopic.toUpperCase());
-
+				
 				for (String state : stateLawMap.keySet()) {
-
+					
 					String escapeSequence = "\\\\" ;
 					log.info("state : " + state);
 					String lawDescription = stateLawMap.get(state).replaceAll("\'", escapeSequence+"\'").replaceAll("\"", escapeSequence+"\""); //.replaceAll("\n", "/\n").replaceAll("\t", "/\t");
 					if (state.equalsIgnoreCase("FEDERAL")) {
 						log.info("insert into Law_Description(law_description,country_id,state_id,sub_topic_id) Values('"+lawDescription+"','"+"1"+"','"+"NULL"+"','"+subTopicId+"')");
+						count++;
 						insertDescIntoDb("insert into Law_Description(law_description,country_id,sub_topic_id) Values('"+lawDescription+"','"+"1"+"','"+subTopicId+"')");
 					}
 					else{
 						int state_id = getstateId(state); 
 						log.info("insert into Law_Description(law_description,state_id,sub_topic_id) Values('"+lawDescription+"','"+state_id+"','"+subTopicId+"')");
+						count++;
 						insertDescIntoDb("insert into Law_Description(law_description,country_id,state_id,sub_topic_id) Values('"+lawDescription+"','"+"1"+"','"+state_id+"','"+subTopicId+"')");
 
 					}

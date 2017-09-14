@@ -12,17 +12,7 @@ import com.ey.db.*;
 public class ListComplianceDetails extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(ListComplianceDetails.class.getName());
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ListComplianceDetails() {
-        super();
-    }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 
@@ -35,7 +25,7 @@ public class ListComplianceDetails extends HttpServlet {
 			//int page_number = Integer.parseInt(requestObject.get("page_number").toString());
 			
 			response.setContentType("application/json");
-			response.getWriter().write(DbOperation.fetchComplianceDetailsFromDB(0));	
+			response.getWriter().write(DbOperation.fetchCompliance());	
 		
 		}
 		catch(Exception e){
