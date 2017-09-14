@@ -23,18 +23,19 @@ public class MyWebhookServlet extends AIWebhookServlet  {
 		HashMap<String, JsonElement> parameter = input.getResult().getParameters();
 		switch (action) {
 		case "compliance_expert_yes":
+			log.info("Webhook : compliance_expert_yes");
 			output = handler.compilanceExpertYesHandler(output);
 			break;
 		case "query":
 			String topic = parameter.get("topics").toString().replaceAll("^\"|\"$", "");
 			String law_scope = parameter.get("law_scope").toString().replaceAll("^\"|\"$", "");
+			log.info("Webhook : topic :"+topic + " law scope :"+law_scope);
 			output  = getQueryResponse(topic,law_scope.toUpperCase() , output );
 			break;
 		case "state_laws": 
 			topic = parameter.get("topic").toString().replaceAll("^\"|\"$", "");
-			log.info(topic);
 			String state = parameter.get("state").toString().replaceAll("^\"|\"$", "");
-			log.info(state);
+			log.info("Webhook : topic :"+topic + " state :"+state);
 			output  = getStateActionResponse(topic,state.toUpperCase() , output );
 			break;
 
@@ -45,37 +46,36 @@ public class MyWebhookServlet extends AIWebhookServlet  {
 
 	}
 	protected Fulfillment getQueryResponse(String topic , String law_scope , Fulfillment output){
-		String response = "No Response!!!" ;
-
+		String response = "" ;
+		log.info("inside getQueryResponse");
 		if (law_scope.equals("FEDERAL")) {
 			try {
 				response = "This is what I found about federal law on" + topic+ ". \n" ;
 				//response += obj1.get(law_scope).toString();
-				response += DbOperation.getResponse(topic, law_scope, "1");
+				String responseFromDB = DbOperation.getResponse(topic, law_scope, "1");
+				response += responseFromDB;
+				log.info("responseFromDB : "+responseFromDB);
 				output.setDisplayText(response + "\n\nDoes this help?\n :obYes:cb :obNo:cb");
 				output.setSpeech(response + "\n \n This is what I found. Does it help ?");
 				//webhook_res["contextOut"].append({"name":"complaince_expert", "lifespan":2,"parameters":{ "topic": topic} })
 				AIOutputContext contextOut = new AIOutputContext();
 				HashMap<String, JsonElement> outParameters = new HashMap<String , JsonElement>();
-
 				JsonElement contextOutParameter ;
 				contextOutParameter = new JsonPrimitive(topic);
 				outParameters.put("topic",contextOutParameter );
-
 				contextOut.setLifespan(2);
 				contextOut.setName("complaince_expert");
 				contextOut.setParameters(outParameters);
 				log.info("Context out parameters" + contextOutParameter.toString());
-
 				output.setContextOut(contextOut);
 
 
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.severe("Exception Fetching response from database");
 			}
 		}
 		else if(law_scope.equals("STATE")){
+			log.info("Ask for state ? ");
 			output.setSpeech("Which state ?");
 			output.setDisplayText("Which State ?");
 			AIOutputContext contextOut = new AIOutputContext();
@@ -94,12 +94,14 @@ public class MyWebhookServlet extends AIWebhookServlet  {
 		return output ;
 	}
 	protected Fulfillment getStateActionResponse(String topic , String state , Fulfillment output){
-		log.info("inside funb");
-		String response = "No Response!!!" ;
+		log.info("inside getStateActionResponse");
+		String response = "" ;
 		AIOutputContext contextOut = new AIOutputContext();
 		try {
 			response = "This is what I found on" + topic+ ". \n" ;
-			response += DbOperation.getResponse(topic, state, "1");
+			String responseFromDB = DbOperation.getResponse(topic, state, "1");
+			response += responseFromDB ;
+			log.info("responseFromDB : "+responseFromDB);
 			output.setDisplayText(response + "\n\nDoes this help?\n :obYes:cb :obNo:cb");
 			output.setSpeech(response + "\n \n This is what I found. Does it help ?");
 			//webhook_res["contextOut"].append({"name":"complaince_expert", "lifespan":2,"parameters":{ "topic": topic} })
@@ -110,16 +112,13 @@ public class MyWebhookServlet extends AIWebhookServlet  {
 			contextOut.setLifespan(2);
 			contextOut.setName("complaince_expert");
 			contextOut.setParameters(outParameters);
+			log.info("" + contextOut.getLifespan() + " : " + contextOut.getName() );
 			output.setContextOut(contextOut);
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			log.info("exception  "+ e);
-			e.printStackTrace();
+			log.severe("Exception Fetching response from database");
 		}
-
-
-		log.info("out");
+		log.info("sending response from webhook");
 		return output ;
 	}
 }
