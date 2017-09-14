@@ -211,26 +211,21 @@ public class DbOperation extends ConnectionService {
 		log.info("inside getResponse(String subTopic, String state, String country)");
 		String response = "";
 		String query = "";
-		int subTopic_id = getSubTopicId(subTopic.toUpperCase());
 		Connection connection = ConnectionService.getConnection();
 		PreparedStatement statement ;	
 		try {
 		if (state.toUpperCase().equalsIgnoreCase("FEDERAL")) { // check if its for federal or some state
-			query = "SELECT LD.law_description , LD.law_desc_id,S.state_id,ST.sub_topic_id FROM Law_Description AS LD RIGHT OUTER JOIN SubTopics AS ST ON LD.sub_topic_id = ST.sub_topic_id RIGHT OUTER JOIN State AS S  ON S.state_id = LD.state_id WHERE UPPER(S.state_name) = 'WEST VIRGINIA' and  UPPER(ST.sub_topic_name) = 'NON-COMPETE AGREEMENTS' ;";
-			 statement = connection.prepareStatement(query);
-			/*query = Queries.getQuery("GetLawDescriptionForFederal");
+			query = Queries.getQuery("GetLawDescriptionForFederal");
 			log.info("Query : "+query);
 			statement = connection.prepareStatement(query);
-			statement.setInt(1, subTopic_id);*/
-		} else {
-			int state_id = getstateId(state.toUpperCase());
-		/*	Query = "SELECT law_description FROM Law_Description WHERE sub_topic_id = '" + subTopic_id
-					+ "' AND state_id = '" + state_id + "';";*/
+			statement.setString(1, subTopic);
+		} 
+		else {
 			query = Queries.getQuery("GetLawDescriptionForState");
 			statement = connection.prepareStatement(query);
 			log.info("Query : "+query);
-			statement.setInt(1,subTopic_id );
-			statement.setInt(2,state_id);
+			statement.setString(1,state.toUpperCase() );
+			statement.setString(2,subTopic.toUpperCase() );
 		}
 			ResultSet rs = statement.executeQuery();
 			while (rs.next()) {
