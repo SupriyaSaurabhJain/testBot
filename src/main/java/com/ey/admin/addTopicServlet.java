@@ -50,6 +50,7 @@ public class addTopicServlet extends HttpServlet {
 			resultFromAPI = APIHandler.addTopic(subTopic, subTopic); //Method call to add topic to API AI
 			if (resultFromAPI == 1) { //check if subTopic successfully added to API AI
 				response = getErrorResponse(resultFromAPI);  //if success set response message  
+				addDefaultQuestion(topic, subTopic);
 			}
 			else{
 				DbOperation.deleteSubTopicFromDb(subTopic); // if not added successfully roll back all the transactions, deleting entries from database
@@ -76,9 +77,9 @@ public class addTopicServlet extends HttpServlet {
 	//Method to add CUSTOM generated question 
 	private static int addDefaultQuestion(String subTopic,String topic){
 		int response = -1;
+		//add questions to DB
 		for (String question : generateQuestion(subTopic)) {
 			response = DbOperation.addNewQuestionToDB(topic, subTopic, question, -1);
-
 		}
 		return response;
 	}
@@ -88,6 +89,7 @@ public class addTopicServlet extends HttpServlet {
 		questions.add("What is "+subTopic+" ?");
 		questions.add("Tell me about "+subTopic+" ?");
 		questions.add("Describe "+subTopic+" ?");
+		questions.add("Explain "+subTopic+" ?");
 		return questions;
 	}
 }
