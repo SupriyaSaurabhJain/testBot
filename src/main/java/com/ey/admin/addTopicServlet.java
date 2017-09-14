@@ -51,8 +51,7 @@ public class addTopicServlet extends HttpServlet {
 			if (resultFromAPI == 1) { //check if subTopic successfully added to API AI
 				response = getErrorResponse(resultFromAPI);  //if success set response message  
 				if (resultFromAPI == 1) { // if topic added add question too
-					addDefaultQuestion(topic, subTopic);
-
+					addDefaultQuestion(subTopic, topic);
 				}
 			}
 			else{
