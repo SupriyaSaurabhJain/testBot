@@ -1,6 +1,7 @@
 package com.ey.admin;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -72,5 +73,21 @@ public class addTopicServlet extends HttpServlet {
 		}
 		return errorResponse;
 	}
+	//Method to add CUSTOM generated question 
+	private static int addDefaultQuestion(String subTopic,String topic){
+		int response = -1;
+		for (String question : generateQuestion(subTopic)) {
+			response = DbOperation.addNewQuestionToDB(topic, subTopic, question, -1);
 
+		}
+		return response;
+	}
+	//Method to generate question
+	private static ArrayList<String> generateQuestion(String subTopic){
+		ArrayList<String> questions = new ArrayList<String>();
+		questions.add("What is "+subTopic+" ?");
+		questions.add("Tell me about "+subTopic+" ?");
+		questions.add("Describe "+subTopic+" ?");
+		return questions;
+	}
 }
