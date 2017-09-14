@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 public class readFromExcel {
 	private static final Logger log = Logger.getLogger(testing.class.getName());
-	static int count = 14;
+	static int count = 15;
 	public static void toDb(){
 	}
 	static void insertTopic(Set<String> topics)  {
