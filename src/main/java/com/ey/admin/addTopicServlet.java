@@ -50,7 +50,10 @@ public class addTopicServlet extends HttpServlet {
 			resultFromAPI = APIHandler.addTopic(subTopic, subTopic); //Method call to add topic to API AI
 			if (resultFromAPI == 1) { //check if subTopic successfully added to API AI
 				response = getErrorResponse(resultFromAPI);  //if success set response message  
-				addDefaultQuestion(topic, subTopic);
+				if (resultFromAPI == 1) { // if topic added add question too
+					addDefaultQuestion(topic, subTopic);
+
+				}
 			}
 			else{
 				DbOperation.deleteSubTopicFromDb(subTopic); // if not added successfully roll back all the transactions, deleting entries from database
