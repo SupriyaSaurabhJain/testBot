@@ -25,7 +25,7 @@ public class ListComplianceDetails extends HttpServlet {
 			//int page_number = Integer.parseInt(requestObject.get("page_number").toString());
 			
 			response.setContentType("application/json");
-			response.getWriter().write(DbOperation.fetchCompliance());	
+			response.getWriter().write(DbOperation.fetchComplianceDetails());	
 		
 		}
 		catch(Exception e){
