@@ -162,4 +162,44 @@
     <servlet-name>test</servlet-name>
     <url-pattern>/test</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>dsdad</display-name>
+    <servlet-name>dsdad</servlet-name>
+    <servlet-class>com.ey.subscriber.dsdad</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>dsdad</servlet-name>
+    <url-pattern>/dsdad</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ada</display-name>
+    <servlet-name>ada</servlet-name>
+    <servlet-class>com.ey.subscriber.ada</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ada</servlet-name>
+    <url-pattern>/ada</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>sds</display-name>
+    <servlet-name>sds</servlet-name>
+    <servlet-class>com.ey.subscriber.sds</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>sds</servlet-name>
+    <url-pattern>/sds</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>addadad</display-name>
+    <servlet-name>addadad</servlet-name>
+    <servlet-class>com.ey.subscriber.addadad</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>addadad</servlet-name>
+    <url-pattern>/addadad</url-pattern>
+  </servlet-mapping>
 </web-app>

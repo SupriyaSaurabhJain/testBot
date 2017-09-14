@@ -738,4 +738,223 @@ public class DbOperation extends ConnectionService {
 		}
 		return response;
 	}
+	
+	public static int addSubscriber(String username, String emailId,
+			String password, boolean isadmin, String status) {
+		log.info("inside add subscriber");
+		int response = -1;
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		log.info(timestamp.toString());
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+
+			connection = ConnectionService.getConnection();
+			String addSubscriberAsAdmin, addSubscriberAsUser;
+			if (isadmin) {
+				addSubscriberAsAdmin = "INSERT INTO User(Username, Email , Password , Status , IsAdmin, account_creation_date) VALUES (?,?,?,?,?,?);";
+				log.info(addSubscriberAsAdmin);	
+				statement = connection.prepareStatement(addSubscriberAsAdmin);
+				statement.setString(1, username);
+				statement.setString(2, emailId);
+				statement.setString(3, password);
+				statement.setString(4, status);
+				statement.setString(5, String.valueOf(isadmin));
+				statement.setString(6, String.valueOf(timestamp));
+			} else {
+				addSubscriberAsUser = "INSERT INTO User(Username, Email , Status , IsAdmin, account_creation_date) VALUES (?,?,?,?,?);";
+				log.info(addSubscriberAsUser);	
+				statement = connection.prepareStatement(addSubscriberAsUser);
+				statement.setString(1, username);
+				statement.setString(2, emailId);
+				statement.setString(3, status);
+				statement.setString(4, String.valueOf(isadmin));
+				statement.setString(5, String.valueOf(timestamp));
+			}
+			response = statement.executeUpdate();
+			log.info("subscriber added successfully");
+		} catch (SQLIntegrityConstraintViolationException e) {
+			log.info("email id repeated");
+			response = -2;
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.severe("exception inserting the subscriber");
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+				ConnectionService.closeConnection();
+			} catch (SQLException e) {
+				log.severe("exception closing the db resources");
+			}
+		}
+		return response;
+	}
+
+	public static int deleteSubscriber(int userId) {
+		// TODO Auto-generated method stub
+		log.info("inside method deleteSubscriber");
+		int response = 0;
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			String deleteSubscriberQuery = "DELETE FROM User WHERE User_ID  = ?;";
+			connection = ConnectionService.getConnection();
+			statement = connection.prepareStatement(deleteSubscriberQuery);
+			statement.setInt(1, userId);
+			response = statement.executeUpdate();
+			log.info("Query executed response : " + response);
+
+		}catch (SQLException e) {
+			log.severe("SQLexception deleting the subscriber");
+		}catch (Exception e) {
+			log.severe("exception deleting the subscriber");
+		}
+		finally {
+			try {
+				statement.close();
+				connection.close();
+				ConnectionService.closeConnection();
+			} catch (SQLException e) {
+				log.severe("exception closing the db resources");
+			}
+		}
+		return response;
+	}
+
+	public static int modifySubscriber(int userId, String username,
+			String email, String password, String status, boolean isadmin,
+			boolean isRoleChange) {
+		// TODO Auto-generated method stub
+		log.info("inside method ModifySubscriber");
+		int response = 0;
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = ConnectionService.getConnection();
+			String modifySubscriberAsAdmin, modifySubscriberAsUser;
+			if (isRoleChange) {
+				modifySubscriberAsAdmin = "UPDATE User SET Username  = ? , Email = ? , Password = ? , Status = ? , IsAdmin = ? WHERE User_ID = ?;";
+				statement= connection.prepareStatement(modifySubscriberAsAdmin);
+				statement.setString(1, username);
+				statement.setString(2, email);
+				statement.setString(3, password);
+				statement.setString(4, status);
+				statement.setString(5, String.valueOf(isadmin));
+				statement.setInt(6, userId);
+			} else {
+				modifySubscriberAsUser = "UPDATE User SET Username  = ? , Email = ?, Status = ? , IsAdmin = ? WHERE User_ID = ?;";
+				statement= connection.prepareStatement(modifySubscriberAsUser);
+				statement.setString(1, username);
+				statement.setString(2, email);
+				statement.setString(3, status);
+				statement.setString(4, String.valueOf(isadmin));
+				statement.setInt(5, userId);
+			}
+			
+			response = statement.executeUpdate();
+			log.info("Query executed response : " + response);
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			log.severe("SQLException in modifying the subscriber");
+
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+				ConnectionService.closeConnection();
+			} catch (SQLException e) {
+				log.severe("exception closing the db resources");
+			}
+		}
+		return response;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static String fetchSubscribers() {
+
+		log.info("Inside method fetchSubscriberFromDB");
+
+		JSONObject listOfSubscribers = new JSONObject();
+
+		JSONArray data = new JSONArray();
+
+		
+		Connection connection = null;
+		PreparedStatement statement = null;
+
+		try {
+			String fetchSubscriberQuery = "select * from User;";
+			
+			connection = ConnectionService.getConnection();
+			statement = connection.prepareStatement(fetchSubscriberQuery);
+			
+			ResultSet subscribersResultSet = statement.executeQuery();
+
+			while (subscribersResultSet.next()) {
+				JSONObject SubscriberData = new JSONObject();
+				SubscriberData.put("User_ID", subscribersResultSet.getInt("User_ID"));
+				SubscriberData.put("Username", subscribersResultSet.getString("Username"));
+				SubscriberData.put("Email", subscribersResultSet.getString("Email"));
+				SubscriberData.put("Status", subscribersResultSet.getString("Status"));
+				SubscriberData.put("IsAdmin", subscribersResultSet.getString("IsAdmin"));
+
+				data.add(SubscriberData);
+
+			}
+			listOfSubscribers.put("data", data);
+
+		}catch(SQLException e){
+			log.severe("SqlException while fetching subscribers");
+		}catch (Exception e) {
+			log.severe("Exception while fetching subscribers");
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+				ConnectionService.closeConnection();
+			} catch (SQLException e) {
+				log.severe("exception closing the db resources");
+			}
+		}
+
+		return listOfSubscribers.toJSONString();
+	}
+
+	public static boolean isUserAdmin(int userId) {
+		log.info("checking if user is admin");
+		boolean isadmin = false;
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			String isUserAdminQuery = "SELECT IsAdmin FROM User WHERE User_ID = ?;";
+			log.info(isUserAdminQuery);
+			connection = ConnectionService.getConnection();
+			statement = connection.prepareStatement(isUserAdminQuery);
+			statement.setInt(1, userId);
+			ResultSet rolesResultSet = statement.executeQuery();
+			while (rolesResultSet.next()) {
+				String role = rolesResultSet.getString("IsAdmin");
+				isadmin = Boolean.parseBoolean(role.trim());
+				log.info("Is user admin :" + isadmin);
+			}
+			rolesResultSet.close();
+		}catch(SQLException e){
+			log.severe("SQLException while cheking user role");
+		}
+		catch (Exception e) {
+			log.severe("Exception while cheking user role");
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+				ConnectionService.closeConnection();
+			} catch (SQLException e) {
+				log.severe("exception closing the db resources");
+			}
+		}
+		return isadmin;
+	}
+	
 }

@@ -67,6 +67,13 @@
 			<artifactId>mysql-socket-factory</artifactId>
 			<version>1.0.3</version>
 		</dependency>
+		 
+		<dependency>
+    		<groupId>org.apache.commons</groupId>
+    		<artifactId>commons-lang3</artifactId>
+    		<version>3.4</version>
+		</dependency>
+ 		
 	</dependencies>
 	<build>
 		<!-- for hot reload of the web application -->
