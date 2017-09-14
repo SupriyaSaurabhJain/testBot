@@ -308,6 +308,11 @@ public class DbOperation extends ConnectionService {
 		int response = -1;
 		int topicId = getTopicId(topic);
 		int subTopicId = getSubTopicId(subTopic);
+		String type = "USER";
+		//check if userId = -1, it is custom/system generated question
+		if (userId == -1) { 
+			type = "CUSTOM" ;
+		}
 		/*String query = "INSERT INTO QuestionsManagement(possible_questions , questions_type , User_ID , sub_topic_id ,topic_id) VALUES"
 				+ " ('" + question + "' , 'USER' , ' " + userId + "' , '" + subTopicId + "' , '" + topicId + "') ;";*/
 		Connection connection = ConnectionService.getConnection();
@@ -315,7 +320,7 @@ public class DbOperation extends ConnectionService {
 		try {
 			statement = connection.prepareStatement(Queries.getQuery("InsertQuestion"));
 			statement.setString(1, question);
-			statement.setString(2, "USER");
+			statement.setString(2, type);
 			statement.setInt(3,userId );
 			statement.setInt(4,subTopicId );
 			statement.setInt(5,topicId );
@@ -323,7 +328,7 @@ public class DbOperation extends ConnectionService {
 			log.info("question added sucessfully");
 			statement.close();
 		} catch (SQLException e) {
-			log.severe("exception adding question : " + e);
+			log.severe("Exception adding question : " + e);
 		} finally {
 			ConnectionService.closeConnection();
 
