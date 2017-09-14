@@ -750,11 +750,11 @@ public class DbOperation extends ConnectionService {
 		try {
 
 			connection = ConnectionService.getConnection();
-			String addSubscriberAsAdmin, addSubscriberAsUser;
+			//String addSubscriberAsAdmin, addSubscriberAsUser;
 			if (isadmin) {
-				addSubscriberAsAdmin = "INSERT INTO User(Username, Email , Password , Status , IsAdmin, account_creation_date) VALUES (?,?,?,?,?,?);";
-				log.info(addSubscriberAsAdmin);	
-				statement = connection.prepareStatement(addSubscriberAsAdmin);
+				//addSubscriberAsAdmin = "INSERT INTO User(Username, Email , Password , Status , IsAdmin, account_creation_date) VALUES (?,?,?,?,?,?);";
+				//log.info(addSubscriberAsAdmin);	
+				statement = connection.prepareStatement(Queries.getQuery("addSubscriberAsAdmin"));
 				statement.setString(1, username);
 				statement.setString(2, emailId);
 				statement.setString(3, password);
@@ -762,9 +762,9 @@ public class DbOperation extends ConnectionService {
 				statement.setString(5, String.valueOf(isadmin));
 				statement.setString(6, String.valueOf(timestamp));
 			} else {
-				addSubscriberAsUser = "INSERT INTO User(Username, Email , Status , IsAdmin, account_creation_date) VALUES (?,?,?,?,?);";
-				log.info(addSubscriberAsUser);	
-				statement = connection.prepareStatement(addSubscriberAsUser);
+				//addSubscriberAsUser = "INSERT INTO User(Username, Email , Status , IsAdmin, account_creation_date) VALUES (?,?,?,?,?);";
+				//log.info(addSubscriberAsUser);	
+				statement = connection.prepareStatement(Queries.getQuery("addSubscriberAsUser"));
 				statement.setString(1, username);
 				statement.setString(2, emailId);
 				statement.setString(3, status);
@@ -798,9 +798,9 @@ public class DbOperation extends ConnectionService {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		try {
-			String deleteSubscriberQuery = "DELETE FROM User WHERE User_ID  = ?;";
+			//String deleteSubscriberQuery = "DELETE FROM User WHERE User_ID  = ?;";
 			connection = ConnectionService.getConnection();
-			statement = connection.prepareStatement(deleteSubscriberQuery);
+			statement = connection.prepareStatement(Queries.getQuery("deleteSubscriberQuery"));
 			statement.setInt(1, userId);
 			response = statement.executeUpdate();
 			log.info("Query executed response : " + response);
@@ -832,10 +832,10 @@ public class DbOperation extends ConnectionService {
 		PreparedStatement statement = null;
 		try {
 			connection = ConnectionService.getConnection();
-			String modifySubscriberAsAdmin, modifySubscriberAsUser;
+			//String modifySubscriberAsAdmin, modifySubscriberAsUser;
 			if (isRoleChange) {
-				modifySubscriberAsAdmin = "UPDATE User SET Username  = ? , Email = ? , Password = ? , Status = ? , IsAdmin = ? WHERE User_ID = ?;";
-				statement= connection.prepareStatement(modifySubscriberAsAdmin);
+				//modifySubscriberAsAdmin = "UPDATE User SET Username  = ? , Email = ? , Password = ? , Status = ? , IsAdmin = ? WHERE User_ID = ?;";
+				statement= connection.prepareStatement(Queries.getQuery("modifySubscriberAsAdmin"));
 				statement.setString(1, username);
 				statement.setString(2, email);
 				statement.setString(3, password);
@@ -843,8 +843,8 @@ public class DbOperation extends ConnectionService {
 				statement.setString(5, String.valueOf(isadmin));
 				statement.setInt(6, userId);
 			} else {
-				modifySubscriberAsUser = "UPDATE User SET Username  = ? , Email = ?, Status = ? , IsAdmin = ? WHERE User_ID = ?;";
-				statement= connection.prepareStatement(modifySubscriberAsUser);
+				//modifySubscriberAsUser = "UPDATE User SET Username  = ? , Email = ?, Status = ? , IsAdmin = ? WHERE User_ID = ?;";
+				statement= connection.prepareStatement(Queries.getQuery("modifySubscriberAsUser"));
 				statement.setString(1, username);
 				statement.setString(2, email);
 				statement.setString(3, status);
@@ -885,10 +885,10 @@ public class DbOperation extends ConnectionService {
 		PreparedStatement statement = null;
 
 		try {
-			String fetchSubscriberQuery = "select * from User;";
+			//String fetchSubscriberQuery = "select * from User;";
 			
 			connection = ConnectionService.getConnection();
-			statement = connection.prepareStatement(fetchSubscriberQuery);
+			statement = connection.prepareStatement(Queries.getQuery("fetchSubscriberQuery"));
 			
 			ResultSet subscribersResultSet = statement.executeQuery();
 
@@ -928,10 +928,10 @@ public class DbOperation extends ConnectionService {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		try {
-			String isUserAdminQuery = "SELECT IsAdmin FROM User WHERE User_ID = ?;";
-			log.info(isUserAdminQuery);
+			//String isUserAdminQuery = "SELECT IsAdmin FROM User WHERE User_ID = ?;";
+			//log.info(isUserAdminQuery);
 			connection = ConnectionService.getConnection();
-			statement = connection.prepareStatement(isUserAdminQuery);
+			statement = connection.prepareStatement(Queries.getQuery("isUserAdminQuery"));
 			statement.setInt(1, userId);
 			ResultSet rolesResultSet = statement.executeQuery();
 			while (rolesResultSet.next()) {
