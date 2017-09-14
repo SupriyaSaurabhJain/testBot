@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Logger;
 
+import com.ey.util.Queries;
+
 
 public class DBOperationsForEvent{
 
@@ -18,10 +20,8 @@ public class DBOperationsForEvent{
 		
 		Connection connection = ConnectionService.getConnection();
 		
-		String queryToInsertEventLog = "INSERT INTO Event_Log (Event_description, Event_ID, User_ID ) VALUES ('?', ?, ?);"; 
-		
 		try{
-			PreparedStatement statement = connection.prepareStatement(queryToInsertEventLog);
+			PreparedStatement statement = connection.prepareStatement(Queries.getQuery("queryToInsertEventLog"));
 			
 			//SET PARAMETERS
 			statement.setString(1, eventDescription);
@@ -51,10 +51,8 @@ public class DBOperationsForEvent{
 		
 		Connection connection = ConnectionService.getConnection();
 		
-		String queryTogetEventID = "SELECT Event_ID FROM Event_Type WHERE Event_name = '?'";
-		
 		try{
-			PreparedStatement statement = connection.prepareStatement(queryTogetEventID);
+			PreparedStatement statement = connection.prepareStatement(Queries.getQuery("queryToGetEventID"));
 			
 			//SET PARAMETERS
 			statement.setString(1, eventName);
@@ -87,10 +85,8 @@ public class DBOperationsForEvent{
 		int chatSessionID = 0; 
 		Connection connection = ConnectionService.getConnection();
 		
-		String queryToLogNewSession = "INSERT INTO Chat_Session (`User_ID`) VALUES (?);";
-		
 		try {
-			PreparedStatement statement = connection.prepareStatement(queryToLogNewSession, Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement statement = connection.prepareStatement(Queries.getQuery("queryToLogNewSession"), Statement.RETURN_GENERATED_KEYS);
 			
 			//SET PAREMETERS
 			statement.setInt(1, userID);
@@ -123,12 +119,10 @@ public class DBOperationsForEvent{
 		
 		log.info("Inside logEmailSupportRequest");
 		
-		String queryToLogEmailSupportRequest = "INSERT INTO Email_Support_Details (`Chat_session_ID`,`Chat_entry`) VALUES (?, '?')";
-		
 		Connection connection = ConnectionService.getConnection();
 
 		try {
-			PreparedStatement statement = connection.prepareStatement(queryToLogEmailSupportRequest);
+			PreparedStatement statement = connection.prepareStatement(Queries.getQuery("queryToLogEmailSupportRequest"));
 
 			//SET PAREMETERS
 			statement.setInt(1, chatSessionID);
@@ -153,13 +147,10 @@ public class DBOperationsForEvent{
 		
 		log.info("Inside logNewMessage");
 		
-		
-		String queryToLogMessage = "INSERT INTO Chat_Session_Details (`Chat_session_ID`,`Chat_entry`, `Response_type`) VALUES (?, '?', ?)";
-		
 		Connection connection = ConnectionService.getConnection();
 
 		try {
-			PreparedStatement statement = connection.prepareStatement(queryToLogMessage);
+			PreparedStatement statement = connection.prepareStatement(Queries.getQuery("queryToLogMessage"));
 			
 			//SET PARAMETERS
 			statement.setInt(1, chatSessionID);

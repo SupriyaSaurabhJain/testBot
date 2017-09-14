@@ -72,4 +72,45 @@
     <servlet-name>testing</servlet-name>
     <url-pattern>/testing</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <description></description>
+    <display-name>AddSubscriber</display-name>
+    <servlet-name>AddSubscriber</servlet-name>
+    <servlet-class>com.ey.subscriber.AddSubscriber</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddSubscriber</servlet-name>
+    <url-pattern>/AddSubscriber</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>DeleteSubscriber</display-name>
+    <servlet-name>DeleteSubscriber</servlet-name>
+    <servlet-class>com.ey.subscriber.DeleteSubscriber</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteSubscriber</servlet-name>
+    <url-pattern>/DeleteSubscriber</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ModifySubscriber</display-name>
+    <servlet-name>ModifySubscriber</servlet-name>
+    <servlet-class>com.ey.subscriber.ModifySubscriber</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ModifySubscriber</servlet-name>
+    <url-pattern>/ModifySubscriber</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>FetchSubscribers</display-name>
+    <servlet-name>FetchSubscribers</servlet-name>
+    <servlet-class>com.ey.subscriber.FetchSubscribers</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FetchSubscribers</servlet-name>
+    <url-pattern>/FetchSubscribers</url-pattern>
+  </servlet-mapping>
 </web-app>
