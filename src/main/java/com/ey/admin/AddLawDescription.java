@@ -47,12 +47,12 @@ public class AddLawDescription extends HttpServlet {
 		String response = "";
 		int result = DbOperation.addLawDescriptionToDB(topicId, subTopicId, countryId, stateId, description); // function call to add law description to database
 		log.info("result from DbOperation.addLawDescriptionToDB :" + result);
-		response = getErrorResponse(result);
+		response = getFormattedResponse(result);
 		log.info("Response to be sent : " + response);
 		return response;
 	}
 // Method to format response
-	private static String getErrorResponse(int result) {
+	private static String getFormattedResponse(int result) {
 
 		String response;
 		if (result == 1) {
