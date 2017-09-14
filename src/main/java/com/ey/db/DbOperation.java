@@ -216,7 +216,7 @@ public class DbOperation extends ConnectionService {
 		PreparedStatement statement ;	
 		try {
 		if (state.toUpperCase().equalsIgnoreCase("FEDERAL")) { // check if its for federal or some state
-			query = "SELECT LD.law_description , LD.law_desc_id,S.state_id,ST.sub_topic_id FROM Law_Description AS LD INNER JOIN SubTopics AS ST ON LD.sub_topic_id = ST.sub_topic_id LEFT JOIN State AS S  ON S.state_id = LD.state_id WHERE S.state_id = 1 and ST.sub_topic_id = 1;" ;
+			query = "ELECT LD.law_description , LD.law_desc_id,S.state_id,ST.sub_topic_id FROM Law_Description AS LD RIGHT OUTER JOIN SubTopics AS ST ON LD.sub_topic_id = ST.sub_topic_id RIGHT OUTER JOIN State AS S  ON S.state_id = LD.state_id WHERE UPPER(S.state_name) = 'WEST VIRGINIA' and  UPPER(ST.sub_topic_name) = 'NON-COMPETE AGREEMENTS' ;";
 			 statement = connection.prepareStatement(query);
 			/*query = Queries.getQuery("GetLawDescriptionForFederal");
 			log.info("Query : "+query);
