@@ -448,14 +448,12 @@ public class DbOperation extends ConnectionService {
 		
 		JSONObject complianceDetails = new JSONObject();
 		JSONArray dataArray = new JSONArray();
-		
-		String queryToFetchTopicSubtopic = "select T.topic_id, T.topic_name, ST.sub_topic_id, ST.sub_topic_name from Topics T, SubTopics ST WHERE T.topic_id = ST.topic_id;";
-		
+				
 		Connection connection = ConnectionService.getConnection();
 		
 		try {
 			
-			PreparedStatement statement = connection.prepareStatement(queryToFetchTopicSubtopic);
+			PreparedStatement statement = connection.prepareStatement(Queries.getQuery("queryToFetchTopicSubtopic"));
 			
 			ResultSet resultSet = statement.executeQuery();
 			while(resultSet.next()){
@@ -468,7 +466,7 @@ public class DbOperation extends ConnectionService {
 				rowData.put("sub_topic_id",  resultSet.getString("sub_topic_id"));
 				rowData.put("sub_topic_name", resultSet.getString("sub_topic_name"));
 				
-				String queryToFetchNumberOfQuestions = "select count(question_id) as number_of_questions from QuestionsManagement group by sub_topic_id having sub_topic_id = ?;";
+				String queryToFetchNumberOfQuestions = Queries.getQuery("queryToFetchNumberOfQuestions");
 				
 				log.info(queryToFetchNumberOfQuestions);
 				
@@ -502,7 +500,7 @@ public class DbOperation extends ConnectionService {
 			
 		} catch (SQLException e) {
 			
-			log.info("Error in fetchComplianceDetailsFromDB : "+ e);
+			log.info("Error in fetchComplianceDetails : "+ e);
 			
 			e.printStackTrace();
 		}
@@ -523,10 +521,8 @@ public class DbOperation extends ConnectionService {
 
 		Connection connection = ConnectionService.getConnection();
 		
-		String queryToFetchQuestions = "select * from QuestionsManagement where topic_id = ? and sub_topic_id = ?;";
-		
 		try {
-			PreparedStatement statement = connection.prepareStatement(queryToFetchQuestions);
+			PreparedStatement statement = connection.prepareStatement(Queries.getQuery("queryToFetchQuestions"));
 
 			//SET PARAMETERS
 			statement.setInt(1, topic_id);
@@ -551,7 +547,7 @@ public class DbOperation extends ConnectionService {
 			listOfQuestions.put("data", data);
 			
 		} catch (SQLException e) {
-			log.info("Error in fetchQuestionsFromDB : "+ e);
+			log.info("Error in fetchQuestions : "+ e);
 			
 		}
 		finally{
