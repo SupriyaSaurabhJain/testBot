@@ -164,42 +164,42 @@
   </servlet-mapping>
   <servlet>
     <description></description>
-    <display-name>dsdad</display-name>
-    <servlet-name>dsdad</servlet-name>
-    <servlet-class>com.ey.subscriber.dsdad</servlet-class>
+    <display-name>AddSubscriber</display-name>
+    <servlet-name>AddSubscriber</servlet-name>
+    <servlet-class>com.ey.subscriber.AddSubscriber</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>dsdad</servlet-name>
-    <url-pattern>/dsdad</url-pattern>
+    <servlet-name>AddSubscriber</servlet-name>
+    <url-pattern>/AddSubscriber</url-pattern>
   </servlet-mapping>
   <servlet>
     <description></description>
-    <display-name>ada</display-name>
-    <servlet-name>ada</servlet-name>
-    <servlet-class>com.ey.subscriber.ada</servlet-class>
+    <display-name>DeleteSubscriber</display-name>
+    <servlet-name>DeleteSubscriber</servlet-name>
+    <servlet-class>com.ey.subscriber.DeleteSubscriber</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>ada</servlet-name>
-    <url-pattern>/ada</url-pattern>
+    <servlet-name>DeleteSubscriber</servlet-name>
+    <url-pattern>/DeleteSubscriber</url-pattern>
   </servlet-mapping>
   <servlet>
     <description></description>
-    <display-name>sds</display-name>
-    <servlet-name>sds</servlet-name>
-    <servlet-class>com.ey.subscriber.sds</servlet-class>
+    <display-name>ModifySubscriber</display-name>
+    <servlet-name>ModifySubscriber</servlet-name>
+    <servlet-class>com.ey.subscriber.ModifySubscriber</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>sds</servlet-name>
-    <url-pattern>/sds</url-pattern>
+    <servlet-name>ModifySubscriber</servlet-name>
+    <url-pattern>/ModifySubscriber</url-pattern>
   </servlet-mapping>
   <servlet>
     <description></description>
-    <display-name>addadad</display-name>
-    <servlet-name>addadad</servlet-name>
-    <servlet-class>com.ey.subscriber.addadad</servlet-class>
+    <display-name>FetchSubscribers</display-name>
+    <servlet-name>FetchSubscribers</servlet-name>
+    <servlet-class>com.ey.subscriber.FetchSubscribers</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>addadad</servlet-name>
-    <url-pattern>/addadad</url-pattern>
+    <servlet-name>FetchSubscribers</servlet-name>
+    <url-pattern>/FetchSubscribers</url-pattern>
   </servlet-mapping>
 </web-app>
