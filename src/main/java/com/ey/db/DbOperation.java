@@ -184,6 +184,7 @@ public class DbOperation extends ConnectionService {
 	}
 //Method to get subTopicId for given sub topic
 	public static int getSubTopicId(String subtopic) {
+		log.info("inside get subtopicId");
 		Connection connection = ConnectionService.getConnection();
 		int subTopic_id = -1;
 		subtopic = subtopic.trim().toUpperCase();
@@ -197,10 +198,9 @@ public class DbOperation extends ConnectionService {
 			}
 			rs.close();
 			statement.close();
-
+			log.info("SubTopicId : "+subTopic_id);
 		} catch (SQLException e) {
-			log.severe("exception fetching sub topic id "+ e);
-			e.printStackTrace();
+			log.severe("Exception fetching sub topic id "+ e);
 		} finally {
 			ConnectionService.closeConnection();
 		}
@@ -213,12 +213,13 @@ public class DbOperation extends ConnectionService {
 		String query = "";
 		int subTopic_id = getSubTopicId(subTopic.toUpperCase());
 		Connection connection = ConnectionService.getConnection();
-		PreparedStatement statement ;
+		PreparedStatement statement ;	
 		try {
 		if (state.toUpperCase().equalsIgnoreCase("FEDERAL")) { // check if its for federal or some state
 			/*Query = "SELECT law_description FROM Law_Description WHERE sub_topic_id = '" + subTopic_id
 					+ "' AND state_id IS NULL;";*/
 			query = Queries.getQuery("GetLawDescriptionForFederal");
+			log.info("Query : "+query);
 			statement = connection.prepareStatement(query);
 			statement.setInt(1, subTopic_id);
 		} else {
@@ -227,6 +228,7 @@ public class DbOperation extends ConnectionService {
 					+ "' AND state_id = '" + state_id + "';";*/
 			query = Queries.getQuery("GetLawDescriptionForState");
 			statement = connection.prepareStatement(query);
+			log.info("Query : "+query);
 			statement.setInt(1,subTopic_id );
 			statement.setInt(2,state_id);
 		}
